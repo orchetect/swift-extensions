@@ -1,0 +1,51 @@
+//
+//  String Title Case.swift
+//  swift-extensions • https://github.com/orchetect/swift-extensions
+//  © 2025 Steffan Andrews • Licensed under MIT License
+//
+
+// MARK: - Title Case
+
+extension String {
+    /// Used by `titleCased`.
+    /// Private array of title case particles to leave as lowercase
+    private static let titleCasedParticles = [
+        "a", "an", "the",              // articles
+        "and", "but", "for",           // coordinating conjunctions
+        "at", "by", "of", "in", "on",  // prepositions
+        "to", "with",
+        "is"
+    ]
+    
+    /// Returns a representation of the string in title case capitalization style.
+    ///
+    /// Example:
+    ///
+    /// ```swift
+    /// "what to capitalize in a title".titleCased
+    /// // "What to Capitalize in a Title"
+    /// ```
+    ///
+    /// (English localization only at this time.)
+    @available(macOS 10.11, *)
+    @_disfavoredOverload
+    public var titleCased: String {
+        var words =
+            localizedCapitalized
+                .split(separator: " ")
+                .map { String($0) }
+        
+        // only process if there are more than 2 words
+        if words.count > 2 {
+            for idx in 1 ... words.count - 2 {
+                let currentWord = words[idx].localizedLowercase
+                
+                if String.titleCasedParticles.contains(currentWord) {
+                    words[idx] = currentWord
+                }
+            }
+        }
+        
+        return words.joined(separator: " ")
+    }
+}

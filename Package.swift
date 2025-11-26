@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "OTCore",
+    name: "swift-extensions",
     platforms: [
         // The minimum platform versions here set the baseline requirements for the library, however
         // individual features of the library may be marked as `@available` only on newer versions.
@@ -11,26 +11,26 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "OTCore",
+            name: "swift-extensions",
             type: .static,
-            targets: ["OTCore"]
+            targets: ["SwiftExtensions"]
         )
     ],
     dependencies: [
         // Testing-only dependencies
-        .package(url: "https://github.com/apple/swift-numerics", from: "1.0.3"),
-        .package(url: "https://github.com/orchetect/swift-testing-extensions", from: "0.2.3")
+        .package(url: "https://github.com/apple/swift-numerics", from: "1.1.0"),
+        .package(url: "https://github.com/orchetect/swift-testing-extensions", from: "0.2.4")
     ],
     targets: [
         .target(
-            name: "OTCore",
+            name: "SwiftExtensions",
             dependencies: [],
             swiftSettings: [.define("DEBUG", .when(configuration: .debug))]
         ),
         .testTarget(
-            name: "OTCoreTests",
+            name: "SwiftExtensionsTests",
             dependencies: [
-                "OTCore", 
+                "SwiftExtensions", 
                 .product(name: "Numerics", package: "swift-numerics"),
                 .product(name: "TestingExtensions", package: "swift-testing-extensions")
             ],

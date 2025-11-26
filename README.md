@@ -1,6 +1,6 @@
-# OTCore
+# swift-extensions
 
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%2FOTCore%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/orchetect/OTCore) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%2FOTCore%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/orchetect/OTCore) [![Xcode 16](https://img.shields.io/badge/Xcode-16-blue.svg?style=flat)](https://developer.apple.com/swift) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/orchetect/OTCore/blob/main/LICENSE)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%2Fswift-extensions%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/orchetect/swift-extensions) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Forchetect%swift-extensions%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/orchetect/swift-extensions) [![Xcode 16](https://img.shields.io/badge/Xcode-16-blue.svg?style=flat)](https://developer.apple.com/swift) [![License: MIT](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/orchetect/swift-extensions/blob/main/LICENSE)
 
 Multi-platform Swift shared code module with useful extension methods on standard library types.
 
@@ -10,12 +10,12 @@ The library has full unit test coverage and is actively used in production.
 
 ### Dependency within an Application Project
 
-1. Add the package to your Xcode project using Swift Package Manager using `https://github.com/orchetect/OTCore` as the URL.
+1. Add the package to your Xcode project using Swift Package Manager using `https://github.com/orchetect/swift-extensions` as the URL.
 
 2. Import the module files where needed. It's recommended to use the `internal` access level if used in a package so that it is not exported to the user of your package.
 
    ```swift
-   internal import OTCore
+   internal import SwiftExtensions
    ```
 
 ### Dependency within a Swift Package
@@ -23,9 +23,18 @@ The library has full unit test coverage and is actively used in production.
 In your Package.swift file:
 
 ```swift
-dependencies: [
-    .package(url: "https://github.com/orchetect/OTCore", from: "1.7.12")
-]
+let package = Package(
+    dependencies: [
+        .package(url: "https://github.com/orchetect/swift-extensions", from: "2.0.0")
+    ],
+    targets: [
+        .target(
+            dependencies: [
+                .product(name: "SwiftExtensions", package: "swift-extensions")
+            ]
+        )
+    ]
+)
 ```
 
 ## Documentation
@@ -40,15 +49,19 @@ Coded by a bunch of 🐹 hamsters in a trenchcoat that calls itself [@orchetect]
 
 ## License
 
-Licensed under the MIT license. See [LICENSE](https://github.com/orchetect/OTCore/blob/master/LICENSE) for details.
+Licensed under the MIT license. See [LICENSE](https://github.com/orchetect/swift-extensions/blob/master/LICENSE) for details.
 
 ## Community & Support
 
 Please do not email maintainers for technical support. Several options are available for issues and questions:
 
-- Questions and feature ideas can be posted to [Discussions](https://github.com/orchetect/OTCore/discussions).
-- If an issue is a verifiable bug with reproducible steps it may be posted in [Issues](https://github.com/orchetect/OTCore/issues).
+- Questions and feature ideas can be posted to [Discussions](https://github.com/orchetect/swift-extensions/discussions).
+- If an issue is a verifiable bug with reproducible steps it may be posted in [Issues](https://github.com/orchetect/swift-extensions/issues).
 
 ## Contributions
 
-Contributions are welcome. Posting in [Discussions](https://github.com/orchetect/OTCore/discussions) first prior to new submitting PRs for features or modifications is encouraged.
+Contributions are welcome. Posting in [Discussions](https://github.com/orchetect/swift-extensions/discussions) first prior to new submitting PRs for features or modifications is encouraged.
+
+## Legacy
+
+This repository was formerly known as OTCore.
