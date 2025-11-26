@@ -289,7 +289,7 @@ import System
         )
     }
     
-    // MARK: - FilePath OTCore-Defined Forwarded Methods & Properties
+    // MARK: - FilePath SwiftExtensions-Defined Forwarded Methods & Properties
     
     // since methods under this mark are just proxy methods to access the wrapper, we won't bother testing all of them
     // since all of them are already tested in the corresponding `FilePath` tests.
