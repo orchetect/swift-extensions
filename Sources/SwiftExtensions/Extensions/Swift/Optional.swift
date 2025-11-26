@@ -31,15 +31,15 @@ extension Optional: OTCoreOptionalTyped {
     }
 }
 
-// MARK: - OTCoreOptional
+// MARK: - SwiftExtensionsOptional
 
 /// Protocol to allow conditional casting of an unknown type to an Optional.
 ///
-/// First, conditionally cast `Any` as? `OTCoreOptional`:
+/// First, conditionally cast `Any` as? `SwiftExtensionsOptional`:
 ///
 /// ```swift
 /// let value: Any = Optional("Test")
-/// guard let asOptional = value as? OTCoreOptional else { ... }
+/// guard let asOptional = value as? SwiftExtensionsOptional else { ... }
 /// ```
 ///
 /// An easy way to test if the Optional is `nil`:
@@ -93,7 +93,7 @@ extension Optional: OTCoreOptionalTyped {
 ///     // nil
 /// }
 /// ```
-protocol OTCoreOptional {
+protocol SwiftExtensionsOptional {
     /// Returns the optional Typed as `Any?`.
     @_disfavoredOverload
     func asAny() -> Any?
@@ -107,7 +107,7 @@ protocol OTCoreOptional {
     var isNone: Bool { get }
 }
 
-extension Optional: OTCoreOptional {
+extension Optional: SwiftExtensionsOptional {
     @_disfavoredOverload
     public func asAny() -> Any? {
         self as Any?

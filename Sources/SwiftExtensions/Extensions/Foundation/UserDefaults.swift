@@ -163,7 +163,7 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
         set {
             var processedValue: StorageValue?
             
-            if let asOptional = newValue as? OTCoreOptional {
+            if let asOptional = newValue as? SwiftExtensionsOptional {
                 if asOptional.isNone {
                     // we have to treat newValue == nil as a special case
                     // otherwise .setValue() will throw an exception
