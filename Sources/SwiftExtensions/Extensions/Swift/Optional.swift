@@ -4,10 +4,10 @@
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
 
-// MARK: - OTCoreOptionalTyped
+// MARK: - SwiftExtensionsOptionalTyped
 
 /// Protocol describing an optional, used to enable extensions on types such as `Type<T>?`.
-public protocol OTCoreOptionalTyped {
+public protocol SwiftExtensionsOptionalTyped {
     associatedtype Wrapped
     
     /// Semantic workaround used to enable extensions on types such as `Type<T>?`.
@@ -15,7 +15,7 @@ public protocol OTCoreOptionalTyped {
     var optional: Wrapped? { get set }
 }
 
-extension OTCoreOptionalTyped {
+extension SwiftExtensionsOptionalTyped {
     /// Same as `Wrapped?.none`.
     @inlinable @_disfavoredOverload
     public static var noneValue: Wrapped? {
@@ -23,7 +23,7 @@ extension OTCoreOptionalTyped {
     }
 }
 
-extension Optional: OTCoreOptionalTyped {
+extension Optional: SwiftExtensionsOptionalTyped {
     @inlinable @_disfavoredOverload
     public var optional: Wrapped? {
         get { self }

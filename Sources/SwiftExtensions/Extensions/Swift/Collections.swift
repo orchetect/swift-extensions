@@ -142,7 +142,7 @@ extension MutableCollection {
     }
 }
 
-extension MutableCollection where Element: OTCoreOptionalTyped {
+extension MutableCollection where Element: SwiftExtensionsOptionalTyped {
     /// Access collection indexes safely.
     ///
     /// Get: if index does not exist (out-of-bounds), `nil` is returned.
@@ -407,7 +407,7 @@ extension MutableCollection {
     }
 }
 
-extension MutableCollection where Element: OTCoreOptionalTyped {
+extension MutableCollection where Element: SwiftExtensionsOptionalTyped {
     /// Access collection indexes safely, referenced by position offset `0 ..< count`.
     /// (Same as `[position: Int]` but returns `nil` if out-of-bounds.)
     ///

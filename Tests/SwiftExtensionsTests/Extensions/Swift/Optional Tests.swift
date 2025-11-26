@@ -11,7 +11,7 @@ import Testing
 
 private protocol testStructProtocol { }
 
-extension Collection where Element: OTCoreOptionalTyped, Element.Wrapped: testStructProtocol {
+extension Collection where Element: SwiftExtensionsOptionalTyped, Element.Wrapped: testStructProtocol {
     fileprivate var foo: Int { 2 }
 }
 
