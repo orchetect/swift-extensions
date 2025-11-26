@@ -12,7 +12,6 @@ let package = Package(
     products: [
         .library(
             name: "swift-extensions",
-            type: .static,
             targets: ["SwiftExtensions"]
         )
     ],
