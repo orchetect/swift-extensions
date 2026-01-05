@@ -32,47 +32,40 @@ let package = Package(
                 "SwiftExtensions", 
                 .product(name: "Numerics", package: "swift-numerics"),
                 .product(name: "TestingExtensions", package: "swift-testing-extensions")
-            ],
-            swiftSettings: isRunningOnGitHubActions()
-                ? [.define("GITHUB_ACTIONS", .when(configuration: .debug))]
-                : []
+            ]
         )
     ]
 )
 
-// MARK: - CI Pipeline
-
-#if canImport(Foundation)
-import Foundation
-#elseif canImport(CoreFoundation)
-import CoreFoundation
-#endif
-
-func getEnvironmentVar(_ name: String) -> String? {
-    guard let rawValue = getenv(name) else { return nil }
-    return String(utf8String: rawValue)
-}
-
-extension StringProtocol {
-    var isTrueEnvValue: Bool {
-        let value = trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        return value == "true"
-            || value == "TRUE"
-            || value == "1"
-            || value == "yes"
-            || value == "YES"
-    }
-}
-
-func isRunningOnGitHubActions() -> Bool {
 #if canImport(Foundation) || canImport(CoreFoundation)
-    guard let value = getEnvironmentVar("GITHUB_ACTIONS")?
-        .trimmingCharacters(in: .whitespacesAndNewlines)
-    else { return false }
-    
-    return value.isTrueEnvValue
-#else
-    return false
+    #if canImport(Foundation)
+        import class Foundation.ProcessInfo
+
+        func getEnvironmentVar(_ name: String) -> String? {
+            ProcessInfo.processInfo.environment[name]
+        }
+    #elseif canImport(CoreFoundation)
+        import CoreFoundation
+
+        func getEnvironmentVar(_ name: String) -> String? {
+            guard let rawValue = getenv(name) else { return nil }
+            return String(utf8String: rawValue)
+        }
+    #endif
+
+    func isEnvironmentVarTrue(_ name: String) -> Bool {
+        guard let value = getEnvironmentVar(name)?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        else { return false }
+        return ["true", "yes", "1"].contains(value.lowercased())
+    }
+
+    // MARK: - CI Pipeline
+
+    if isEnvironmentVarTrue("GITHUB_ACTIONS") {
+        for target in package.targets.filter(\.isTest) {
+            if target.swiftSettings == nil { target.swiftSettings = [] }
+            target.swiftSettings? += [.define("GITHUB_ACTIONS", .when(configuration: .debug))]
+        }
+    }
 #endif
-}
