@@ -52,45 +52,45 @@ extension IPAddress {
     
     /// Internal:
     /// Performs validation on the IP address.
-    static func validate(address: String) throws -> Version {
+    static func validate(address: String) throws(ValidationError) -> Version {
         // first test for IPv4
-        if try NSRegularExpression(pattern: ipv4Pattern, options: [])
-            .matches(
-                in: address,
-                options: .anchored,
-                range: NSRange(
-                    location: 0,
-                    length: address.distance(
-                        from: address.startIndex,
-                        to: address.endIndex
-                    )
-                )
-            )
-            .count == 1
+        if let regex = try? NSRegularExpression(pattern: ipv4Pattern, options: []),
+           regex.matches(
+               in: address,
+               options: .anchored,
+               range: NSRange(
+                   location: 0,
+                   length: address.distance(
+                       from: address.startIndex,
+                       to: address.endIndex
+                   )
+               )
+           )
+           .count == 1
         {
             return .ipV4
         }
         
         // secondly, test for IPv6
-        if try NSRegularExpression(pattern: ipv6Pattern, options: [])
-            .matches(
-                in: address,
-                options: .anchored,
-                range: NSRange(
-                    location: 0,
-                    length: address.distance(
-                        from: address.startIndex,
-                        to: address.endIndex
-                    )
-                )
-            )
-            .count == 1
+        if let regex = try? NSRegularExpression(pattern: ipv6Pattern, options: []),
+           regex.matches(
+               in: address,
+               options: .anchored,
+               range: NSRange(
+                   location: 0,
+                   length: address.distance(
+                       from: address.startIndex,
+                       to: address.endIndex
+                   )
+               )
+           )
+           .count == 1
         {
             return .ipV6
         }
-        
+
         // if all tests failed, return invalid - does not match any known IP address format
-        throw ValidationError.invalid
+        throw .invalid
     }
 }
 
