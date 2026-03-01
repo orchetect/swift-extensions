@@ -54,7 +54,7 @@ public struct PassiveDataReader<D: DataProtocol> {
     /// Return the next byte and increment the read offset.
     ///
     /// If no bytes remain, `nil` will be returned.
-    public mutating func readByte() throws -> D.Element {
+    public mutating func readByte() throws(ReadError) -> D.Element {
         let d = try dataByte()
         defer { readOffset += 1 }
         return d
@@ -62,7 +62,7 @@ public struct PassiveDataReader<D: DataProtocol> {
     
     /// Read the next byte without advancing the read offset.
     /// If no bytes remain, `nil` will be returned.
-    public func nonAdvancingReadByte() throws -> D.Element {
+    public func nonAdvancingReadByte() throws(ReadError) -> D.Element {
         try dataByte()
     }
     
@@ -71,7 +71,7 @@ public struct PassiveDataReader<D: DataProtocol> {
     /// If `bytes` parameter is nil, the remainder of the data will be returned.
     ///
     /// If fewer bytes remain than are requested, `nil` will be returned.
-    public mutating func read(bytes count: Int? = nil) throws -> D.SubSequence {
+    public mutating func read(bytes count: Int? = nil) throws(ReadError) -> D.SubSequence {
         let d = try data(bytes: count)
         defer { readOffset += d.advanceCount }
         return d.data
@@ -80,7 +80,7 @@ public struct PassiveDataReader<D: DataProtocol> {
     /// Read _n_ number of bytes from the current read offset, without advancing the read offset.
     /// If `bytes count` passed is `nil`, the remainder of the data will be returned.
     /// If fewer bytes remain than are requested, `nil` will be returned.
-    public func nonAdvancingRead(bytes count: Int? = nil) throws -> D.SubSequence {
+    public func nonAdvancingRead(bytes count: Int? = nil) throws(ReadError) -> D.SubSequence {
         try data(bytes: count).data
     }
     
@@ -92,19 +92,19 @@ public struct PassiveDataReader<D: DataProtocol> {
         return out
     }
     
-    func dataByte() throws -> D.Element {
-        guard remainingByteCount > 0 else { throw ReadError.pastEndOfStream }
+    func dataByte() throws(ReadError) -> D.Element {
+        guard remainingByteCount > 0 else { throw .pastEndOfStream }
         let readPosIndex = withData { $0.index($0.startIndex, offsetBy: readOffset) }
         return withData { $0[readPosIndex] }
     }
     
-    func data(bytes count: Int? = nil) throws -> (data: D.SubSequence, advanceCount: Int) {
+    func data(bytes count: Int? = nil) throws(ReadError) -> (data: D.SubSequence, advanceCount: Int) {
         if count == 0 {
             return (data: withData { $0[$0.startIndex ..< $0.startIndex] }, advanceCount: 0)
         }
         
         if let count,
-           count < 0 { throw ReadError.invalidByteCount }
+           count < 0 { throw .invalidByteCount }
         
         let readPosStartIndex = withData { $0.index($0.startIndex, offsetBy: readOffset) }
         
@@ -113,7 +113,7 @@ public struct PassiveDataReader<D: DataProtocol> {
         let count = count ?? remainingCount
         
         guard count <= remainingCount else {
-            throw ReadError.pastEndOfStream
+            throw .pastEndOfStream
         }
         
         let endIndex = withData { $0.index(readPosStartIndex, offsetBy: count - 1) }
@@ -121,7 +121,7 @@ public struct PassiveDataReader<D: DataProtocol> {
         guard withData({
             $0.indices.contains(readPosStartIndex) && $0.indices.contains(endIndex)
         }) else {
-            throw ReadError.pastEndOfStream
+            throw .pastEndOfStream
         }
         
         let returnBytes = withData { $0[readPosStartIndex ... endIndex] }
@@ -129,6 +129,11 @@ public struct PassiveDataReader<D: DataProtocol> {
         return (data: returnBytes, advanceCount: count)
     }
 }
+
+// MARK: - ReadError
+
+#if compiler(>=6.2)
+// this works fine in Xcode 26, which solved the compiler crash bug that Xcode 16.4 had
 
 extension PassiveDataReader {
     /// Error returned by ``PassiveDataReader`` methods.
@@ -138,12 +143,30 @@ extension PassiveDataReader {
     }
 }
 
+#else
+// workaround for Xcode 16.4 which has a compiler crash bug when referencing a type nested
+// under a type that has associated generics in `throws()`
+
+extension PassiveDataReader {
+    /// Error returned by ``PassiveDataReader`` methods.
+    public typealias ReadError = PassiveDataReaderError
+}
+
+/// Error returned by ``PassiveDataReader`` methods.
+public enum PassiveDataReaderError: Error {
+    case pastEndOfStream
+    case invalidByteCount
+}
+#endif
+
+// MARK: - Standard Type Extensions
+
 extension DataProtocol {
     /// Accesses the data by providing a ``PassiveDataReader`` instance to a closure.
     @_disfavoredOverload @discardableResult
-    public func withDataReader<Result>(
-        _ block: (_ dataReader: inout PassiveDataReader<Self>) throws -> Result
-    ) rethrows -> Result {
+    public func withDataReader<Result, E>(
+        _ block: (_ dataReader: inout PassiveDataReader<Self>) throws(E) -> Result
+    ) throws(E) -> Result {
         var mutableSelf = self
         var reader = PassiveDataReader { $0(&mutableSelf) }
         return try block(&reader)
