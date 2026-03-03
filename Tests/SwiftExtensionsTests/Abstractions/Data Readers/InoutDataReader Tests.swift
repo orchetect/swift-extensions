@@ -1,5 +1,5 @@
 //
-//  PassiveDataReader Tests.swift
+//  InoutDataReader Tests.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
@@ -8,7 +8,7 @@ import Foundation
 import SwiftExtensions
 import Testing
 
-@Suite struct Abstractions_PassiveDataReader_Tests {
+@Suite struct Abstractions_InoutDataReader_Tests {
     // MARK: - Data storage starting with index 0
     
     @Test
@@ -17,7 +17,7 @@ import Testing
         
         // .read(bytes:)
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(dr.readOffset == 0)
             #expect(dr.remainingByteCount == 4)
@@ -35,7 +35,7 @@ import Testing
         
         // .readByte()
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(dr.readOffset == 0)
             #expect(dr.remainingByteCount == 4)
@@ -53,7 +53,7 @@ import Testing
         
         // .read - nil read - return all remaining bytes
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(try dr.read() == data)
             #expect(throws: (any Error).self) { try dr.read(bytes: 1) }
@@ -61,14 +61,14 @@ import Testing
         
         // .read - zero count read - return empty data, not nil
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(try dr.read(bytes: 0) == Data())
         }
         
         // .read - read overflow - return nil
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(throws: (any Error).self) { try dr.read(bytes: 5) }
         }
@@ -80,7 +80,7 @@ import Testing
         
         // .nonAdvancingRead - nil read - return all remaining bytes
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(try dr.nonAdvancingRead() == data)
             #expect(try dr.read(bytes: 1) == Data([0x01]))
@@ -88,7 +88,7 @@ import Testing
         
         // single bytes
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(try dr.nonAdvancingReadByte() == data[0])
             #expect(try dr.nonAdvancingReadByte() == data[0])
@@ -98,7 +98,7 @@ import Testing
         
         // .nonAdvancingRead - read byte counts
         do {
-            let dr = PassiveDataReader { $0(&data) }
+            let dr = InoutDataReader { $0(&data) }
             
             #expect(try dr.nonAdvancingRead(bytes: 1) == Data([0x01]))
             #expect(try dr.nonAdvancingRead(bytes: 2) == Data([0x01, 0x02]))
@@ -106,7 +106,7 @@ import Testing
         
         // .nonAdvancingRead - read overflow - return nil
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(throws: (any Error).self) { try dr.nonAdvancingRead(bytes: 5) }
             #expect(try dr.read(bytes: 1) == Data([0x01]))
@@ -119,7 +119,7 @@ import Testing
         
         // advanceBy
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             dr.advanceBy(1)
             #expect(try dr.read(bytes: 1) == Data([0x02]))
@@ -132,7 +132,7 @@ import Testing
         
         // reset
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(try dr.read(bytes: 1) == Data([0x01]))
             #expect(try dr.read(bytes: 2) == Data([0x02, 0x03]))
@@ -146,7 +146,7 @@ import Testing
     func readMutation() throws {
         var data = Data([0x01, 0x02, 0x03, 0x04])
         
-        var dr = PassiveDataReader { $0(&data) }
+        var dr = InoutDataReader { $0(&data) }
         
         #expect(dr.readOffset == 0)
         #expect(try dr.read(bytes: 1) == Data([0x01]))
@@ -168,7 +168,7 @@ import Testing
         
         // .read - byte by byte
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(dr.readOffset == 0)
             #expect(try dr.read(bytes: 1) == Data([0x01]))
@@ -180,7 +180,7 @@ import Testing
         
         // .read - nil read - return all remaining bytes
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(try dr.read() == data)
             #expect(throws: (any Error).self) { try dr.read(bytes: 1) }
@@ -188,14 +188,14 @@ import Testing
         
         // .read - zero count read - return empty data, not nil
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(try dr.read(bytes: 0) == Data())
         }
         
         // .read - read overflow - return nil
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(throws: (any Error).self) { try dr.read(bytes: 5) }
         }
@@ -208,7 +208,7 @@ import Testing
         
         // .nonAdvancingRead - nil read - return all remaining bytes
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(try dr.nonAdvancingRead() == data)
             #expect(try dr.read(bytes: 1) == Data([0x01]))
@@ -216,7 +216,7 @@ import Testing
         
         // .nonAdvancingRead - read byte counts
         do {
-            let dr = PassiveDataReader { $0(&data) }
+            let dr = InoutDataReader { $0(&data) }
             
             #expect(try dr.nonAdvancingRead(bytes: 1) == Data([0x01]))
             #expect(try dr.nonAdvancingRead(bytes: 2) == Data([0x01, 0x02]))
@@ -224,7 +224,7 @@ import Testing
         
         // .nonAdvancingRead - read overflow - return nil
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(throws: (any Error).self) { try dr.nonAdvancingRead(bytes: 5) }
             #expect(try dr.read(bytes: 1) == Data([0x01]))
@@ -232,7 +232,7 @@ import Testing
         
         // .nonAdvancingRead - read overflow - return nil
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(throws: (any Error).self) { try dr.read(bytes: 8) }
         }
@@ -245,7 +245,7 @@ import Testing
         
         // advanceBy
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             dr.advanceBy(1)
             #expect(try dr.read(bytes: 1) == Data([0x02]))
@@ -259,7 +259,7 @@ import Testing
         
         // reset
         do {
-            var dr = PassiveDataReader { $0(&data) }
+            var dr = InoutDataReader { $0(&data) }
             
             #expect(try dr.read(bytes: 1) == Data([0x01]))
             #expect(try dr.read(bytes: 2) == Data([0x02, 0x03]))
@@ -269,40 +269,40 @@ import Testing
     }
     
     @Test
-    func withDataReader() throws {
-        let data = Data([0x01, 0x02, 0x03, 0x04])
+    func withInoutDataReader() throws {
+        var data = Data([0x01, 0x02, 0x03, 0x04])
         
-        try data.withDataReader { dr in
-            #expect(dr.readOffset == 0)
-            try #expect(dr.read(bytes: 1) == Data([0x01]))
-            try #expect(dr.read(bytes: 1) == Data([0x02]))
-            try #expect(dr.read(bytes: 1) == Data([0x03]))
-            try #expect(dr.read(bytes: 1) == Data([0x04]))
-            #expect(throws: (any Error).self) { try dr.read(bytes: 1) }
+        try data.withInoutDataReader { reader in
+            #expect(reader.readOffset == 0)
+            try #expect(reader.read(bytes: 1) == Data([0x01]))
+            try #expect(reader.read(bytes: 1) == Data([0x02]))
+            try #expect(reader.read(bytes: 1) == Data([0x03]))
+            try #expect(reader.read(bytes: 1) == Data([0x04]))
+            #expect(throws: (any Error).self) { try reader.read(bytes: 1) }
         }
         
         struct TestError: Error { }
         
         #expect(throws: (any Error).self) {
-            try data.withDataReader { dr in
+            try data.withInoutDataReader { reader in
                 throw TestError()
             }
         }
     }
     
     @Test
-    func withDataReader_ReturnsValue() throws {
-        let data = Data([0x01, 0x02, 0x03, 0x04])
+    func withInoutDataReader_ReturnsValue() throws {
+        var data = Data([0x01, 0x02, 0x03, 0x04])
         
         #if swift(>=5.7)
-        let getByte = try data.withDataReader { dr in
-            _ = try dr.readByte()
-            return try dr.readByte()
+        let getByte = try data.withInoutDataReader { reader in
+            _ = try reader.readByte()
+            return try reader.readByte()
         }
         #else
-        let getByte: UInt8 = try data.withDataReader { dr in
-            _ = try dr.readByte()
-            return try dr.readByte()
+        let getByte: UInt8 = try data.withInoutDataReader { reader in
+            _ = try reader.readByte()
+            return try reader.readByte()
         }
         #endif
         
