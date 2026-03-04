@@ -22,7 +22,7 @@ public protocol DataReaderDataProtocol where Self: DataProtocol, Self.Index == I
     /// Accesses the data using the most efficient data reading implementation for the current platform.
     @discardableResult
     func withDataReader<T, E>(
-        _ block: (_ dataReader: inout DefaultDataReader<Self>) throws(E) -> T
+        _ block: (_ reader: inout DefaultDataReader<Self>) throws(E) -> T
     ) throws(E) -> T
 }
 

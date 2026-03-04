@@ -63,7 +63,7 @@ extension DataProtocol {
     /// Accesses the data by providing a ``CopyingDataReader`` instance to a closure.
     @discardableResult
     public mutating func withCopyingDataReader<T, E>(
-        _ block: (_ dataReader: inout CopyingDataReader<Self>) throws(E) -> T
+        _ block: (_ reader: inout CopyingDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
         var reader = CopyingDataReader(self)
         return try block(&reader)

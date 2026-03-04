@@ -34,8 +34,8 @@ public struct InoutDataReader<DataType: DataReaderDataProtocol>: _DataReaderProt
     public typealias DataElement = DataType.Element
     public typealias DataRange = DataType.SubSequence
     
-    public typealias DataAccess = (_ block: InoutDataAccess) -> Void
-    public typealias InoutDataAccess = (inout DataType) -> Void
+    typealias DataAccess = (_ block: InoutDataAccess) -> Void
+    typealias InoutDataAccess = (inout DataType) -> Void
     
     let dataAccess: DataAccess
     
@@ -94,7 +94,7 @@ extension DataProtocol {
     /// Accesses the data by providing an ``InoutDataReader`` instance to a closure.
     @discardableResult
     public mutating func withInoutDataReader<T, E>(
-        _ block: (_ dataReader: inout InoutDataReader<Self>) throws(E) -> T
+        _ block: (_ reader: inout InoutDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
         // since `withUnsafe... { }` does not work with typed error throws, we have to use a workaround to get the typed error out
         var result: Result<T, E>!

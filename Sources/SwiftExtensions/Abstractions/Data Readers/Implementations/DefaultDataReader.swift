@@ -16,7 +16,7 @@ public typealias DefaultDataReader = PointerDataReader
 extension Data {
     @discardableResult
     public func withDataReader<T, E>(
-        _ block: (_ dataReader: inout DefaultDataReader<Self>) throws(E) -> T
+        _ block: (_ reader: inout DefaultDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
         try withPointerDataReader(block)
     }
@@ -25,7 +25,7 @@ extension Data {
 extension [UInt8] {
     @discardableResult
     public func withDataReader<T, E>(
-        _ block: (_ dataReader: inout PointerDataReader<Self>) throws(E) -> T
+        _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
         try withPointerDataReader(block)
     }
@@ -34,7 +34,7 @@ extension [UInt8] {
 extension [UInt8].SubSequence {
     @discardableResult
     public func withDataReader<T, E>(
-        _ block: (_ dataReader: inout PointerDataReader<Self>) throws(E) -> T
+        _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
         try withPointerDataReader(block)
     }

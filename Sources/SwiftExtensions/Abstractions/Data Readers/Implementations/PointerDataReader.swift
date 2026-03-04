@@ -100,7 +100,7 @@ extension Data {
     /// Accesses the data by way of unsafe pointer access by providing a ``PointerDataReader`` instance to a closure.
     @discardableResult
     public func withPointerDataReader<T, E>(
-        _ block: (_ dataReader: inout PointerDataReader<Self>) throws(E) -> T
+        _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
         // since `withUnsafe... { }` does not work with typed error throws, we have to use a workaround to get the typed error out
         var result: Result<T, E>!
@@ -121,7 +121,7 @@ extension [UInt8] {
     /// Accesses the data by way of unsafe pointer access by providing a ``PointerDataReader`` instance to a closure.
     @discardableResult
     public func withPointerDataReader<T, E>(
-        _ block: (_ dataReader: inout PointerDataReader<Self>) throws(E) -> T
+        _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
         // since `withUnsafe... { }` does not work with typed error throws, we have to use a workaround to get the typed error out
         var result: Result<T, E>!
@@ -142,7 +142,7 @@ extension [UInt8].SubSequence {
     /// Accesses the data by way of unsafe pointer access by providing a ``PointerDataReader`` instance to a closure.
     @discardableResult
     public func withPointerDataReader<T, E>(
-        _ block: (_ dataReader: inout PointerDataReader<Self>) throws(E) -> T
+        _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
         // since `withUnsafe... { }` does not work with typed error throws, we have to use a workaround to get the typed error out
         var result: Result<T, E>!
