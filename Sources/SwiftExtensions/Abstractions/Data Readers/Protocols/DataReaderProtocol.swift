@@ -4,11 +4,15 @@
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
 
+#if canImport(Foundation)
+
 import Foundation
 
 /// Protocol describing a common API layer for data reader implementations.
 public protocol DataReaderProtocol where DataType.Index == Int {
     associatedtype DataType: DataProtocol
+    associatedtype DataRange
+    associatedtype DataElement
     
     /// Current byte index of read offset (byte position).
     var readOffset: Int { get }
@@ -24,30 +28,30 @@ public protocol DataReaderProtocol where DataType.Index == Int {
     /// Return the next byte and increment the read offset.
     ///
     /// If no bytes remain, an error will be returned.
-    mutating func readByte() throws(DataReaderError) -> DataType.Element
+    mutating func readByte() throws(DataReaderError) -> DataElement
     
     /// Return the remainder of the data and increment the read offset.
     ///
     /// If fewer bytes remain than are requested, an error will be returned.
-    mutating func read() throws(DataReaderError) -> DataType.SubSequence
+    mutating func read() throws(DataReaderError) -> DataRange
     
     /// Return the next _n_ number of bytes and increment the read offset.
     ///
     /// If fewer bytes remain than are requested, an error will be returned.
-    mutating func read(bytes count: Int) throws(DataReaderError) -> DataType.SubSequence
+    mutating func read(bytes count: Int) throws(DataReaderError) -> DataRange
     
     /// Read the next byte without advancing the read offset.
     /// If no bytes remain, an error will be returned.
-    func nonAdvancingReadByte() throws(DataReaderError) -> DataType.Element
+    func nonAdvancingReadByte() throws(DataReaderError) -> DataElement
     
     /// Read the remainder of the data, without advancing the read offset.
     /// If fewer bytes remain than are requested, an error will be returned.
-    func nonAdvancingRead() throws(DataReaderError) -> DataType.SubSequence
+    func nonAdvancingRead() throws(DataReaderError) -> DataRange
     
     /// Read _n_ number of bytes from the current read offset, without advancing the read offset.
     /// If `bytes count` passed is `nil`, the remainder of the data will be returned.
     /// If fewer bytes remain than are requested, an error will be returned.
-    func nonAdvancingRead(bytes count: Int) throws(DataReaderError) -> DataType.SubSequence
+    func nonAdvancingRead(bytes count: Int) throws(DataReaderError) -> DataRange
     
     /// Resets read offset back to byte index 0.
     mutating func reset()
@@ -69,13 +73,13 @@ protocol _DataReaderProtocol: DataReaderProtocol {
     func _dataReadOffsetIndex(offsetBy offset: Int) -> DataType.Index
     
     /// Return the data byte at the given data structure index.
-    func _dataByte(at dataIndex: DataType.Index) throws(DataReaderError) -> DataType.Element
+    func _dataByte(at dataIndex: DataType.Index) throws(DataReaderError) -> DataElement
     
     /// Return the data bytes in the given data structure index range.
-    func _dataBytes(in dataIndexRange: Range<DataType.Index>) throws(DataReaderError) -> DataType.SubSequence
+    func _dataBytes(in dataIndexRange: Range<DataType.Index>) throws(DataReaderError) -> DataRange
     
     /// Return the data bytes in the given data structure index range.
-    func _dataBytes(in dataIndexRange: ClosedRange<DataType.Index>) throws(DataReaderError) -> DataType.SubSequence
+    func _dataBytes(in dataIndexRange: ClosedRange<DataType.Index>) throws(DataReaderError) -> DataRange
 }
 
 // MARK: - Public Implementation
@@ -87,33 +91,33 @@ extension _DataReaderProtocol {
         readOffset += count
     }
     
-    public mutating func readByte() throws(DataReaderError) -> DataType.Element {
+    public mutating func readByte() throws(DataReaderError) -> DataElement {
         let d = try dataByte()
         defer { readOffset += 1 }
         return d
     }
     
-    public mutating func read() throws(DataReaderError) -> DataType.SubSequence {
+    public mutating func read() throws(DataReaderError) -> DataRange {
         let d = try data()
         defer { readOffset += d.advanceCount }
         return d.data
     }
     
-    public mutating func read(bytes count: Int) throws(DataReaderError) -> DataType.SubSequence {
+    public mutating func read(bytes count: Int) throws(DataReaderError) -> DataRange {
         let d = try data(bytes: count)
         defer { readOffset += d.advanceCount }
         return d.data
     }
     
-    public func nonAdvancingReadByte() throws(DataReaderError) -> DataType.Element {
+    public func nonAdvancingReadByte() throws(DataReaderError) -> DataElement {
         try dataByte()
     }
     
-    public func nonAdvancingRead() throws(DataReaderError) -> DataType.SubSequence {
+    public func nonAdvancingRead() throws(DataReaderError) -> DataRange {
         try data().data
     }
     
-    public func nonAdvancingRead(bytes count: Int) throws(DataReaderError) -> DataType.SubSequence {
+    public func nonAdvancingRead(bytes count: Int) throws(DataReaderError) -> DataRange {
         try data(bytes: count).data
     }
     
@@ -125,13 +129,13 @@ extension _DataReaderProtocol {
 // MARK: - Internal Helpers
 
 extension _DataReaderProtocol {
-    func dataByte() throws(DataReaderError) -> DataType.Element {
+    func dataByte() throws(DataReaderError) -> DataElement {
         guard remainingByteCount > 0 else { throw .pastEndOfStream }
         let readPosIndex = _dataReadOffsetIndex(offsetBy: 0)
         return try _dataByte(at: readPosIndex)
     }
     
-    func data(bytes count: Int? = nil) throws(DataReaderError) -> (data: DataType.SubSequence, advanceCount: Int) {
+    func data(bytes count: Int? = nil) throws(DataReaderError) -> (data: DataRange, advanceCount: Int) {
         if count == 0 {
             // return empty bytes, but as a SubSequence
             let index = _dataReadOffsetIndex(offsetBy: 0)
@@ -160,14 +164,4 @@ extension _DataReaderProtocol {
     }
 }
 
-// MARK: - DataProtocol Extensions
-
-extension DataProtocol {
-    /// Accesses the data using the most efficient data reading implementation for the current platform.
-    @discardableResult
-    public func withDataReader<T, E>(
-        _ block: (_ dataReader: inout PointerDataReader) throws(E) -> T
-    ) throws(E) -> T {
-        try withPointerDataReader(block)
-    }
-}
+#endif

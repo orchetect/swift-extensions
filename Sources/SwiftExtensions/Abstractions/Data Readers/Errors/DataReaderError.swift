@@ -4,6 +4,8 @@
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
 
+#if canImport(Foundation)
+
 /// Error returned by methods in ``DataReaderProtocol``-conforming types.
 public enum DataReaderError: Error {
     case pastEndOfStream
@@ -15,3 +17,5 @@ extension DataReaderError: Equatable { }
 extension DataReaderError: Hashable { }
 
 extension DataReaderError: Sendable { }
+
+#endif

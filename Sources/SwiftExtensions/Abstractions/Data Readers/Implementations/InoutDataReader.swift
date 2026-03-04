@@ -4,7 +4,9 @@
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
 
-import Foundation
+#if canImport(Foundation)
+
+import protocol Foundation.DataProtocol
 
 /// Utility to facilitate sequential reading of bytes.
 /// Passing the data in as a mutable `inout` allows for passive memory reading. The data itself is never mutated.
@@ -26,7 +28,10 @@ import Foundation
 ///     if let bytes = reader.read(bytes: 4) { ... }
 /// }
 /// ```
-public struct InoutDataReader<DataType: DataProtocol>: _DataReaderProtocol where DataType.Index == Int {
+public struct InoutDataReader<DataType: DataReaderDataProtocol>: _DataReaderProtocol where DataType.Index == Int {
+    public typealias DataElement = DataType.Element
+    public typealias DataRange = DataType.SubSequence
+    
     public typealias DataAccess = (_ block: InoutDataAccess) -> Void
     public typealias InoutDataAccess = (inout DataType) -> Void
     
@@ -56,15 +61,15 @@ public struct InoutDataReader<DataType: DataProtocol>: _DataReaderProtocol where
         withData { $0.index($0.startIndex, offsetBy: readOffset + offset) }
     }
     
-    func _dataByte(at dataIndex: DataType.Index) throws(DataReaderError) -> UInt8 {
+    func _dataByte(at dataIndex: DataType.Index) throws(DataReaderError) -> DataElement {
         withData { $0[dataIndex] }
     }
     
-    func _dataBytes(in dataIndexRange: Range<DataType.Index>) throws(DataReaderError) -> DataType.SubSequence {
+    func _dataBytes(in dataIndexRange: Range<DataType.Index>) throws(DataReaderError) -> DataRange {
         withData { $0[dataIndexRange] }
     }
     
-    func _dataBytes(in dataIndexRange: ClosedRange<DataType.Index>) throws(DataReaderError) -> DataType.SubSequence {
+    func _dataBytes(in dataIndexRange: ClosedRange<DataType.Index>) throws(DataReaderError) -> DataRange {
         withData { $0[dataIndexRange] }
     }
     
@@ -80,13 +85,16 @@ public struct InoutDataReader<DataType: DataProtocol>: _DataReaderProtocol where
 
 // MARK: - DataProtocol Extensions
 
+// This generic implementation will work on any `DataProtocol`-conforming concrete type without needing
+// individual implementations on the known concrete types.
+
 extension DataProtocol {
     /// Accesses the data by providing an ``InoutDataReader`` instance to a closure.
     @discardableResult
     public mutating func withInoutDataReader<T, E>(
         _ block: (_ dataReader: inout InoutDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
-        // since `withUnsafeBytes { }` does not work with typed error throws, we have to use a workaround to get the typed error out
+        // since `withUnsafe... { }` does not work with typed error throws, we have to use a workaround to get the typed error out
         var result: Result<T, E>!
         
         withUnsafeMutablePointer(to: &self) { ptr in
@@ -100,3 +108,5 @@ extension DataProtocol {
         return try result.get()
     }
 }
+
+#endif
