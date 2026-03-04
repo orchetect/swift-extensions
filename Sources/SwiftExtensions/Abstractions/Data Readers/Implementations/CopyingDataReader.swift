@@ -9,13 +9,15 @@
 import protocol Foundation.DataProtocol
 
 /// Utility to facilitate sequential reading of bytes.
+///
+/// This type is not meant to be initialized directly, but rather used within a call to `<data>.withCopyingDataReader { reader in }`.
 public struct CopyingDataReader<DataType: DataReaderDataProtocol & Sendable>: _DataReaderProtocol where DataType.Index == Int {
     public typealias DataElement = DataType.Element
     public typealias DataRange = DataType.SubSequence
 
     let base: DataType
 
-    public init(_ data: DataType) {
+    init(_ data: DataType) {
         base = data
     }
 

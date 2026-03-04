@@ -11,6 +11,8 @@ import protocol Foundation.DataProtocol
 /// Utility to facilitate sequential reading of bytes.
 /// Passing the data in as a mutable `inout` allows for passive memory reading. The data itself is never mutated.
 ///
+/// This type is not meant to be initialized directly, but rather used within a call to `<data>.withInoutDataReader { reader in }`.
+///
 /// Usage with `Data`:
 ///
 /// ```swift
@@ -39,7 +41,7 @@ public struct InoutDataReader<DataType: DataReaderDataProtocol>: _DataReaderProt
     
     // MARK: - Init
     
-    public init(_ dataAccess: @escaping DataAccess) {
+    init(_ dataAccess: @escaping DataAccess) {
         self.dataAccess = dataAccess
     }
     

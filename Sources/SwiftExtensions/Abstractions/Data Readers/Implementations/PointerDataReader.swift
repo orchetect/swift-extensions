@@ -11,6 +11,8 @@ import protocol Foundation.DataProtocol
 
 /// Utility to facilitate sequential reading of bytes.
 ///
+/// This type is not meant to be initialized directly, but rather used within a call to `<data>.withPointerDataReader { reader in }`.
+///
 /// Usage with `Data`:
 ///
 /// ```swift
@@ -36,7 +38,7 @@ public struct PointerDataReader<DataType: DataReaderDataProtocol>: _DataReaderPr
     
     // MARK: - Init
     
-    public init(pointer: UnsafeBufferPointer<UInt8>) {
+    init(pointer: UnsafeBufferPointer<UInt8>) {
         self.pointer = pointer
     }
     
