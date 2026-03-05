@@ -53,14 +53,6 @@ extension String {
         wrapped(with: .parentheses)
     }
     
-    /// Syntactic sugar. Returns the string wrapped with parentheses: `( )`.
-    /// Same as `self.wrapped(with: .parentheses)`
-    @inline(__always) @_disfavoredOverload
-    @available(*, unavailable, renamed: "parenthesized")
-    public var parens: Self {
-        parenthesized
-    }
-    
     /// Syntactic sugar. Returns the string wrapped with single quote marks: `' '`.
     /// Same as `self.wrapped(with: .singleQuotes)`
     @inline(__always) @_disfavoredOverload
@@ -73,5 +65,17 @@ extension String {
     @inline(__always) @_disfavoredOverload
     public var quoted: Self {
         wrapped(with: .quotes)
+    }
+}
+
+// MARK: - API Changes in 1.4.0
+
+extension String {
+    /// Syntactic sugar. Returns the string wrapped with parentheses: `( )`.
+    /// Same as `self.wrapped(with: .parentheses)`
+    @inline(__always) @_disfavoredOverload
+    @available(*, unavailable, renamed: "parenthesized")
+    public var parens: Self {
+        parenthesized
     }
 }
