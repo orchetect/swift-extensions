@@ -123,6 +123,43 @@ import TestingExtensions
     }
     
     @Test
+    func int_uInt8Array() {
+        // Int is 32-bit on 32-bit systems, 64-bit on 64-bit systems
+        
+        #if !(arch(arm) || arch(arm64_32) || arch(i386))
+        
+        // .toInt64
+        
+        #expect(
+            ([1, 2, 3, 4, 5, 6, 7, 8] as [UInt8]).toInt(from: .littleEndian)
+                == 0b00001000_00000111_00000110_00000101_00000100_00000011_00000010_00000001
+        )
+        #expect(
+            ([1, 2, 3, 4, 5, 6, 7, 8] as [UInt8]).toInt(from: .bigEndian)
+                == 0b00000001_00000010_00000011_00000100_00000101_00000110_00000111_00001000
+        )
+        
+        #elseif(arch(arm) || arch(arm64_32) || !arch(i386))
+        
+        // .toInt64
+        
+        #expect(
+            ([1, 2, 3, 4] as [UInt8]).toInt(from: .littleEndian)
+                == 0b00000100_00000011_00000010_00000001
+        )
+        #expect(
+            ([1, 2, 3, 4] as [UInt8]).toInt(from: .bigEndian)
+                == 0b00000001_00000010_00000011_00000100
+        )
+        
+        #else
+        
+        #fail("Platform not supported yet.")
+        
+        #endif
+    }
+    
+    @Test
     func int8() {
         // .toData
         
@@ -140,6 +177,15 @@ import TestingExtensions
         #expect(1.int8.toData().toInt8() == 1)
         #expect(127.int8.toData().toInt8() == 127)
         #expect((-128).int8.toData().toInt8() == -128)
+    }
+    
+    @Test
+    func int8_uInt8Array() {
+        // .toInt8
+        
+        #expect(([] as [UInt8]).toInt8() == nil) // underflow
+        #expect(([1] as [UInt8]).toInt8() == 0b00000001)
+        #expect(([1, 2] as [UInt8]).toInt8() == nil) // overflow
     }
     
     @Test
@@ -175,6 +221,20 @@ import TestingExtensions
         
         #expect(Data([1, 2]).toInt16(from: .littleEndian)?.toData(.bigEndian) == Data([2, 1]))
         #expect(Data([1, 2]).toInt16(from: .bigEndian)?.toData(.littleEndian) == Data([2, 1]))
+    }
+    
+    @Test
+    func int16_uInt8Array() {
+        // .toInt16
+        
+        #expect(
+            ([1, 2] as [UInt8]).toInt16(from: .littleEndian)
+                == 0b00000010_00000001
+        )
+        #expect(
+            ([1, 2] as [UInt8]).toInt16(from: .bigEndian)
+                == 0b00000001_00000010
+        )
     }
     
     @Test
@@ -220,6 +280,20 @@ import TestingExtensions
         #expect(
             Data([1, 2, 3, 4]).toInt32(from: .bigEndian)?.toData(.littleEndian)
                 == Data([4, 3, 2, 1])
+        )
+    }
+    
+    @Test
+    func int32_uInt8Array() {
+        // .toInt32
+        
+        #expect(
+            ([1, 2, 3, 4] as [UInt8]).toInt32(from: .littleEndian)
+                == 0b00000100_00000011_00000010_00000001
+        )
+        #expect(
+            ([1, 2, 3, 4] as [UInt8]).toInt32(from: .bigEndian)
+                == 0b00000001_00000010_00000011_00000100
         )
     }
     
@@ -274,6 +348,20 @@ import TestingExtensions
         #expect(
             Data([1, 2, 3, 4, 5, 6, 7, 8]).toInt64(from: .bigEndian)?.toData(.littleEndian)
                 == Data([8, 7, 6, 5, 4, 3, 2, 1])
+        )
+    }
+    
+    @Test
+    func int64_uInt8Array() {
+        // .toInt64
+        
+        #expect(
+            ([1, 2, 3, 4, 5, 6, 7, 8] as [UInt8]).toInt64(from: .littleEndian)
+                == 0b00001000_00000111_00000110_00000101_00000100_00000011_00000010_00000001
+        )
+        #expect(
+            ([1, 2, 3, 4, 5, 6, 7, 8] as [UInt8]).toInt64(from: .bigEndian)
+                == 0b00000001_00000010_00000011_00000100_00000101_00000110_00000111_00001000
         )
     }
     #endif
@@ -388,6 +476,38 @@ import TestingExtensions
     }
     
     @Test
+    func uInt_uInt8Array() {
+        // UInt is 32-bit on 32-bit systems, 64-bit on 64-bit systems
+        #if !(arch(arm) || arch(arm64_32) || arch(i386))
+        
+        // .toUInt
+        
+        #expect(
+            ([1, 2, 3, 4, 5, 6, 7, 8] as [UInt8]).toUInt(from: .littleEndian)
+                == 0b00001000_00000111_00000110_00000101_00000100_00000011_00000010_00000001
+        )
+        #expect(
+            ([1, 2, 3, 4, 5, 6, 7, 8] as [UInt8]).toUInt(from: .bigEndian)
+                == 0b00000001_00000010_00000011_00000100_00000101_00000110_00000111_00001000
+        )
+        
+        #elseif(arch(arm) || arch(arm64_32) || arch(i386))
+        
+        // .toUInt
+        
+        #expect(
+            ([1, 2, 3, 4] as [UInt8]).toUInt(from: .littleEndian)
+                == 0b00000100_00000011_00000010_00000001
+        )
+        #expect(
+            ([1, 2, 3, 4] as [UInt8]).toUInt(from: .bigEndian)
+                == 0b00000001_00000010_00000011_00000100
+        )
+        
+        #endif
+    }
+    
+    @Test
     func uInt8() {
         // .toData
         
@@ -404,6 +524,15 @@ import TestingExtensions
         
         #expect(1.uInt8.toData().toUInt8() == 1)
         #expect(255.uInt8.toData().toUInt8() == 255)
+    }
+    
+    @Test
+    func uInt8_uInt8Array() {
+        // .toUInt8
+        
+        #expect(([] as [UInt8]).toUInt8() == nil) // underflow
+        #expect(([1] as [UInt8]).toUInt8() == 0b00000001)
+        #expect(([1, 2] as [UInt8]).toUInt8() == nil) // overflow
     }
     
     @Test
@@ -439,6 +568,20 @@ import TestingExtensions
     }
     
     @Test
+    func uInt16_uInt8Array() {
+        // .toUInt16
+        
+        #expect(
+            ([1, 2] as [UInt8]).toUInt16(from: .littleEndian)
+                == 0b00000010_00000001
+        )
+        #expect(
+            ([1, 2] as [UInt8]).toUInt16(from: .bigEndian)
+                == 0b00000001_00000010
+        )
+    }
+    
+    @Test
     func uInt32() {
         // .toData
         
@@ -470,6 +613,20 @@ import TestingExtensions
         
         #expect(Data([1, 2, 3, 4]).toUInt32(from: .littleEndian)?.toData(.bigEndian) == Data([4, 3, 2, 1]))
         #expect(Data([1, 2, 3, 4]).toUInt32(from: .bigEndian)?.toData(.littleEndian) == Data([4, 3, 2, 1]))
+    }
+    
+    @Test
+    func uInt32_uInt8Array() {
+        // .toUInt32
+        
+        #expect(
+            ([1, 2, 3, 4] as [UInt8]).toUInt32(from: .littleEndian)
+                == 0b00000100_00000011_00000010_00000001
+        )
+        #expect(
+            ([1, 2, 3, 4] as [UInt8]).toUInt32(from: .bigEndian)
+                == 0b00000001_00000010_00000011_00000100
+        )
     }
     
     #if !(arch(arm) || arch(arm64_32) || arch(i386))
@@ -525,6 +682,20 @@ import TestingExtensions
                 == Data([8, 7, 6, 5, 4, 3, 2, 1])
         )
     }
+    
+    @Test
+    func uInt64_uInt8Array() {
+        // .toUInt64
+        
+        #expect(
+            ([1, 2, 3, 4, 5, 6, 7, 8] as [UInt8]).toUInt64(from: .littleEndian)
+                == 0b00001000_00000111_00000110_00000101_00000100_00000011_00000010_00000001
+        )
+        #expect(
+            ([1, 2, 3, 4, 5, 6, 7, 8] as [UInt8]).toUInt64(from: .bigEndian)
+                == 0b00000001_00000010_00000011_00000100_00000101_00000110_00000111_00001000
+        )
+    }
     #endif
     
     // MARK: - Floats
@@ -567,6 +738,14 @@ import TestingExtensions
             Data([1, 2, 3, 4]).toFloat32(from: .bigEndian)?.toData(.littleEndian)
                 == Data([4, 3, 2, 1])
         )
+    }
+    
+    @Test
+    func float32_uInt8Array() {
+        // .toFloat32
+        
+        #expect(([1, 2, 3, 4] as [UInt8]).toFloat32(from: .littleEndian) == 1.5399896e-36)
+        #expect(([1, 2, 3, 4] as [UInt8]).toFloat32(from: .bigEndian) == 2.3879393e-38)
     }
     
     @Test
@@ -629,6 +808,20 @@ import TestingExtensions
     }
     
     @Test
+    func double_uInt8Array() {
+        // .toDouble
+        
+        #expect(
+            ([1, 2, 3, 4, 5, 6, 7, 8] as [UInt8]).toDouble(from: .littleEndian)
+                == 5.447603722011605e-270
+        )
+        #expect(
+            ([1, 2, 3, 4, 5, 6, 7, 8] as [UInt8]).toDouble(from: .bigEndian)
+                == 8.20788039913184e-304
+        )
+    }
+    
+    @Test
     func memoryAlignment() {
         // test for misaligned raw pointer (memory alignment)
         
@@ -675,12 +868,57 @@ import TestingExtensions
         }
     }
     
+    @Test
+    func memoryAlignment_uInt8Array() {
+        // test for misaligned raw pointer (memory alignment)
+        
+        // if the underlying `Data -> T: FixedWidthInteger` method is not properly aligned, this test
+        // will trigger a runtime exception
+        
+        // cycle through 8 memory offset positions regardless of the type we're testing
+        for offset in 1 ... 8 {
+            let offSetBytes = [UInt8](repeating: 0x00, count: offset)
+            
+            // integers
+            
+            _ = (offSetBytes + Int8(1).toData(.bigEndian))[offset ... offset]
+                .toInt8()
+            
+            _ = (offSetBytes + UInt8(1).toData(.bigEndian))[offset ... offset]
+                .toUInt8()
+            
+            _ = (offSetBytes + Int16(1).toData(.bigEndian))[offset ... offset + 1]
+                .toInt16(from: .bigEndian)
+            
+            _ = (offSetBytes + UInt16(1).toData(.bigEndian))[offset ... offset + 1]
+                .toUInt16(from: .bigEndian)
+            
+            _ = (offSetBytes + Int32(1).toData(.bigEndian))[offset ... offset + 3]
+                .toInt32(from: .bigEndian)
+            
+            _ = (offSetBytes + UInt32(1).toData(.bigEndian))[offset ... offset + 3]
+                .toUInt32(from: .bigEndian)
+            
+            _ = (offSetBytes + Int64(1).toData(.bigEndian))[offset ... offset + 7]
+                .toInt64(from: .bigEndian)
+            
+            _ = (offSetBytes + UInt64(1).toData(.bigEndian))[offset ... offset + 7]
+                .toUInt64(from: .bigEndian)
+            
+            // floating-point
+            
+            _ = (offSetBytes + Float32(1).toData(.bigEndian))[offset ... offset + 3]
+                .toFloat32(from: .bigEndian)
+            
+            _ = (offSetBytes + Double(1).toData(.bigEndian))[offset ... offset + 7]
+                .toDouble(from: .bigEndian)
+        }
+    }
+    
     // MARK: - String
     
     @Test
     func string() throws {
-        // String -> Data
-        
         let sourceString = "This is a test string"
         
         let expectedBytes: [UInt8] = [
@@ -689,11 +927,30 @@ import TestingExtensions
             0x74, 0x72, 0x69, 0x6E, 0x67
         ]
         
+        // String -> Data
+        
         #expect(try #require(sourceString.toData(using: .utf8)) == Data(expectedBytes))
         
         // Data -> String
         
         let convertedString = Data(expectedBytes).toString(using: .utf8)
+        
+        #expect(convertedString == sourceString)
+    }
+    
+    @Test
+    func string_uInt8Array() throws {
+        let sourceString = "This is a test string"
+        
+        let expectedBytes: [UInt8] = [
+            0x54, 0x68, 0x69, 0x73, 0x20, 0x69, 0x73, 0x20,
+            0x61, 0x20, 0x74, 0x65, 0x73, 0x74, 0x20, 0x73,
+            0x74, 0x72, 0x69, 0x6E, 0x67
+        ]
+        
+        // Data -> String
+        
+        let convertedString = expectedBytes.toString(using: .utf8)
         
         #expect(convertedString == sourceString)
     }
@@ -711,6 +968,19 @@ import TestingExtensions
         // Data -> Collection
         
         #expect(Data(sourceBytes).toUInt8Bytes() == [1, 2, 3])
+    }
+    
+    @Test
+    func dataUInt8Bytes_uInt8Array() {
+        let sourceBytes: [UInt8] = [1, 2, 3]
+        
+        // Collection -> Data
+        
+        #expect(sourceBytes.toData() == [1, 2, 3])
+        
+        // Data -> Collection
+        
+        #expect(sourceBytes.toUInt8Bytes() == [1, 2, 3])
     }
 }
 
