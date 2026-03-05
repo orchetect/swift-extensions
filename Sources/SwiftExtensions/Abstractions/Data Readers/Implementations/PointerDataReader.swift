@@ -87,46 +87,39 @@ public struct PointerDataReader<DataType: DataProtocol>: _DataReaderProtocol {
 
 // MARK: - DataProtocol Extensions
 
-// Knowledge of the underlying concrete data type is necessary to ensure correct pointer access.
-
-extension DataReaderDataProtocol {
+extension DataProtocol {
     /// Accesses the data by way of unsafe pointer access by providing a ``PointerDataReader`` instance to a closure.
     @discardableResult
-    package func withPointerDataReader<T, E>(
+    public func withPointerDataReader<T, E>(
         _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
         // since `withUnsafe... { }` does not work with typed error throws, we have to use a workaround to get the typed error out
         var result: Result<T, E>!
-        self.withUnsafeBytes { ptr in
-            let boundPtr = ptr.assumingMemoryBound(to: UInt8.self)
-            var reader = PointerDataReader<Self>(pointer: boundPtr)
-            do throws(E) {
-                result = .success(try block(&reader))
-            } catch {
-                result = .failure(error)
+        
+        // Knowledge of the underlying concrete data type is necessary to ensure correct pointer access.
+        if let self = self as? any DataReaderDataProtocol {
+            self.withUnsafeBytes { ptr in
+                let boundPtr = ptr.assumingMemoryBound(to: UInt8.self)
+                var reader = PointerDataReader<Self>(pointer: boundPtr)
+                do throws(E) {
+                    let value = try block(&reader)
+                    result = .success(value)
+                } catch {
+                    result = .failure(error)
+                }
             }
-        }
-        return try result.get()
-    }
-}
-
-extension DataProtocol {
-    /// Accesses the data by way of unsafe pointer access by providing a ``PointerDataReader`` instance to a closure.
-    @_disfavoredOverload @discardableResult
-    package func withPointerDataReader<T, E>(
-        _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
-    ) throws(E) -> T {
-        var result: Result<T, E>? = nil
-        self.withContiguousStorageIfAvailable { ptr in
-            var reader = PointerDataReader<Self>(pointer: ptr)
-            do throws(E) {
-                result = .success(try block(&reader))
-            } catch {
-                result = .failure(error)
+        } else {
+            // TODO: this is not tested and may not work with unhandled concrete DataProtocol types
+            withUnsafeBytes(of: self) { ptr in
+                let boundPtr = ptr.assumingMemoryBound(to: UInt8.self)
+                var reader = PointerDataReader<Self>(pointer: boundPtr)
+                do throws(E) {
+                    let value = try block(&reader)
+                    result = .success(value)
+                } catch {
+                    result = .failure(error)
+                }
             }
-        }
-        guard let result else {
-            fatalError("Unhandled DataProtocol concrete type: \(type(of: self)).")
         }
         return try result.get()
     }

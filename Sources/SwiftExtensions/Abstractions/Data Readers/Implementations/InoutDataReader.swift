@@ -104,7 +104,8 @@ extension DataProtocol {
         withUnsafeMutablePointer(to: &self) { ptr in
             var reader = InoutDataReader(dataAccess: { $0(&ptr.pointee) })
             do throws(E) {
-                result = .success(try block(&reader))
+                let value = try block(&reader)
+                result = .success(value)
             } catch {
                 result = .failure(error)
             }

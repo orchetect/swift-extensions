@@ -12,35 +12,19 @@ import Foundation
 public protocol DataReaderDataProtocol where Self: DataProtocol, SubSequence: DataReaderDataProtocol {
     associatedtype SubSequence
     
-    init()
-    init(_ other: Self)
-    init(_ other: SubSequence)
-    
     // Restated from DataProtocol concrete types
     func withUnsafeBytes<ResultType>(_ body: (UnsafeRawBufferPointer) throws -> ResultType) rethrows -> ResultType
-    
-    /// Returns a subsequence formed from the pointer.
-    static func subSequence(from pointer: UnsafeBufferPointer<UInt8>) -> SubSequence
 }
 
 // MARK: - Concrete Type Conformances
 
-extension Data: DataReaderDataProtocol {
-    public static func subSequence(from pointer: UnsafeBufferPointer<UInt8>) -> SubSequence {
-        SubSequence(pointer)
-    }
-}
+extension Data: DataReaderDataProtocol { }
 // extension Data.SubSequence: DataReaderDataProtocol { } // not needed since Data.SubSequence == Data
 
-extension [UInt8]: DataReaderDataProtocol {
-    public static func subSequence(from pointer: UnsafeBufferPointer<UInt8>) -> SubSequence {
-        SubSequence(pointer)
-    }
-}
-extension [UInt8].SubSequence: DataReaderDataProtocol {
-    public static func subSequence(from pointer: UnsafeBufferPointer<UInt8>) -> SubSequence {
-        SubSequence(pointer)
-    }
-}
+extension [UInt8]: DataReaderDataProtocol { }
+extension [UInt8].SubSequence: DataReaderDataProtocol { }
+
+extension UnsafeBufferPointer<UInt8>: DataReaderDataProtocol { }
+extension UnsafeBufferPointer<UInt8>.SubSequence: DataReaderDataProtocol { }
 
 #endif
