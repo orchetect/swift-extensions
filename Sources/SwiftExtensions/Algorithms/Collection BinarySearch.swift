@@ -33,8 +33,8 @@ extension ArraySlice where Element: Comparable {
         forValue searchElement: Element
     ) -> ClosedRange<Self.Index>? {
         guard !isEmpty else { return nil }
-        guard searchElement >= first! else { return nil }
-        guard searchElement <= last!  else { return nil }
+        guard let first, searchElement >= first else { return nil }
+        guard let last, searchElement <= last else { return nil }
         
         var searchRange = startIndex ... endIndex - 1
         
