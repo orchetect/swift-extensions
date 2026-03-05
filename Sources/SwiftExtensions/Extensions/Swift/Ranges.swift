@@ -4,8 +4,6 @@
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
 
-import Foundation
-
 // MARK: - Comparable .isContained
 
 extension Comparable {

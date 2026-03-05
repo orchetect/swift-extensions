@@ -5,7 +5,7 @@
 //
 
 // This is Mac-only because even though XMLNode exists in Foundation, it is only available on macOS
-#if os(macOS)
+#if os(macOS) && canImport(Foundation)
 
 import Foundation
 

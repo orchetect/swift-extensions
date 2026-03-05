@@ -8,7 +8,7 @@
 import AppKit
 #elseif canImport(UIKit)
 import UIKit
-#else
+#elseif canImport(Foundation)
 import Foundation
 #endif
 

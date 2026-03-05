@@ -4,6 +4,8 @@
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
 
+#if canImport(Foundation)
+
 import OSLog
 import SwiftExtensions
 import Testing
@@ -245,3 +247,5 @@ extension OSLog {
         category: "General"
     )
 }
+
+#endif

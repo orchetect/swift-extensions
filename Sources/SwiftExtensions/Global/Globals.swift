@@ -4,6 +4,8 @@
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
 
+#if canImport(Foundation)
+
 import Foundation
 
 #if os(iOS) || os(tvOS) || os(watchOS)
@@ -168,3 +170,5 @@ extension Bundle {
         infoDictionary?[key as String] as? String
     }
 }
+
+#endif

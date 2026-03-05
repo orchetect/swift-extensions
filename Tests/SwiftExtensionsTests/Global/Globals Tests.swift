@@ -4,6 +4,8 @@
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
 
+#if canImport(Foundation)
+
 import Foundation
 import SwiftExtensions
 import Testing
@@ -72,3 +74,5 @@ import Testing
         )
     }
 }
+
+#endif

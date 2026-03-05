@@ -4,8 +4,6 @@
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
 
-import Foundation
-
 /// Property wrapper that clamps the wrapped value to a given range.
 @propertyWrapper
 public struct Clamped<Value>: Sendable where Value: Comparable, Value: Sendable {

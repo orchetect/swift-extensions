@@ -4,6 +4,8 @@
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
 
+#if canImport(Foundation)
+
 import SwiftExtensions
 import Testing
 
@@ -67,3 +69,5 @@ import Testing
         #expect(IPAddress("1200:0000:AB00:1234:O000:2552:7777:1313") == nil)
     }
 }
+
+#endif
