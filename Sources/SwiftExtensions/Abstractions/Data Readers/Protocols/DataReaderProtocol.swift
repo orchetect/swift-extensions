@@ -9,7 +9,7 @@
 import Foundation
 
 /// Protocol describing a common API layer for data reader implementations.
-public protocol DataReaderProtocol where DataType.Index == Int {
+public protocol DataReaderProtocol {
     associatedtype DataType: DataProtocol
     associatedtype DataRange
     associatedtype DataElement
@@ -59,6 +59,8 @@ public protocol DataReaderProtocol where DataType.Index == Int {
 
 /// Internal members of ``DataReaderProtocol``.
 protocol _DataReaderProtocol: DataReaderProtocol {
+    associatedtype DataIndex: Comparable
+    
     /// Current byte offset.
     var readOffset: Int { get set }
     
@@ -66,20 +68,20 @@ protocol _DataReaderProtocol: DataReaderProtocol {
     func _dataSize() -> Int
     
     /// Return the data structure start index.
-    func _dataStartIndex() -> DataType.Index
+    func _dataStartIndex() -> DataIndex
     
     /// Return the data structure index that corresponds to the current user-facing ``readOffset`` value,
     /// optionally offset by a byte distance.
-    func _dataReadOffsetIndex(offsetBy offset: Int) -> DataType.Index
+    func _dataReadOffsetIndex(offsetBy offset: Int) -> DataIndex
     
     /// Return the data byte at the given data structure index.
-    func _dataByte(at dataIndex: DataType.Index) throws(DataReaderError) -> DataElement
+    func _dataByte(at dataIndex: DataIndex) throws(DataReaderError) -> DataElement
     
     /// Return the data bytes in the given data structure index range.
-    func _dataBytes(in dataIndexRange: Range<DataType.Index>) throws(DataReaderError) -> DataRange
+    func _dataBytes(in dataIndexRange: Range<DataIndex>) throws(DataReaderError) -> DataRange
     
     /// Return the data bytes in the given data structure index range.
-    func _dataBytes(in dataIndexRange: ClosedRange<DataType.Index>) throws(DataReaderError) -> DataRange
+    func _dataBytes(in dataIndexRange: ClosedRange<DataIndex>) throws(DataReaderError) -> DataRange
 }
 
 // MARK: - Public Implementation

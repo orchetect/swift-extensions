@@ -9,21 +9,18 @@
 import Foundation
 
 /// Protocol adopted by data types supported by ``DataReaderProtocol``.
-public protocol DataReaderDataProtocol where Self: DataProtocol, Self.Index == Int, SubSequence: DataReaderDataProtocol {
+public protocol DataReaderDataProtocol where Self: DataProtocol, SubSequence: DataReaderDataProtocol {
     associatedtype SubSequence
     
     init()
     init(_ other: Self)
     init(_ other: SubSequence)
     
+    // Restated from DataProtocol concrete types
+    func withUnsafeBytes<ResultType>(_ body: (UnsafeRawBufferPointer) throws -> ResultType) rethrows -> ResultType
+    
     /// Returns a subsequence formed from the pointer.
     static func subSequence(from pointer: UnsafeBufferPointer<UInt8>) -> SubSequence
-    
-    /// Accesses the data using the most efficient data reading implementation for the current platform.
-    @discardableResult
-    func withDataReader<T, E>(
-        _ block: (_ reader: inout DefaultDataReader<Self>) throws(E) -> T
-    ) throws(E) -> T
 }
 
 // MARK: - Concrete Type Conformances

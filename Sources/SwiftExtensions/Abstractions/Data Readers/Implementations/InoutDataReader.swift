@@ -30,7 +30,7 @@ import protocol Foundation.DataProtocol
 ///     if let bytes = reader.read(bytes: 4) { ... }
 /// }
 /// ```
-public struct InoutDataReader<DataType: DataReaderDataProtocol>: _DataReaderProtocol where DataType.Index == Int {
+public struct InoutDataReader<DataType: DataProtocol>: _DataReaderProtocol {
     public typealias DataElement = DataType.Element
     public typealias DataRange = DataType.SubSequence
     
@@ -41,7 +41,7 @@ public struct InoutDataReader<DataType: DataReaderDataProtocol>: _DataReaderProt
     
     // MARK: - Init
     
-    init(_ dataAccess: @escaping DataAccess) {
+    init(dataAccess: @escaping DataAccess) {
         self.dataAccess = dataAccess
     }
     
@@ -50,6 +50,8 @@ public struct InoutDataReader<DataType: DataReaderDataProtocol>: _DataReaderProt
     public internal(set) var readOffset = 0
     
     // MARK: - Internal
+    
+    typealias DataIndex = DataType.Index
     
     func _dataSize() -> Int {
         withData { $0.count }
@@ -100,7 +102,7 @@ extension DataProtocol {
         var result: Result<T, E>!
         
         withUnsafeMutablePointer(to: &self) { ptr in
-            var reader = InoutDataReader { $0(&ptr.pointee) }
+            var reader = InoutDataReader(dataAccess: { $0(&ptr.pointee) })
             do throws(E) {
                 result = .success(try block(&reader))
             } catch {
@@ -109,6 +111,28 @@ extension DataProtocol {
         }
         return try result.get()
     }
+}
+
+// MARK: - API Changes in 2.1.0
+
+@_documentation(visibility: internal)
+@available(*, renamed: "InoutDataReader")
+public typealias PassiveDataReader = InoutDataReader
+
+extension PassiveDataReader {
+    @_documentation(visibility: internal)
+    @available(*, renamed: "DataType")
+    public typealias D = DataType
+    
+    @_documentation(visibility: internal)
+    @available(*, deprecated, message: "Data readers are no longer instanced directly. Instead, call `data.withDataReader { reader in }`.")
+    public init(_ closure: @escaping (_ block: (inout DataType) -> Void) -> Void) {
+        self.dataAccess = closure
+    }
+    
+    @_documentation(visibility: internal)
+    @available(*, renamed: "DataReaderError")
+    public typealias ReadError = DataReaderError
 }
 
 #endif

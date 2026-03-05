@@ -7,34 +7,18 @@
 #if canImport(Foundation)
 
 import struct Foundation.Data
+import protocol Foundation.DataProtocol
 
 /// Alias to the most performant data reader for the current platform.
 public typealias DefaultDataReader = PointerDataReader
 
-// MARK: - DataProtocol Extensions
+// MARK: - DataReader Extensions
 
-extension Data {
-    @discardableResult
+extension DataProtocol {
+    /// Accesses the data using the most performant data reader for the current platform.
+    @_disfavoredOverload @discardableResult
     public func withDataReader<T, E>(
         _ block: (_ reader: inout DefaultDataReader<Self>) throws(E) -> T
-    ) throws(E) -> T {
-        try withPointerDataReader(block)
-    }
-}
-
-extension [UInt8] {
-    @discardableResult
-    public func withDataReader<T, E>(
-        _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
-    ) throws(E) -> T {
-        try withPointerDataReader(block)
-    }
-}
-
-extension [UInt8].SubSequence {
-    @discardableResult
-    public func withDataReader<T, E>(
-        _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
         try withPointerDataReader(block)
     }

@@ -30,9 +30,9 @@ import protocol Foundation.DataProtocol
 ///     if let bytes = reader.read(bytes: 4) { ... }
 /// }
 /// ```
-public struct PointerDataReader<DataType: DataReaderDataProtocol>: _DataReaderProtocol where DataType.Index == Int {
+public struct PointerDataReader<DataType: DataProtocol>: _DataReaderProtocol {
     public typealias DataElement = DataType.Element
-    public typealias DataRange = DataType.SubSequence
+    public typealias DataRange = Slice<UnsafeBufferPointer<UInt8>>
     
     private let pointer: UnsafeBufferPointer<UInt8>
     
@@ -48,39 +48,33 @@ public struct PointerDataReader<DataType: DataReaderDataProtocol>: _DataReaderPr
     
     // MARK: - Internal
     
+    @usableFromInline typealias DataIndex = Int
+    
     func _dataSize() -> Int {
         withData { $0.count }
     }
     
     @inlinable
-    func _dataStartIndex() -> DataType.Index {
-        withData { $0.indices.lowerBound }
+    func _dataStartIndex() -> DataIndex {
+        withData { $0.startIndex }
     }
     
     @inlinable
-    func _dataReadOffsetIndex(offsetBy offset: Int) -> DataType.Index {
+    func _dataReadOffsetIndex(offsetBy offset: Int) -> DataIndex {
         withData { $0.indices.lowerBound.advanced(by: readOffset + offset) }
     }
     
     @inlinable
-    func _dataByte(at dataIndex: DataType.Index) throws(DataReaderError) -> DataElement {
+    func _dataByte(at dataIndex: DataIndex) throws(DataReaderError) -> DataElement {
         withData { $0[dataIndex] }
     }
     
-    func _dataBytes(in dataIndexRange: Range<DataType.Index>) throws(DataReaderError) -> DataRange {
-        withData {
-            let bytes = $0.extracting(dataIndexRange) /* $0[dataIndexRange] */
-            let wrapped = DataType.subSequence(from: bytes)
-            return wrapped
-        }
+    func _dataBytes(in dataIndexRange: Range<DataIndex>) throws(DataReaderError) -> DataRange {
+        withData { $0[dataIndexRange] }
     }
     
-    func _dataBytes(in dataIndexRange: ClosedRange<DataType.Index>) throws(DataReaderError) -> DataRange {
-        withData {
-            let bytes = $0.extracting(dataIndexRange) /* $0[dataIndexRange] */
-            let wrapped = DataType.subSequence(from: bytes)
-            return wrapped
-        }
+    func _dataBytes(in dataIndexRange: ClosedRange<DataIndex>) throws(DataReaderError) -> DataRange {
+        withData { $0[dataIndexRange] }
     }
     
     // MARK: - Helpers
@@ -93,34 +87,12 @@ public struct PointerDataReader<DataType: DataReaderDataProtocol>: _DataReaderPr
 
 // MARK: - DataProtocol Extensions
 
-// Note that implementation on the `DataProtocol` protocol itself will not reliably get us the pointer we need.
-// Instead, individual implementations on `Data` and `[UInt8]` are required in order to acquire the correct pointers.
+// Knowledge of the underlying concrete data type is necessary to ensure correct pointer access.
 
-extension Data {
+extension DataReaderDataProtocol {
     /// Accesses the data by way of unsafe pointer access by providing a ``PointerDataReader`` instance to a closure.
     @discardableResult
-    public func withPointerDataReader<T, E>(
-        _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
-    ) throws(E) -> T {
-        // since `withUnsafe... { }` does not work with typed error throws, we have to use a workaround to get the typed error out
-        var result: Result<T, E>!
-        withUnsafeBytes { ptr in
-            let boundPtr = ptr.assumingMemoryBound(to: UInt8.self)
-            var reader = PointerDataReader<Self>(pointer: boundPtr)
-            do throws(E) {
-                result = .success(try block(&reader))
-            } catch {
-                result = .failure(error)
-            }
-        }
-        return try result.get()
-    }
-}
-
-extension [UInt8] {
-    /// Accesses the data by way of unsafe pointer access by providing a ``PointerDataReader`` instance to a closure.
-    @discardableResult
-    public func withPointerDataReader<T, E>(
+    package func withPointerDataReader<T, E>(
         _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
         // since `withUnsafe... { }` does not work with typed error throws, we have to use a workaround to get the typed error out
@@ -138,22 +110,23 @@ extension [UInt8] {
     }
 }
 
-extension [UInt8].SubSequence {
+extension DataProtocol {
     /// Accesses the data by way of unsafe pointer access by providing a ``PointerDataReader`` instance to a closure.
-    @discardableResult
-    public func withPointerDataReader<T, E>(
+    @_disfavoredOverload @discardableResult
+    package func withPointerDataReader<T, E>(
         _ block: (_ reader: inout PointerDataReader<Self>) throws(E) -> T
     ) throws(E) -> T {
-        // since `withUnsafe... { }` does not work with typed error throws, we have to use a workaround to get the typed error out
-        var result: Result<T, E>!
-        self.withUnsafeBytes { ptr in
-            let boundPtr = ptr.assumingMemoryBound(to: UInt8.self)
-            var reader = PointerDataReader<Self>(pointer: boundPtr)
+        var result: Result<T, E>? = nil
+        self.withContiguousStorageIfAvailable { ptr in
+            var reader = PointerDataReader<Self>(pointer: ptr)
             do throws(E) {
                 result = .success(try block(&reader))
             } catch {
                 result = .failure(error)
             }
+        }
+        guard let result else {
+            fatalError("Unhandled DataProtocol concrete type: \(type(of: self)).")
         }
         return try result.get()
     }

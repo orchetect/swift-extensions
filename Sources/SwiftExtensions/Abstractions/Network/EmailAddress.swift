@@ -93,6 +93,7 @@ extension EmailAddress: Sendable { }
 // MARK: - API Changes in 1.4.4
 
 extension String {
+    @_documentation(visibility: internal)
     @available(*, deprecated, message: "Renamed to: EmailAddress(\"\").isValid")
     @_disfavoredOverload
     public var isValidEmailAddress: Bool {

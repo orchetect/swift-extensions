@@ -73,6 +73,7 @@ extension String {
 extension String {
     /// Syntactic sugar. Returns the string wrapped with parentheses: `( )`.
     /// Same as `self.wrapped(with: .parentheses)`
+    @_documentation(visibility: internal)
     @inline(__always) @_disfavoredOverload
     @available(*, unavailable, renamed: "parenthesized")
     public var parens: Self {
