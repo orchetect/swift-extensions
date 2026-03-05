@@ -109,15 +109,25 @@ extension DataProtocol {
                 }
             }
         } else {
-            // TODO: this is not tested and may not work with unhandled concrete DataProtocol types
-            withUnsafeBytes(of: self) { ptr in
-                let boundPtr = ptr.assumingMemoryBound(to: UInt8.self)
-                var reader = PointerDataReader<Self>(pointer: boundPtr)
+            if withContiguousStorageIfAvailable({ ptr in
+                var reader = PointerDataReader<Self>(pointer: ptr)
                 do throws(E) {
                     let value = try block(&reader)
                     result = .success(value)
                 } catch {
                     result = .failure(error)
+                }
+            }) as Void? == nil {
+                // TODO: this is not tested and may not work with unhandled concrete DataProtocol types
+                withUnsafeBytes(of: self) { ptr in
+                    let boundPtr = ptr.assumingMemoryBound(to: UInt8.self)
+                    var reader = PointerDataReader<Self>(pointer: boundPtr)
+                    do throws(E) {
+                        let value = try block(&reader)
+                        result = .success(value)
+                    } catch {
+                        result = .failure(error)
+                    }
                 }
             }
         }
