@@ -196,37 +196,69 @@ extension DataProtocol {
         
         // since load(as:) is not memory alignment safe, memcpy is the current workaround
         // see for more info: https://bugs.swift.org/browse/SR-10273
-        let number: Float32 = withUnsafeBytes(of: self) {
-            var value = Float32()
-            memcpy(&value, $0.baseAddress!, 4)
-            return value
+        
+        func number() -> Float32? {
+            if let self = self as? Data {
+                self.withUnsafeBytes({
+                    var value = Float32()
+                    memcpy(&value, $0.baseAddress!, 4)
+                    return value
+                })
+            } else if let self = self as? [UInt8] {
+                self.withUnsafeBytes({
+                    var value = Float32()
+                    memcpy(&value, $0.baseAddress!, 4)
+                    return value
+                })
+            } else {
+                self.withContiguousStorageIfAvailable({
+                    var value = Float32()
+                    memcpy(&value, $0.baseAddress!, 4)
+                    return value
+                })
+            }
         }
         
-        // float twiddling
-        
-        let numberSwapped: Float32 = {
-            var floatsw = CFConvertFloat32HostToSwapped(Float32())
-            floatsw = withUnsafeBytes(of: self) {
-                // $0.load(as: CFSwappedFloat32.self)
-                var value = CFSwappedFloat32()
-                memcpy(&value, $0.baseAddress!, 4)
-                return value
+        func numberSwapped() -> Float32? {
+            guard let swapped: CFSwappedFloat32 = if let self = self as? Data {
+                self.withUnsafeBytes({
+                    // $0.load(as: CFSwappedFloat32.self)
+                    var value = CFSwappedFloat32()
+                    memcpy(&value, $0.baseAddress!, 4)
+                    return value
+                })
+            } else if let self = self as? [UInt8] {
+                self.withUnsafeBytes({
+                    // $0.load(as: CFSwappedFloat32.self)
+                    var value = CFSwappedFloat32()
+                    memcpy(&value, $0.baseAddress!, 4)
+                    return value
+                })
+            } else {
+                self.withContiguousStorageIfAvailable({
+                    // $0.load(as: CFSwappedFloat32.self)
+                    var value = CFSwappedFloat32()
+                    memcpy(&value, $0.baseAddress!, 4)
+                    return value
+                })
+            } else {
+                return nil
             }
-            return CFConvertFloat32SwappedToHost(floatsw)
-        }()
+            return CFConvertFloat32SwappedToHost(swapped)
+        }
         
         // determine which conversion is needed
         
         switch endianness {
         case .platformDefault:
-            return number
+            return number()
             
         case .littleEndian:
             switch NumberEndianness.system {
             case .littleEndian:
-                return number
+                return number()
             case .bigEndian:
-                return numberSwapped
+                return numberSwapped()
             default:
                 fatalError() // should never happen
             }
@@ -234,9 +266,9 @@ extension DataProtocol {
         case .bigEndian:
             switch NumberEndianness.system {
             case .littleEndian:
-                return numberSwapped
+                return numberSwapped()
             case .bigEndian:
-                return number
+                return number()
             default:
                 fatalError() // should never happen
             }
@@ -297,37 +329,71 @@ extension DataProtocol {
         
         // since load(as:) is not memory alignment safe, memcpy is the current workaround
         // see for more info: https://bugs.swift.org/browse/SR-10273
-        let number: Double = withUnsafeBytes(of: self) {
-            var value = Double()
-            memcpy(&value, $0.baseAddress!, 8)
-            return value
+        
+        func number() -> Double? {
+            if let self = self as? Data {
+                self.withUnsafeBytes({
+                    var value = Double()
+                    memcpy(&value, $0.baseAddress!, 8)
+                    return value
+                })
+            } else if let self = self as? [UInt8] {
+                self.withUnsafeBytes({
+                    var value = Double()
+                    memcpy(&value, $0.baseAddress!, 8)
+                    return value
+                })
+            } else {
+                self.withContiguousStorageIfAvailable({
+                    var value = Double()
+                    memcpy(&value, $0.baseAddress!, 8)
+                    return value
+                })
+            }
         }
         
         // double twiddling
         
-        let numberSwapped: Double = {
-            var floatsw = CFConvertDoubleHostToSwapped(Double())
-            floatsw = withUnsafeBytes(of: self) {
-                // $0.load(as: CFSwappedFloat64.self)
-                var value = CFSwappedFloat64()
-                memcpy(&value, $0.baseAddress!, 8)
-                return value
+        func numberSwapped() -> Double? {
+            guard let swapped = if let self = self as? Data {
+                self.withUnsafeBytes({
+                    // $0.load(as: CFSwappedFloat64.self)
+                    var value = CFSwappedFloat64()
+                    memcpy(&value, $0.baseAddress!, 8)
+                    return value
+                })
+            } else if let self = self as? [UInt8] {
+                self.withUnsafeBytes({
+                    // $0.load(as: CFSwappedFloat64.self)
+                    var value = CFSwappedFloat64()
+                    memcpy(&value, $0.baseAddress!, 8)
+                    return value
+                })
+            } else {
+                self.withContiguousStorageIfAvailable({
+                    // $0.load(as: CFSwappedFloat64.self)
+                    var value = CFSwappedFloat64()
+                    memcpy(&value, $0.baseAddress!, 8)
+                    return value
+                })
+            } else {
+                return nil
             }
-            return CFConvertDoubleSwappedToHost(floatsw)
-        }()
+            return CFConvertDoubleSwappedToHost(swapped)
+        }
         
         // determine which conversion is needed
         
         switch endianness {
         case .platformDefault:
-            return number
+            return number()
             
         case .littleEndian:
             switch NumberEndianness.system {
             case .littleEndian:
-                return number
+                return number()
             case .bigEndian:
-                return numberSwapped
+                return numberSwapped()
             default:
                 fatalError() // should never happen
             }
@@ -335,9 +401,9 @@ extension DataProtocol {
         case .bigEndian:
             switch NumberEndianness.system {
             case .littleEndian:
-                return numberSwapped
+                return numberSwapped()
             case .bigEndian:
-                return number
+                return number()
             default:
                 fatalError() // should never happen
             }
@@ -385,10 +451,26 @@ extension DataProtocol {
         
         // since load(as:) is not memory alignment safe, memcpy is the current workaround
         // see for more info: https://bugs.swift.org/browse/SR-10273
-        let int: T = withUnsafeBytes(of: self) {
-            var value = T()
-            memcpy(&value, $0.baseAddress!, MemoryLayout<T>.size)
-            return value
+        guard let int: T = if let self = self as? Data {
+            self.withUnsafeBytes({
+                var value = T()
+                memcpy(&value, $0.baseAddress!, MemoryLayout<T>.size)
+                return value
+            })
+        } else if let self = self as? [UInt8] {
+            self.withUnsafeBytes({
+                var value = T()
+                memcpy(&value, $0.baseAddress!, MemoryLayout<T>.size)
+                return value
+            })
+        } else {
+            self.withContiguousStorageIfAvailable({
+                var value = T()
+                memcpy(&value, $0.baseAddress!, MemoryLayout<T>.size)
+                return value
+            })
+        } else {
+            return nil
         }
         
         // determine which conversion is needed

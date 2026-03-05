@@ -32,7 +32,7 @@ import protocol Foundation.DataProtocol
 /// ```
 public struct PointerDataReader<DataType: DataProtocol>: _DataReaderProtocol {
     public typealias DataElement = DataType.Element
-    public typealias DataRange = Slice<UnsafeBufferPointer<UInt8>>
+    public typealias DataRange = UnsafeBufferPointer<UInt8>
     
     private let pointer: UnsafeBufferPointer<UInt8>
     
@@ -70,11 +70,11 @@ public struct PointerDataReader<DataType: DataProtocol>: _DataReaderProtocol {
     }
     
     func _dataBytes(in dataIndexRange: Range<DataIndex>) throws(DataReaderError) -> DataRange {
-        withData { $0[dataIndexRange] }
+        withData { $0.extracting(dataIndexRange) }
     }
     
     func _dataBytes(in dataIndexRange: ClosedRange<DataIndex>) throws(DataReaderError) -> DataRange {
-        withData { $0[dataIndexRange] }
+        withData { $0.extracting(dataIndexRange) }
     }
     
     // MARK: - Helpers
