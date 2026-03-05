@@ -26,6 +26,12 @@ import Testing
         someStruct.value = 5
         #expect(someStruct.value == 5)
         
+        someStruct.value = 6
+        #expect(someStruct.value == 6)
+        
+        someStruct.value = 9
+        #expect(someStruct.value == 9)
+        
         someStruct.value = 10
         #expect(someStruct.value == 10)
         
