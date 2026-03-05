@@ -18,6 +18,7 @@ import CoreFoundation
 
 extension NumberEndianness {
     /// Returns the current system hardware's byte order endianness.
+    @inline(__always)
     public static let system: NumberEndianness =
         CFByteOrderGetCurrent() == CFByteOrderBigEndian.rawValue
             ? .bigEndian
