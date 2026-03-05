@@ -28,7 +28,7 @@ import Foundation
 
 // MARK: - Int
 
-extension Data {
+extension DataProtocol {
     /// Returns an Int64 value from Data.
     /// Returns `nil` if Data is not the correct length.
     @_disfavoredOverload
@@ -39,7 +39,7 @@ extension Data {
 
 // MARK: - Int8
 
-extension Data {
+extension DataProtocol {
     /// Returns a Int8 value from Data (stored as two's complement).
     /// Returns `nil` if Data is not the correct length.
     @_disfavoredOverload
@@ -47,8 +47,8 @@ extension Data {
         guard count == 1 else { return nil }
         
         var int = UInt8()
-        withUnsafeMutablePointer(to: &int) {
-            self.copyBytes(to: $0, count: 1)
+        withUnsafeMutableBytes(of: &int) {
+            _ = self.copyBytes(to: $0, count: 1)
         }
         return Int8(bitPattern: int)
     }
@@ -56,7 +56,7 @@ extension Data {
 
 // MARK: - Int16
 
-extension Data {
+extension DataProtocol {
     /// Returns an Int16 value from Data.
     /// Returns `nil` if Data is not the correct length.
     @_disfavoredOverload
@@ -67,7 +67,7 @@ extension Data {
 
 // MARK: - Int32
 
-extension Data {
+extension DataProtocol {
     /// Returns an Int32 value from Data.
     /// Returns `nil` if Data is not the correct length.
     @_disfavoredOverload
@@ -78,7 +78,7 @@ extension Data {
 
 // MARK: - Int64
 
-extension Data {
+extension DataProtocol {
     /// Returns an Int64 value from Data.
     /// Returns `nil` if Data is not the correct length.
     @_disfavoredOverload
@@ -89,7 +89,7 @@ extension Data {
 
 // MARK: - UInt
 
-extension Data {
+extension DataProtocol {
     /// Returns a UInt value from Data.
     /// Returns `nil` if Data is not the correct length.
     @_disfavoredOverload
@@ -100,7 +100,7 @@ extension Data {
 
 // MARK: - UInt8
 
-extension Data {
+extension DataProtocol {
     /// Returns a UInt8 value from Data.
     /// Returns `nil` if Data is not the correct length.
     @_disfavoredOverload
@@ -112,7 +112,7 @@ extension Data {
 
 // MARK: - UInt16
 
-extension Data {
+extension DataProtocol {
     /// Returns a UInt16 value from Data.
     /// Returns `nil` if Data is not the correct length.
     @_disfavoredOverload
@@ -123,7 +123,7 @@ extension Data {
 
 // MARK: - UInt32
 
-extension Data {
+extension DataProtocol {
     /// Returns a UInt32 value from Data.
     /// Returns `nil` if Data is not the correct length.
     @_disfavoredOverload
@@ -134,7 +134,7 @@ extension Data {
 
 // MARK: - UInt64
 
-extension Data {
+extension DataProtocol {
     /// Returns a UInt64 value from Data.
     /// Returns `nil` if Data is not the correct length.
     @_disfavoredOverload
@@ -182,7 +182,7 @@ extension Float32 {
     }
 }
 
-extension Data {
+extension DataProtocol {
     /// Returns a Float32 value from Data.
     /// Returns `nil` if Data is != 4 bytes.
     @_disfavoredOverload
@@ -196,7 +196,7 @@ extension Data {
         
         // since load(as:) is not memory alignment safe, memcpy is the current workaround
         // see for more info: https://bugs.swift.org/browse/SR-10273
-        let number: Float32 = withUnsafeBytes {
+        let number: Float32 = withUnsafeBytes(of: self) {
             var value = Float32()
             memcpy(&value, $0.baseAddress!, 4)
             return value
@@ -206,7 +206,7 @@ extension Data {
         
         let numberSwapped: Float32 = {
             var floatsw = CFConvertFloat32HostToSwapped(Float32())
-            floatsw = self.withUnsafeBytes {
+            floatsw = withUnsafeBytes(of: self) {
                 // $0.load(as: CFSwappedFloat32.self)
                 var value = CFSwappedFloat32()
                 memcpy(&value, $0.baseAddress!, 4)
@@ -283,7 +283,7 @@ extension Double {
     }
 }
 
-extension Data {
+extension DataProtocol {
     /// Returns a Double value from Data.
     /// Returns `nil` if Data is != 8 bytes.
     @_disfavoredOverload
@@ -297,7 +297,7 @@ extension Data {
         
         // since load(as:) is not memory alignment safe, memcpy is the current workaround
         // see for more info: https://bugs.swift.org/browse/SR-10273
-        let number: Double = withUnsafeBytes {
+        let number: Double = withUnsafeBytes(of: self) {
             var value = Double()
             memcpy(&value, $0.baseAddress!, 8)
             return value
@@ -307,7 +307,7 @@ extension Data {
         
         let numberSwapped: Double = {
             var floatsw = CFConvertDoubleHostToSwapped(Double())
-            floatsw = self.withUnsafeBytes {
+            floatsw = withUnsafeBytes(of: self) {
                 // $0.load(as: CFSwappedFloat64.self)
                 var value = CFSwappedFloat64()
                 memcpy(&value, $0.baseAddress!, 8)
@@ -370,7 +370,7 @@ extension FixedWidthInteger {
 
 // MARK: - Helper methods
 
-extension Data {
+extension DataProtocol {
     /// Internal use.
     func toNumber<T: FixedWidthInteger>(
         from endianness: NumberEndianness = .platformDefault,
@@ -385,7 +385,7 @@ extension Data {
         
         // since load(as:) is not memory alignment safe, memcpy is the current workaround
         // see for more info: https://bugs.swift.org/browse/SR-10273
-        let int: T = withUnsafeBytes {
+        let int: T = withUnsafeBytes(of: self) {
             var value = T()
             memcpy(&value, $0.baseAddress!, MemoryLayout<T>.size)
             return value
@@ -438,6 +438,14 @@ extension Data {
     }
 }
 
+extension DataProtocol {
+    /// Returns a String converted from Data. Optionally pass an encoding type.
+    @_disfavoredOverload
+    public func toString(using encoding: String.Encoding = .utf8) -> String? {
+        String(data: Data(self), encoding: encoding)
+    }
+}
+
 // MARK: - Data Bytes
 
 extension Collection<UInt8> {
@@ -449,7 +457,7 @@ extension Collection<UInt8> {
     }
 }
 
-extension Data {
+extension DataProtocol {
     /// Returns an array of `UInt8` bytes.
     /// Same as `[UInt8](self)`
     @_disfavoredOverload
