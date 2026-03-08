@@ -28,63 +28,63 @@ env:
   SCHEME: "swift-extensions"
 
 jobs:
-  macOS-14:
-    name: macOS 14 Sonoma
-    runs-on: macos-14
-    timeout-minutes: 20
-    steps:
-    - uses: actions/checkout@main
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
-    - name: Build
-      run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-    - name: Unit Tests
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-  
-  macOS:
-    name: macOS
-    runs-on: macos-latest
-    timeout-minutes: 20
-    steps:
-    - uses: actions/checkout@main
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
-    - name: Build
-      run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-    - name: Unit Tests
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-  
-  macOS-swift6-2:
-    name: macOS (Swift 6.2)
-    runs-on: macos-latest
-    timeout-minutes: 20
-    steps:
-    - uses: actions/checkout@main
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
-    - name: Set Package to Swift 6.2
-      run: swift package tools-version --set "6.2"
-    - name: Build
-      run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-    - name: Unit Tests
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-  
-  macCatalyst:
-    name: macCatalyst
-    runs-on: macos-latest
-    timeout-minutes: 20
-    steps:
-    - uses: actions/checkout@main
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
-    - name: Build
-      run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,variant=Mac Catalyst" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-    - name: Unit Tests
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS,variant=Mac Catalyst" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  # macOS-14:
+  #   name: macOS 14 Sonoma
+  #   runs-on: macos-14
+  #   timeout-minutes: 20
+  #   steps:
+  #   - uses: actions/checkout@main
+  #   - uses: maxim-lobanov/setup-xcode@v1
+  #     with:
+  #       xcode-version: latest-stable
+  #   - name: Build
+  #     run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  #   - name: Unit Tests
+  #     run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  # 
+  # macOS:
+  #   name: macOS
+  #   runs-on: macos-latest
+  #   timeout-minutes: 20
+  #   steps:
+  #   - uses: actions/checkout@main
+  #   - uses: maxim-lobanov/setup-xcode@v1
+  #     with:
+  #       xcode-version: latest-stable
+  #   - name: Build
+  #     run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  #   - name: Unit Tests
+  #     run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  # 
+  # macOS-swift6-2:
+  #   name: macOS (Swift 6.2)
+  #   runs-on: macos-latest
+  #   timeout-minutes: 20
+  #   steps:
+  #   - uses: actions/checkout@main
+  #   - uses: maxim-lobanov/setup-xcode@v1
+  #     with:
+  #       xcode-version: latest-stable
+  #   - name: Set Package to Swift 6.2
+  #     run: swift package tools-version --set "6.2"
+  #   - name: Build
+  #     run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  #   - name: Unit Tests
+  #     run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  # 
+  # macCatalyst:
+  #   name: macCatalyst
+  #   runs-on: macos-latest
+  #   timeout-minutes: 20
+  #   steps:
+  #   - uses: actions/checkout@main
+  #   - uses: maxim-lobanov/setup-xcode@v1
+  #     with:
+  #       xcode-version: latest-stable
+  #   - name: Build
+  #     run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=macOS,variant=Mac Catalyst" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  #   - name: Unit Tests
+  #     run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS,variant=Mac Catalyst" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
 
   iOS:
     name: iOS
@@ -106,224 +106,195 @@ jobs:
     - name: Build
       run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=iOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     - name: Prepare Destination Device Name
+      uses: orchetect/xcode-simulator@main
+      with:
+        scheme: ${{ env.SCHEME }}
+        target: iOS
       id: destnameprep
-      # As of GitHub's updates to the macOS-15 runner summer 2025, randomly Xcode may not list any simulators.
-      # No idea why. Seems like a bug or runner config issue. So to prevent false-positive job failures, we'll skip
-      # the unit tests if no devices are found, but mark the unit test step as cancelled. The job is still marked as
-      # passed (green), but the Unit Tests step will show cancelled. This is the best we can do, as there appears to
-      # be no way to "cancel" an individual job programmatically.
-      continue-on-error: true
-      shell: bash
-      run: |
-        # Edit these variables on a per-platform basis
-        SIMPLATFORM="iOS"
-        SIMDEVICE="iPhone\s\d{2}\s"
-        SIMOS="" # Leave Empty to use latest OS version, or enter an OS version
-        # ---- Do not edit script below this point (Generalized for all platforms) ----
-        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
-        XCODE_OUTPUT_REGEX="m/\{\splatform:(.*\sSimulator),.*id:([A-F0-9\-]{36}),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
-        SIMPATFORM_LIST_PREVIEW=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat} - ${os}) - ${id}"; } }')
-        if [[ -z $SIMPATFORM_LIST_PREVIEW ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Available $SIMPLATFORM simulators:"
-        echo "$SIMPATFORM_LIST_PREVIEW"
-        SIMPLATFORMS=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "${name}\t${plat}\t${os}\t${id}"; } }' | sort -rV)
-        SIMPLATFORMS_REGEX="m/(.*)\t(.*)\t(.*)\t(.*)/g"
-        rm destinations.txt
-        if [[ -z $SIMOS ]]; then
-          echo "Finding latest OS version for platform."
-          LINE=$(echo "${SIMPLATFORMS}" | head -1)
-          DESTID=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print $id; }')
-          DESTDESC=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print "${name} (${plat} - ${os}) - ${id}"; }')
-        else
-          echo "Finding OS version ${SIMOS}."
-          DESTID=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${id}"; } }' | head -n 1)
-          DESTDESC=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${name} (${plat} - ${os}) - ${id}"; } }' | head -n 1)
-        fi
-        if [[ -z $DESTID ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Using device: $DESTDESC"
-        echo "DESTID=$DESTID" >> "$GITHUB_ENV"
     - name: Unit Tests
       if: steps.destnameprep.outcome != 'failure'
       run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=iOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-
-  tvOS:
-    name: tvOS
-    runs-on: macos-latest
-    timeout-minutes: 20
-    steps:
-    - uses: actions/checkout@main
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
-    - name: Bootstrap Platforms
-      # Workaround for Xcode/GitHub runner issues finding simulators.
-      # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
-      run: xcrun simctl list
-    - name: Download Platform
-      # Workaround for Xcode/GitHub runner issues finding simulators.
-      # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
-      run: xcodebuild -downloadPlatform tvOS
-    - name: Build
-      run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=tvOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-    - name: Prepare Destination Device Name
-      id: destnameprep
-      # As of GitHub's updates to the macOS-15 runner summer 2025, randomly Xcode may not list any simulators.
-      # No idea why. Seems like a bug or runner config issue. So to prevent false-positive job failures, we'll skip
-      # the unit tests if no devices are found, but mark the unit test step as cancelled. The job is still marked as
-      # passed (green), but the Unit Tests step will show cancelled. This is the best we can do, as there appears to
-      # be no way to "cancel" an individual job programmatically.
-      continue-on-error: true
-      shell: bash
-      run: |
-        # Edit these variables on a per-platform basis
-        SIMPLATFORM="tvOS"
-        SIMDEVICE="Apple\sTV"
-        SIMOS="" # Leave Empty to use latest OS version, or enter an OS version
-        # ---- Do not edit script below this point (Generalized for all platforms) ----
-        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
-        XCODE_OUTPUT_REGEX="m/\{\splatform:(.*\sSimulator),.*id:([A-F0-9\-]{36}),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
-        SIMPATFORM_LIST_PREVIEW=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat} - ${os}) - ${id}"; } }')
-        if [[ -z $SIMPATFORM_LIST_PREVIEW ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Available $SIMPLATFORM simulators:"
-        echo "$SIMPATFORM_LIST_PREVIEW"
-        SIMPLATFORMS=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "${name}\t${plat}\t${os}\t${id}"; } }' | sort -rV)
-        SIMPLATFORMS_REGEX="m/(.*)\t(.*)\t(.*)\t(.*)/g"
-        rm destinations.txt
-        if [[ -z $SIMOS ]]; then
-          echo "Finding latest OS version for platform."
-          LINE=$(echo "${SIMPLATFORMS}" | head -1)
-          DESTID=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print $id; }')
-          DESTDESC=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print "${name} (${plat} - ${os}) - ${id}"; }')
-        else
-          echo "Finding OS version ${SIMOS}."
-          DESTID=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${id}"; } }' | head -n 1)
-          DESTDESC=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${name} (${plat} - ${os}) - ${id}"; } }' | head -n 1)
-        fi
-        if [[ -z $DESTID ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Using device: $DESTDESC"
-        echo "DESTID=$DESTID" >> "$GITHUB_ENV"
-    - name: Unit Tests
-      if: steps.destnameprep.outcome != 'failure'
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=tvOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-      
-  watchOS:
-    name: watchOS
-    runs-on: macos-latest
-    timeout-minutes: 20
-    steps:
-    - uses: actions/checkout@main
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
-    - name: Bootstrap Platforms
-      # Workaround for Xcode/GitHub runner issues finding simulators.
-      # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
-      run: xcrun simctl list
-    - name: Download Platform
-      # Workaround for Xcode/GitHub runner issues finding simulators.
-      # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
-      run: xcodebuild -downloadPlatform watchOS
-    - name: Build
-      run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=watchOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-    - name: Prepare Destination Device Name
-      id: destnameprep
-      # As of GitHub's updates to the macOS-15 runner summer 2025, randomly Xcode may not list any simulators.
-      # No idea why. Seems like a bug or runner config issue. So to prevent false-positive job failures, we'll skip
-      # the unit tests if no devices are found, but mark the unit test step as cancelled. The job is still marked as
-      # passed (green), but the Unit Tests step will show cancelled. This is the best we can do, as there appears to
-      # be no way to "cancel" an individual job programmatically.
-      continue-on-error: true
-      shell: bash
-      run: |
-        # Edit these variables on a per-platform basis
-        SIMPLATFORM="watchOS"
-        SIMDEVICE="Apple\sWatch\sSeries"
-        SIMOS="" # Leave Empty to use latest OS version, or enter an OS version
-        # ---- Do not edit script below this point (Generalized for all platforms) ----
-        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
-        XCODE_OUTPUT_REGEX="m/\{\splatform:(.*\sSimulator),.*id:([A-F0-9\-]{36}),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
-        SIMPATFORM_LIST_PREVIEW=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat} - ${os}) - ${id}"; } }')
-        if [[ -z $SIMPATFORM_LIST_PREVIEW ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Available $SIMPLATFORM simulators:"
-        echo "$SIMPATFORM_LIST_PREVIEW"
-        SIMPLATFORMS=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "${name}\t${plat}\t${os}\t${id}"; } }' | sort -rV)
-        SIMPLATFORMS_REGEX="m/(.*)\t(.*)\t(.*)\t(.*)/g"
-        rm destinations.txt
-        if [[ -z $SIMOS ]]; then
-          echo "Finding latest OS version for platform."
-          LINE=$(echo "${SIMPLATFORMS}" | head -1)
-          DESTID=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print $id; }')
-          DESTDESC=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print "${name} (${plat} - ${os}) - ${id}"; }')
-        else
-          echo "Finding OS version ${SIMOS}."
-          DESTID=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${id}"; } }' | head -n 1)
-          DESTDESC=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${name} (${plat} - ${os}) - ${id}"; } }' | head -n 1)
-        fi
-        if [[ -z $DESTID ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Using device: $DESTDESC"
-        echo "DESTID=$DESTID" >> "$GITHUB_ENV"
-    - name: Unit Tests
-      if: steps.destnameprep.outcome != 'failure'
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=watchOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-
-  visionOS:
-    name: visionOS
-    # visionOS Simulator requires Apple Silicon, but GitHub no longer allows specifying arm64.
-    # Instead, its base runners default to arm64 (but it's not clear if that's always the case, as sometimes Intel runners pick up jobs?)
-    runs-on: macos-latest
-    timeout-minutes: 20
-    steps:
-    - uses: actions/checkout@main
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: latest-stable
-    - name: Bootstrap Platforms
-      # Workaround for Xcode/GitHub runner issues finding simulators.
-      # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
-      run: xcrun simctl list
-    - name: Download Platform
-      # Workaround for Xcode/GitHub runner issues finding simulators.
-      # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
-      run: xcodebuild -downloadPlatform visionOS
-    - name: Build
-      run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=visionOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-    - name: Prepare Destination Device Name
-      id: destnameprep
-      # As of GitHub's updates to the macOS-15 runner summer 2025, randomly Xcode may not list any simulators.
-      # No idea why. Seems like a bug or runner config issue. So to prevent false-positive job failures, we'll skip
-      # the unit tests if no devices are found, but mark the unit test step as cancelled. The job is still marked as
-      # passed (green), but the Unit Tests step will show cancelled. This is the best we can do, as there appears to
-      # be no way to "cancel" an individual job programmatically.
-      continue-on-error: true
-      shell: bash
-      run: |
-        # Edit these variables on a per-platform basis
-        SIMPLATFORM="visionOS"
-        SIMDEVICE="Apple\sVision\sPro"
-        SIMOS="" # Leave Empty to use latest OS version, or enter an OS version
-        # ---- Do not edit script below this point (Generalized for all platforms) ----
-        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
-        XCODE_OUTPUT_REGEX="m/\{\splatform:(.*\sSimulator),.*id:([A-F0-9\-]{36}),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
-        SIMPATFORM_LIST_PREVIEW=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat} - ${os}) - ${id}"; } }')
-        if [[ -z $SIMPATFORM_LIST_PREVIEW ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Available $SIMPLATFORM simulators:"
-        echo "$SIMPATFORM_LIST_PREVIEW"
-        SIMPLATFORMS=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "${name}\t${plat}\t${os}\t${id}"; } }' | sort -rV)
-        SIMPLATFORMS_REGEX="m/(.*)\t(.*)\t(.*)\t(.*)/g"
-        rm destinations.txt
-        if [[ -z $SIMOS ]]; then
-          echo "Finding latest OS version for platform."
-          LINE=$(echo "${SIMPLATFORMS}" | head -1)
-          DESTID=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print $id; }')
-          DESTDESC=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print "${name} (${plat} - ${os}) - ${id}"; }')
-        else
-          echo "Finding OS version ${SIMOS}."
-          DESTID=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${id}"; } }' | head -n 1)
-          DESTDESC=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${name} (${plat} - ${os}) - ${id}"; } }' | head -n 1)
-        fi
-        if [[ -z $DESTID ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Using device: $DESTDESC"
-        echo "DESTID=$DESTID" >> "$GITHUB_ENV"
-    - name: Unit Tests
-      if: steps.destnameprep.outcome != 'failure'
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=visionOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+      env:
+        DESTID: ${{ steps.destnameprep.outputs.id }}
+        
+  # tvOS:
+  #   name: tvOS
+  #   runs-on: macos-latest
+  #   timeout-minutes: 20
+  #   steps:
+  #   - uses: actions/checkout@main
+  #   - uses: maxim-lobanov/setup-xcode@v1
+  #     with:
+  #       xcode-version: latest-stable
+  #   - name: Bootstrap Platforms
+  #     # Workaround for Xcode/GitHub runner issues finding simulators.
+  #     # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
+  #     run: xcrun simctl list
+  #   - name: Download Platform
+  #     # Workaround for Xcode/GitHub runner issues finding simulators.
+  #     # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
+  #     run: xcodebuild -downloadPlatform tvOS
+  #   - name: Build
+  #     run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=tvOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  #   - name: Prepare Destination Device Name
+  #     id: destnameprep
+  #     # As of GitHub's updates to the macOS-15 runner summer 2025, randomly Xcode may not list any simulators.
+  #     # No idea why. Seems like a bug or runner config issue. So to prevent false-positive job failures, we'll skip
+  #     # the unit tests if no devices are found, but mark the unit test step as cancelled. The job is still marked as
+  #     # passed (green), but the Unit Tests step will show cancelled. This is the best we can do, as there appears to
+  #     # be no way to "cancel" an individual job programmatically.
+  #     continue-on-error: true
+  #     shell: bash
+  #     run: |
+  #       # Edit these variables on a per-platform basis
+  #       SIMPLATFORM="tvOS"
+  #       SIMDEVICE="Apple\sTV"
+  #       SIMOS="" # Leave Empty to use latest OS version, or enter an OS version
+  #       # ---- Do not edit script below this point (Generalized for all platforms) ----
+  #       xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
+  #       XCODE_OUTPUT_REGEX="m/\{\splatform:(.*\sSimulator),.*id:([A-F0-9\-]{36}),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
+  #       SIMPATFORM_LIST_PREVIEW=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat} - ${os}) - ${id}"; } }')
+  #       if [[ -z $SIMPATFORM_LIST_PREVIEW ]]; then echo "Error: no matching simulators available."; exit 1; fi
+  #       echo "Available $SIMPLATFORM simulators:"
+  #       echo "$SIMPATFORM_LIST_PREVIEW"
+  #       SIMPLATFORMS=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "${name}\t${plat}\t${os}\t${id}"; } }' | sort -rV)
+  #       SIMPLATFORMS_REGEX="m/(.*)\t(.*)\t(.*)\t(.*)/g"
+  #       rm destinations.txt
+  #       if [[ -z $SIMOS ]]; then
+  #         echo "Finding latest OS version for platform."
+  #         LINE=$(echo "${SIMPLATFORMS}" | head -1)
+  #         DESTID=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print $id; }')
+  #         DESTDESC=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print "${name} (${plat} - ${os}) - ${id}"; }')
+  #       else
+  #         echo "Finding OS version ${SIMOS}."
+  #         DESTID=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${id}"; } }' | head -n 1)
+  #         DESTDESC=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${name} (${plat} - ${os}) - ${id}"; } }' | head -n 1)
+  #       fi
+  #       if [[ -z $DESTID ]]; then echo "Error: no matching simulators available."; exit 1; fi
+  #       echo "Using device: $DESTDESC"
+  #       echo "DESTID=$DESTID" >> "$GITHUB_ENV"
+  #   - name: Unit Tests
+  #     if: steps.destnameprep.outcome != 'failure'
+  #     run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=tvOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  #
+  # watchOS:
+  #   name: watchOS
+  #   runs-on: macos-latest
+  #   timeout-minutes: 20
+  #   steps:
+  #   - uses: actions/checkout@main
+  #   - uses: maxim-lobanov/setup-xcode@v1
+  #     with:
+  #       xcode-version: latest-stable
+  #   - name: Bootstrap Platforms
+  #     # Workaround for Xcode/GitHub runner issues finding simulators.
+  #     # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
+  #     run: xcrun simctl list
+  #   - name: Download Platform
+  #     # Workaround for Xcode/GitHub runner issues finding simulators.
+  #     # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
+  #     run: xcodebuild -downloadPlatform watchOS
+  #   - name: Build
+  #     run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=watchOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  #   - name: Prepare Destination Device Name
+  #     id: destnameprep
+  #     # As of GitHub's updates to the macOS-15 runner summer 2025, randomly Xcode may not list any simulators.
+  #     # No idea why. Seems like a bug or runner config issue. So to prevent false-positive job failures, we'll skip
+  #     # the unit tests if no devices are found, but mark the unit test step as cancelled. The job is still marked as
+  #     # passed (green), but the Unit Tests step will show cancelled. This is the best we can do, as there appears to
+  #     # be no way to "cancel" an individual job programmatically.
+  #     continue-on-error: true
+  #     shell: bash
+  #     run: |
+  #       # Edit these variables on a per-platform basis
+  #       SIMPLATFORM="watchOS"
+  #       SIMDEVICE="Apple\sWatch\sSeries"
+  #       SIMOS="" # Leave Empty to use latest OS version, or enter an OS version
+  #       # ---- Do not edit script below this point (Generalized for all platforms) ----
+  #       xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
+  #       XCODE_OUTPUT_REGEX="m/\{\splatform:(.*\sSimulator),.*id:([A-F0-9\-]{36}),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
+  #       SIMPATFORM_LIST_PREVIEW=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat} - ${os}) - ${id}"; } }')
+  #       if [[ -z $SIMPATFORM_LIST_PREVIEW ]]; then echo "Error: no matching simulators available."; exit 1; fi
+  #       echo "Available $SIMPLATFORM simulators:"
+  #       echo "$SIMPATFORM_LIST_PREVIEW"
+  #       SIMPLATFORMS=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "${name}\t${plat}\t${os}\t${id}"; } }' | sort -rV)
+  #       SIMPLATFORMS_REGEX="m/(.*)\t(.*)\t(.*)\t(.*)/g"
+  #       rm destinations.txt
+  #       if [[ -z $SIMOS ]]; then
+  #         echo "Finding latest OS version for platform."
+  #         LINE=$(echo "${SIMPLATFORMS}" | head -1)
+  #         DESTID=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print $id; }')
+  #         DESTDESC=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print "${name} (${plat} - ${os}) - ${id}"; }')
+  #       else
+  #         echo "Finding OS version ${SIMOS}."
+  #         DESTID=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${id}"; } }' | head -n 1)
+  #         DESTDESC=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${name} (${plat} - ${os}) - ${id}"; } }' | head -n 1)
+  #       fi
+  #       if [[ -z $DESTID ]]; then echo "Error: no matching simulators available."; exit 1; fi
+  #       echo "Using device: $DESTDESC"
+  #       echo "DESTID=$DESTID" >> "$GITHUB_ENV"
+  #   - name: Unit Tests
+  #     if: steps.destnameprep.outcome != 'failure'
+  #     run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=watchOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+#
+  # visionOS:
+  #   name: visionOS
+  #   # visionOS Simulator requires Apple Silicon, but GitHub no longer allows specifying arm64.
+  #   # Instead, its base runners default to arm64 (but it's not clear if that's always the case, as sometimes Intel runners pick up jobs?)
+  #   runs-on: macos-latest
+  #   timeout-minutes: 20
+  #   steps:
+  #   - uses: actions/checkout@main
+  #   - uses: maxim-lobanov/setup-xcode@v1
+  #     with:
+  #       xcode-version: latest-stable
+  #   - name: Bootstrap Platforms
+  #     # Workaround for Xcode/GitHub runner issues finding simulators.
+  #     # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
+  #     run: xcrun simctl list
+  #   - name: Download Platform
+  #     # Workaround for Xcode/GitHub runner issues finding simulators.
+  #     # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
+  #     run: xcodebuild -downloadPlatform visionOS
+  #   - name: Build
+  #     run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=visionOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+  #   - name: Prepare Destination Device Name
+  #     id: destnameprep
+  #     # As of GitHub's updates to the macOS-15 runner summer 2025, randomly Xcode may not list any simulators.
+  #     # No idea why. Seems like a bug or runner config issue. So to prevent false-positive job failures, we'll skip
+  #     # the unit tests if no devices are found, but mark the unit test step as cancelled. The job is still marked as
+  #     # passed (green), but the Unit Tests step will show cancelled. This is the best we can do, as there appears to
+  #     # be no way to "cancel" an individual job programmatically.
+  #     continue-on-error: true
+  #     shell: bash
+  #     run: |
+  #       # Edit these variables on a per-platform basis
+  #       SIMPLATFORM="visionOS"
+  #       SIMDEVICE="Apple\sVision\sPro"
+  #       SIMOS="" # Leave Empty to use latest OS version, or enter an OS version
+  #       # ---- Do not edit script below this point (Generalized for all platforms) ----
+  #       xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
+  #       XCODE_OUTPUT_REGEX="m/\{\splatform:(.*\sSimulator),.*id:([A-F0-9\-]{36}),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
+  #       SIMPATFORM_LIST_PREVIEW=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat} - ${os}) - ${id}"; } }')
+  #       if [[ -z $SIMPATFORM_LIST_PREVIEW ]]; then echo "Error: no matching simulators available."; exit 1; fi
+  #       echo "Available $SIMPLATFORM simulators:"
+  #       echo "$SIMPATFORM_LIST_PREVIEW"
+  #       SIMPLATFORMS=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "${name}\t${plat}\t${os}\t${id}"; } }' | sort -rV)
+  #       SIMPLATFORMS_REGEX="m/(.*)\t(.*)\t(.*)\t(.*)/g"
+  #       rm destinations.txt
+  #       if [[ -z $SIMOS ]]; then
+  #         echo "Finding latest OS version for platform."
+  #         LINE=$(echo "${SIMPLATFORMS}" | head -1)
+  #         DESTID=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print $id; }')
+  #         DESTDESC=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print "${name} (${plat} - ${os}) - ${id}"; }')
+  #       else
+  #         echo "Finding OS version ${SIMOS}."
+  #         DESTID=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${id}"; } }' | head -n 1)
+  #         DESTDESC=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${name} (${plat} - ${os}) - ${id}"; } }' | head -n 1)
+  #       fi
+  #       if [[ -z $DESTID ]]; then echo "Error: no matching simulators available."; exit 1; fi
+  #       echo "Using device: $DESTDESC"
+  #       echo "DESTID=$DESTID" >> "$GITHUB_ENV"
+  #   - name: Unit Tests
+  #     if: steps.destnameprep.outcome != 'failure'
+  #     run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=visionOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
