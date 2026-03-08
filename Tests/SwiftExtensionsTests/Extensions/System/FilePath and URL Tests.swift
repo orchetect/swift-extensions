@@ -604,11 +604,7 @@ import System
     @available(macOS 13.0, iOS 16.0, *)
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
-    @Test(
-        .enabled("There seems to be a bug where calling `URL.trashDirectory` on an iOS Simulator causes a EXC_BAD_INSTRUCTION crash.") {
-            (try? FileManager.default.url(for: .trashDirectory, in: .userDomainMask, appropriateFor: nil, create: false)) != nil
-        }
-    )
+    @Test(.enabledIfTrashDirectoryIsAccessible)
     func trashDirectory() async throws {
         #expect(FilePath.trashDirectory.string == URL.trashDirectory.path)
     }

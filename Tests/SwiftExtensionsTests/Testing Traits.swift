@@ -4,9 +4,10 @@
 //  © 2025 Steffan Andrews • Licensed under MIT License
 //
 
-// See: https://docs.github.com/en/actions/reference/workflows-and-actions/variables
-// "GITHUB_ACTIONS"
+import Testing
 
+/// See: https://docs.github.com/en/actions/reference/workflows-and-actions/variables
+/// "GITHUB_ACTIONS"
 func isRunningOnGitHubActions() -> Bool {
     #if GITHUB_ACTIONS
     return true
@@ -14,3 +15,30 @@ func isRunningOnGitHubActions() -> Bool {
     return false
     #endif
 }
+
+#if canImport(Foundation)
+
+import Foundation
+
+/// Returns `true` if the system Trash directory is accessible.
+func isTrashDirectoryAccessible() -> Bool {
+    (try? FileManager.default.url(for: .trashDirectory, in: .userDomainMask, appropriateFor: nil, create: false)) != nil
+}
+
+extension Trait where Self == ConditionTrait {
+    /// Test trait that checks if the system Trash directory is accessible.
+    ///
+    /// There seems to be a bug where calling `URL.trashDirectory` on an iOS Simulator causes a EXC_BAD_INSTRUCTION crash.
+    ///
+    /// Usage:
+    ///
+    /// ```swift
+    /// @Test(.enabledIfTrashDirectoryIsAccessible)
+    /// func mytest() { /* ... */ }
+    /// ```
+    static var enabledIfTrashDirectoryIsAccessible: ConditionTrait {
+        .enabled(if: isTrashDirectoryAccessible())
+    }
+}
+
+#endif
