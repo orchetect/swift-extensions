@@ -223,7 +223,7 @@ jobs:
 
   visionOS:
     name: visionOS
-    runs-on: macos-latest
+    runs-on: macos-26-arm64 # visionOS Simulator requires Apple Silicon
     timeout-minutes: 20
     steps:
     - uses: actions/checkout@main
