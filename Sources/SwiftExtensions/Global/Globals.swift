@@ -66,6 +66,7 @@ extension Globals {
         @available(iOS, unavailable)
         @available(tvOS, unavailable)
         @available(watchOS, unavailable)
+        @available(visionOS, unavailable)
         public static var userName: String {
             #if os(macOS)
             return ProcessInfo.processInfo.fullUserName
@@ -80,8 +81,9 @@ extension Globals {
         @available(iOS, unavailable)
         @available(tvOS, unavailable)
         @available(watchOS, unavailable)
+        @available(visionOS, unavailable)
         public static var fullUserName: String {
-            #if os(macOS)
+            #if os(macOS) || os(visionOS)
             return ProcessInfo.processInfo.userName
             #else
             fatalError("Not implemented on this platform yet.")
