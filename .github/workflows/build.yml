@@ -104,12 +104,16 @@ jobs:
         scheme: ${{ env.SCHEME }}
         target: iOS
     - name: Build
-      run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=iOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-    - name: Unit Tests
-      if: steps.prep-sim.outcome != 'failure'
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=iOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+      run: xcodebuild build -skipMacroValidation -workspace "$WORKSPACEPATH" -scheme "$SCHEME" -destination "generic/platform=$PLATFORMSHORT" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
       env:
-        DESTID: ${{ steps.prep-sim.outputs.id }}
+        PLATFORMSHORT: ${{ steps.prep-sim.outputs.platform-short }}
+        WORKSPACEPATH: ${{ steps.prep-sim.outputs.workspace-path }}
+    - name: Unit Tests
+      run: xcodebuild test -skipMacroValidation -workspace "$WORKSPACEPATH" -scheme "$SCHEME" -destination "platform=$PLATFORM,id=$ID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+      env:
+        ID: ${{ steps.prep-sim.outputs.id }}
+        PLATFORM: ${{ steps.prep-sim.outputs.platform }}
+        WORKSPACEPATH: ${{ steps.prep-sim.outputs.workspace-path }}
         
   # tvOS:
   #   name: tvOS
