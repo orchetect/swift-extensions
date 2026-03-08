@@ -7,7 +7,7 @@ let package = Package(
     platforms: [
         // The minimum platform versions here set the baseline requirements for the library, however
         // individual features of the library may be marked as `@available` only on newer versions.
-        .macOS(.v10_15), .iOS(.v13), .tvOS(.v13), .watchOS(.v6)
+        .macOS(.v10_15), .iOS(.v13), .tvOS(.v13), .watchOS(.v6), .visionOS(.v1)
     ],
     products: [
         .library(
