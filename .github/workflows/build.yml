@@ -86,9 +86,13 @@ jobs:
   #   - name: Unit Tests
   #     run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=macOS,variant=Mac Catalyst" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
 
-  iOS:
-    name: iOS
+  build-and-test:
+    name: Build and Test
     runs-on: macos-latest
+    strategy:
+      matrix:
+        target: [iOS, tvOS, watchOS, visionOS]
+    continue-on-error: true
     timeout-minutes: 20
     steps:
     - uses: actions/checkout@main
@@ -100,10 +104,9 @@ jobs:
       uses: orchetect/xcode-simulator@main
       with:
         refresh: true
-        download: false
+        download: true
         scheme: ${{ env.SCHEME }}
-        target: ipad
-        os-version: 26.1
+        target: ${{ matrix.target }}
     - name: Build
       run: xcodebuild build -skipMacroValidation -workspace "$WORKSPACEPATH" -scheme "$SCHEME" -destination "generic/platform=$PLATFORMSHORT" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
       env:
