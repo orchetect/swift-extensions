@@ -88,7 +88,6 @@ jobs:
       run: xcodebuild test -skipMacroValidation -workspace "$WORKSPACEPATH" -scheme "$SCHEME" -destination "platform=macOS,variant=Mac Catalyst" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
   
   device-simulators:
-    name: Build and Test
     runs-on: macos-latest
     strategy:
       matrix:
