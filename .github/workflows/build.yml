@@ -95,29 +95,21 @@ jobs:
     - uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: latest-stable
-    - name: Bootstrap Platforms
-      # Workaround for Xcode/GitHub runner issues finding simulators.
-      # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
-      run: xcrun simctl list
-    - name: Download Platform
-      # Workaround for Xcode/GitHub runner issues finding simulators.
-      # see https://github.com/actions/runner-images/issues/12758#issuecomment-3206748945
-      run: xcodebuild -downloadPlatform iOS
-    - name: Build
-      run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=iOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
-    - name: Prepare Destination Device Name
+    - name: Prepare Device Simulator
+      id: prep-sim
       uses: orchetect/xcode-simulator@main
       with:
         refresh: true
         download: true
         scheme: ${{ env.SCHEME }}
         target: iOS
-      id: destnameprep
+    - name: Build
+      run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=iOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     - name: Unit Tests
-      if: steps.destnameprep.outcome != 'failure'
+      if: steps.prep-sim.outcome != 'failure'
       run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=iOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
       env:
-        DESTID: ${{ steps.destnameprep.outputs.id }}
+        DESTID: ${{ steps.prep-sim.outputs.id }}
         
   # tvOS:
   #   name: tvOS
