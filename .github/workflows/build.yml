@@ -106,7 +106,7 @@ jobs:
     - name: Build
       run: xcodebuild build -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "generic/platform=iOS" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
     - name: Prepare Destination Device Name
-      uses: orchetect/xcode-simulator@a1661166ce23332c12211cdf1891a7c7501a9dec
+      uses: orchetect/xcode-simulator@main
       with:
         refresh: true
         download: true
