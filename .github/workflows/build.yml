@@ -223,7 +223,9 @@ jobs:
 
   visionOS:
     name: visionOS
-    runs-on: macos-15-arm64 # visionOS Simulator requires Apple Silicon
+    # visionOS Simulator requires Apple Silicon, but GitHub no longer allows specifying arm64.
+    # Instead, its base runners default to arm64 (but it's not clear if that's always the case, as sometimes Intel runners pick up jobs?)
+    runs-on: macos-latest
     timeout-minutes: 20
     steps:
     - uses: actions/checkout@main
