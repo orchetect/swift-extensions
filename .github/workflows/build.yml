@@ -100,7 +100,7 @@ jobs:
       uses: orchetect/xcode-simulator@main
       with:
         refresh: true
-        download: true
+        download: false
         scheme: ${{ env.SCHEME }}
         target: iOS
     - name: Build
