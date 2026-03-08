@@ -102,7 +102,8 @@ jobs:
         refresh: true
         download: false
         scheme: ${{ env.SCHEME }}
-        target: iOS
+        target: ipad
+        os-version: 26.1
     - name: Build
       run: xcodebuild build -skipMacroValidation -workspace "$WORKSPACEPATH" -scheme "$SCHEME" -destination "generic/platform=$PLATFORMSHORT" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
       env:
