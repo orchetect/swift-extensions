@@ -101,8 +101,8 @@ jobs:
       with:
         xcode-version: latest-stable
     - name: Prepare Device Simulator
-      id: prep-sim
-      uses: orchetect/xcode-simulator@main
+      id: sim-setup
+      uses: orchetect/setup-xcode-simulator@v1
       with:
         refresh: true
         download: true
@@ -111,11 +111,11 @@ jobs:
     - name: Build
       run: xcodebuild build -skipMacroValidation -workspace "$WORKSPACEPATH" -scheme "$SCHEME" -destination "generic/platform=$PLATFORMSHORT" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
       env:
-        PLATFORMSHORT: ${{ steps.prep-sim.outputs.platform-short }}
-        WORKSPACEPATH: ${{ steps.prep-sim.outputs.workspace-path }}
+        PLATFORMSHORT: ${{ steps.sim-setup.outputs.platform-short }}
+        WORKSPACEPATH: ${{ steps.sim-setup.outputs.workspace-path }}
     - name: Unit Tests
       run: xcodebuild test -skipMacroValidation -workspace "$WORKSPACEPATH" -scheme "$SCHEME" -destination "platform=$PLATFORM,id=$ID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
       env:
-        ID: ${{ steps.prep-sim.outputs.id }}
-        PLATFORM: ${{ steps.prep-sim.outputs.platform }}
-        WORKSPACEPATH: ${{ steps.prep-sim.outputs.workspace-path }}
+        ID: ${{ steps.sim-setup.outputs.id }}
+        PLATFORM: ${{ steps.sim-setup.outputs.platform }}
+        WORKSPACEPATH: ${{ steps.sim-setup.outputs.workspace-path }}
