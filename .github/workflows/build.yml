@@ -115,21 +115,36 @@ jobs:
       continue-on-error: true
       shell: bash
       run: |
-        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
+        # Edit these variables on a per-platform basis
         SIMPLATFORM="iOS"
         SIMDEVICE="iPhone\s\d{2}\s"
-        REGEX="m/\{\splatform:(.*\sSimulator),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
-        SIMPATFORMLIST=$(cat destinations.txt | perl -nle 'if ('$REGEX') { ($plat, $os, $name) = ($1, $2, $3); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat}) (${os})"; } }')
-        if [[ -z $SIMPATFORMLIST ]]; then echo "Error: no matching simulators available."; exit 1; fi
+        SIMOS="" # Leave Empty to use latest OS version, or enter an OS version
+        # ---- Do not edit script below this point (Generalized for all platforms) ----
+        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
+        XCODE_OUTPUT_REGEX="m/\{\splatform:(.*\sSimulator),.*id:([A-F0-9\-]{36}),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
+        SIMPATFORM_LIST_PREVIEW=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat} - ${os}) - ${id}"; } }')
+        if [[ -z $SIMPATFORM_LIST_PREVIEW ]]; then echo "Error: no matching simulators available."; exit 1; fi
         echo "Available $SIMPLATFORM simulators:"
-        echo "$SIMPATFORMLIST"
-        DESTNAME=$(cat destinations.txt | perl -nle 'if ('$REGEX') { ($plat, $os, $name) = ($1, $2, $3); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print $name; } }' | sort -rV | head -n 1)
-        if [[ -z $DESTNAME ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Using device name \"$DESTNAME\""
-        echo "DESTNAME=$DESTNAME" >> "$GITHUB_ENV"
+        echo "$SIMPATFORM_LIST_PREVIEW"
+        SIMPLATFORMS=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "${name}\t${plat}\t${os}\t${id}"; } }' | sort -rV)
+        SIMPLATFORMS_REGEX="m/(.*)\t(.*)\t(.*)\t(.*)/g"
+        rm destinations.txt
+        if [[ -z $SIMOS ]]; then
+          echo "Finding latest OS version for platform."
+          LINE=$(echo "${SIMPLATFORMS}" | head -1)
+          DESTID=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print $id; }')
+          DESTDESC=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print "${name} (${plat} - ${os}) - ${id}"; }')
+        else
+          echo "Finding OS version ${SIMOS}."
+          DESTID=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${id}"; } }' | head -n 1)
+          DESTDESC=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${name} (${plat} - ${os}) - ${id}"; } }' | head -n 1)
+        fi
+        if [[ -z $DESTID ]]; then echo "Error: no matching simulators available."; exit 1; fi
+        echo "Using device: $DESTDESC"
+        echo "DESTID=$DESTID" >> "$GITHUB_ENV"
     - name: Unit Tests
       if: steps.destnameprep.outcome != 'failure'
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=iOS Simulator,name=$DESTNAME" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=iOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
 
   tvOS:
     name: tvOS
@@ -160,21 +175,36 @@ jobs:
       continue-on-error: true
       shell: bash
       run: |
-        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
+        # Edit these variables on a per-platform basis
         SIMPLATFORM="tvOS"
         SIMDEVICE="Apple\sTV"
-        REGEX="m/\{\splatform:(.*\sSimulator),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
-        SIMPATFORMLIST=$(cat destinations.txt | perl -nle 'if ('$REGEX') { ($plat, $os, $name) = ($1, $2, $3); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat}) (${os})"; } }')
-        if [[ -z $SIMPATFORMLIST ]]; then echo "Error: no matching simulators available."; exit 1; fi
+        SIMOS="" # Leave Empty to use latest OS version, or enter an OS version
+        # ---- Do not edit script below this point (Generalized for all platforms) ----
+        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
+        XCODE_OUTPUT_REGEX="m/\{\splatform:(.*\sSimulator),.*id:([A-F0-9\-]{36}),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
+        SIMPATFORM_LIST_PREVIEW=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat} - ${os}) - ${id}"; } }')
+        if [[ -z $SIMPATFORM_LIST_PREVIEW ]]; then echo "Error: no matching simulators available."; exit 1; fi
         echo "Available $SIMPLATFORM simulators:"
-        echo "$SIMPATFORMLIST"
-        DESTNAME=$(cat destinations.txt | perl -nle 'if ('$REGEX') { ($plat, $os, $name) = ($1, $2, $3); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print $name; } }' | sort -rV | head -n 1)
-        if [[ -z $DESTNAME ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Using device name \"$DESTNAME\""
-        echo "DESTNAME=$DESTNAME" >> "$GITHUB_ENV"
+        echo "$SIMPATFORM_LIST_PREVIEW"
+        SIMPLATFORMS=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "${name}\t${plat}\t${os}\t${id}"; } }' | sort -rV)
+        SIMPLATFORMS_REGEX="m/(.*)\t(.*)\t(.*)\t(.*)/g"
+        rm destinations.txt
+        if [[ -z $SIMOS ]]; then
+          echo "Finding latest OS version for platform."
+          LINE=$(echo "${SIMPLATFORMS}" | head -1)
+          DESTID=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print $id; }')
+          DESTDESC=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print "${name} (${plat} - ${os}) - ${id}"; }')
+        else
+          echo "Finding OS version ${SIMOS}."
+          DESTID=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${id}"; } }' | head -n 1)
+          DESTDESC=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${name} (${plat} - ${os}) - ${id}"; } }' | head -n 1)
+        fi
+        if [[ -z $DESTID ]]; then echo "Error: no matching simulators available."; exit 1; fi
+        echo "Using device: $DESTDESC"
+        echo "DESTID=$DESTID" >> "$GITHUB_ENV"
     - name: Unit Tests
       if: steps.destnameprep.outcome != 'failure'
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=tvOS Simulator,name=$DESTNAME" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=tvOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
       
   watchOS:
     name: watchOS
@@ -205,21 +235,36 @@ jobs:
       continue-on-error: true
       shell: bash
       run: |
-        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
+        # Edit these variables on a per-platform basis
         SIMPLATFORM="watchOS"
         SIMDEVICE="Apple\sWatch\sSeries"
-        REGEX="m/\{\splatform:(.*\sSimulator),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
-        SIMPATFORMLIST=$(cat destinations.txt | perl -nle 'if ('$REGEX') { ($plat, $os, $name) = ($1, $2, $3); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat}) (${os})"; } }')
-        if [[ -z $SIMPATFORMLIST ]]; then echo "Error: no matching simulators available."; exit 1; fi
+        SIMOS="" # Leave Empty to use latest OS version, or enter an OS version
+        # ---- Do not edit script below this point (Generalized for all platforms) ----
+        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
+        XCODE_OUTPUT_REGEX="m/\{\splatform:(.*\sSimulator),.*id:([A-F0-9\-]{36}),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
+        SIMPATFORM_LIST_PREVIEW=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat} - ${os}) - ${id}"; } }')
+        if [[ -z $SIMPATFORM_LIST_PREVIEW ]]; then echo "Error: no matching simulators available."; exit 1; fi
         echo "Available $SIMPLATFORM simulators:"
-        echo "$SIMPATFORMLIST"
-        DESTNAME=$(cat destinations.txt | perl -nle 'if ('$REGEX') { ($plat, $os, $name) = ($1, $2, $3); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print $name; } }' | sort -rV | head -n 1)
-        if [[ -z $DESTNAME ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Using device name \"$DESTNAME\""
-        echo "DESTNAME=$DESTNAME" >> "$GITHUB_ENV"
+        echo "$SIMPATFORM_LIST_PREVIEW"
+        SIMPLATFORMS=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "${name}\t${plat}\t${os}\t${id}"; } }' | sort -rV)
+        SIMPLATFORMS_REGEX="m/(.*)\t(.*)\t(.*)\t(.*)/g"
+        rm destinations.txt
+        if [[ -z $SIMOS ]]; then
+          echo "Finding latest OS version for platform."
+          LINE=$(echo "${SIMPLATFORMS}" | head -1)
+          DESTID=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print $id; }')
+          DESTDESC=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print "${name} (${plat} - ${os}) - ${id}"; }')
+        else
+          echo "Finding OS version ${SIMOS}."
+          DESTID=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${id}"; } }' | head -n 1)
+          DESTDESC=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${name} (${plat} - ${os}) - ${id}"; } }' | head -n 1)
+        fi
+        if [[ -z $DESTID ]]; then echo "Error: no matching simulators available."; exit 1; fi
+        echo "Using device: $DESTDESC"
+        echo "DESTID=$DESTID" >> "$GITHUB_ENV"
     - name: Unit Tests
       if: steps.destnameprep.outcome != 'failure'
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=watchOS Simulator,name=$DESTNAME" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=watchOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
 
   visionOS:
     name: visionOS
@@ -252,18 +297,33 @@ jobs:
       continue-on-error: true
       shell: bash
       run: |
-        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
+        # Edit these variables on a per-platform basis
         SIMPLATFORM="visionOS"
         SIMDEVICE="Apple\sVision\sPro"
-        REGEX="m/\{\splatform:(.*\sSimulator),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
-        SIMPATFORMLIST=$(cat destinations.txt | perl -nle 'if ('$REGEX') { ($plat, $os, $name) = ($1, $2, $3); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat}) (${os})"; } }')
-        if [[ -z $SIMPATFORMLIST ]]; then echo "Error: no matching simulators available."; exit 1; fi
+        SIMOS="" # Leave Empty to use latest OS version, or enter an OS version
+        # ---- Do not edit script below this point (Generalized for all platforms) ----
+        xcodebuild -showdestinations -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" > destinations.txt
+        XCODE_OUTPUT_REGEX="m/\{\splatform:(.*\sSimulator),.*id:([A-F0-9\-]{36}),.*OS:(\d{1,2}\.\d),.*name:([a-zA-Z0-9\(\)\s]*)\s\}/g"
+        SIMPATFORM_LIST_PREVIEW=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "- ${name} (${plat} - ${os}) - ${id}"; } }')
+        if [[ -z $SIMPATFORM_LIST_PREVIEW ]]; then echo "Error: no matching simulators available."; exit 1; fi
         echo "Available $SIMPLATFORM simulators:"
-        echo "$SIMPATFORMLIST"
-        DESTNAME=$(cat destinations.txt | perl -nle 'if ('$REGEX') { ($plat, $os, $name) = ($1, $2, $3); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print $name; } }' | sort -rV | head -n 1)
-        if [[ -z $DESTNAME ]]; then echo "Error: no matching simulators available."; exit 1; fi
-        echo "Using device name \"$DESTNAME\""
-        echo "DESTNAME=$DESTNAME" >> "$GITHUB_ENV"
+        echo "$SIMPATFORM_LIST_PREVIEW"
+        SIMPLATFORMS=$(cat destinations.txt | perl -nle 'if ('$XCODE_OUTPUT_REGEX') { ($plat, $id, $os, $name) = ($1, $2, $3, $4); if ($plat =~ /'$SIMPLATFORM'/ and $name =~ /'$SIMDEVICE'/) { print "${name}\t${plat}\t${os}\t${id}"; } }' | sort -rV)
+        SIMPLATFORMS_REGEX="m/(.*)\t(.*)\t(.*)\t(.*)/g"
+        rm destinations.txt
+        if [[ -z $SIMOS ]]; then
+          echo "Finding latest OS version for platform."
+          LINE=$(echo "${SIMPLATFORMS}" | head -1)
+          DESTID=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print $id; }')
+          DESTDESC=$(echo "${LINE}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); print "${name} (${plat} - ${os}) - ${id}"; }')
+        else
+          echo "Finding OS version ${SIMOS}."
+          DESTID=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${id}"; } }' | head -n 1)
+          DESTDESC=$(echo "${SIMPLATFORMS}" | perl -nle 'if ('$SIMPLATFORMS_REGEX') { ($name, $plat, $os, $id) = ($1, $2, $3, $4); if ($os =~ /'$SIMOS'/) { print "${name} (${plat} - ${os}) - ${id}"; } }' | head -n 1)
+        fi
+        if [[ -z $DESTID ]]; then echo "Error: no matching simulators available."; exit 1; fi
+        echo "Using device: $DESTDESC"
+        echo "DESTID=$DESTID" >> "$GITHUB_ENV"
     - name: Unit Tests
       if: steps.destnameprep.outcome != 'failure'
-      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=visionOS Simulator,name=$DESTNAME" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
+      run: xcodebuild test -skipMacroValidation -workspace ".swiftpm/xcode/package.xcworkspace" -scheme "$SCHEME" -destination "platform=visionOS Simulator,id=$DESTID" | xcbeautify --renderer github-actions && exit ${PIPESTATUS[0]}
