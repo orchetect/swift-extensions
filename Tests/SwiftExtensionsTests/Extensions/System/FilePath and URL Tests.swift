@@ -530,6 +530,7 @@ import System
     @available(iOS, unavailable) // username lookup not available
     @available(tvOS, unavailable) // username lookup not available
     @available(watchOS, unavailable) // username lookup not available
+    @available(visionOS, unavailable) // username lookup not available
     @Test
     func homeDirectory_forUser() async throws {
         let username = Globals.System.userName

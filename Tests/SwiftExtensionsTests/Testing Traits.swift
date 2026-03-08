@@ -22,7 +22,12 @@ import Foundation
 
 /// Returns `true` if the system Trash directory is accessible.
 func isTrashDirectoryAccessible() -> Bool {
+    #if os(macOS) || os(iOS) || os(visionOS)
     (try? FileManager.default.url(for: .trashDirectory, in: .userDomainMask, appropriateFor: nil, create: false)) != nil
+    #else
+    // unavailable on tvOS and watchOS
+    false
+    #endif
 }
 
 extension Trait where Self == ConditionTrait {
