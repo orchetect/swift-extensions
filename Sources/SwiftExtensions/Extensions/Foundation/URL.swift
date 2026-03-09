@@ -354,7 +354,7 @@ extension URL {
         
         // platform-specific logic
         
-        #if os(macOS) || targetEnvironment(macCatalyst) || os(iOS) || os(visionOS)
+        #if os(macOS) || targetEnvironment(macCatalyst) || os(iOS)
         
         if #available(macOS 10.8, iOS 11.0, *) {
             // move file to trash
@@ -391,6 +391,13 @@ extension URL {
         #elseif os(watchOS)
             
         // watchOS has no Trash - just delete the file
+        
+        try __delFile(url: self)
+        return nil
+        
+        #elseif os(visionOS)
+        
+        // visionOS has no Trash - just delete the file
         
         try __delFile(url: self)
         return nil
