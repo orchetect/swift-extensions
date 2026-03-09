@@ -16,9 +16,25 @@ import Testing
         // this test could break in future versions of Xcode/XCTest
         // but we'll test what 'known values' we can here
         
-        #expect(Globals.MainBundle.name == "xctest")
+        withKnownIssue(
+            """
+            This will only evaluate true if tests are run from Xcode/xcodebuild test. \
+            If using swift test, this will be a different string.
+            """,
+            isIntermittent: true
+        ) {
+            #expect(Globals.MainBundle.name == "xctest")
+        }
         
-        #expect(Globals.MainBundle.bundleID == "com.apple.dt.xctest.tool")
+        withKnownIssue(
+            """
+            This will only evaluate true if tests are run from Xcode/xcodebuild test. \
+            If using swift test, this will be a different string.
+            """,
+            isIntermittent: true
+        ) {
+            #expect(Globals.MainBundle.bundleID == "com.apple.dt.xctest.tool")
+        }
         
         // XCTest in Xcode 12 and earlier doesn't return a value
         // So there isn't a meaningful way to test this
@@ -32,8 +48,16 @@ import Testing
         //   Xcode 13   == 13
         #expect(Globals.MainBundle.versionMajor > -1)
         
-        // XCTest appears to always return a non-empty value
-        #expect(Globals.MainBundle.versionBuildNumber != "")
+        withKnownIssue(
+            """
+            This will only evaluate true if tests are run from Xcode/xcodebuild test. \
+            If using swift test, this will be a different string.
+            """,
+            isIntermittent: true
+        ) {
+            // XCTest appears to always return a non-empty value
+            #expect(Globals.MainBundle.versionBuildNumber != "")
+        }
     }
     
     @Test
@@ -61,17 +85,33 @@ import Testing
     func bundle_infoDictionaryString() {
         // String key name
         
-        #expect(
-            Bundle.main.infoDictionaryString(key: kCFBundleIdentifierKey as String) ==
-                "com.apple.dt.xctest.tool"
-        )
+        withKnownIssue(
+            """
+            This will only evaluate true if tests are run from Xcode/xcodebuild test. \
+            If using swift test, this will be a different string.
+            """,
+            isIntermittent: true
+        ) {
+            #expect(
+                Bundle.main.infoDictionaryString(key: kCFBundleIdentifierKey as String) ==
+                    "com.apple.dt.xctest.tool"
+            )
+        }
         
         // CFString key name
         
-        #expect(
-            Bundle.main.infoDictionaryString(key: kCFBundleIdentifierKey) ==
-                "com.apple.dt.xctest.tool"
-        )
+        withKnownIssue(
+            """
+            This will only evaluate true if tests are run from Xcode/xcodebuild test. \
+            If using swift test, this will be a different string.
+            """,
+            isIntermittent: true
+        ) {
+            #expect(
+                Bundle.main.infoDictionaryString(key: kCFBundleIdentifierKey) ==
+                    "com.apple.dt.xctest.tool"
+            )
+        }
     }
 }
 
