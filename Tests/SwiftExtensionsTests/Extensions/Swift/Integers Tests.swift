@@ -421,11 +421,6 @@ import Testing
     }
     
     @Test
-    func int8twosComplement() {
-        #expect(Int8(-0b01000000).twosComplement == 0b11000000)
-    }
-    
-    @Test
     func collectionRandomNumbers() {
         // typical types
         

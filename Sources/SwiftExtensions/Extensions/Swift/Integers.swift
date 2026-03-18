@@ -279,14 +279,6 @@ extension UnsignedInteger {
     }
 }
 
-extension Int8 {
-    /// Returns a two's complement bit format of an `Int8` so it can be stored as a byte (`UInt8`).
-    @inlinable @_disfavoredOverload
-    public var twosComplement: UInt8 {
-        UInt8(bitPattern: self)
-    }
-}
-
 // MARK: - Random numbers
 
 extension RangeReplaceableCollection where Element: FixedWidthInteger {
