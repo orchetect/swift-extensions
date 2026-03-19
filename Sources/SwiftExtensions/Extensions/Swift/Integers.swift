@@ -269,16 +269,6 @@ extension BinaryInteger {
     }
 }
 
-// MARK: - Binary & Bitwise
-
-extension UnsignedInteger {
-    /// Access binary bits, zero-based from right-to-left.
-    @inlinable @_disfavoredOverload
-    public func bit(_ position: Int) -> Int {
-        Int((self & (0b1 << position)) >> position)
-    }
-}
-
 // MARK: - Random numbers
 
 extension RangeReplaceableCollection where Element: FixedWidthInteger {

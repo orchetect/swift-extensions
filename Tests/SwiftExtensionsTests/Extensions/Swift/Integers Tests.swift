@@ -414,13 +414,6 @@ import Testing
     }
     
     @Test
-    func uInt8_bit() {
-        #expect(0b100.uInt8.bit(0) == 0)
-        #expect(0b100.uInt8.bit(1) == 0)
-        #expect(0b100.uInt8.bit(2) == 1)
-    }
-    
-    @Test
     func collectionRandomNumbers() {
         // typical types
         
