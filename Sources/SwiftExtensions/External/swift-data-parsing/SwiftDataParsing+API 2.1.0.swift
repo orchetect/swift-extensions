@@ -89,13 +89,14 @@ extension DataParserProtocol {
 
 // MARK: DataEndianness.swift
 
+// This was renamed again in swift-dat-parsing 0.1.1 to ByteOrder. See API 2.1.1 file.
 @_documentation(visibility: internal)
 @available(*, deprecated, renamed: "DataEndianness")
 public typealias NumberEndianness = DataEndianness
 
 // MARK: DataEndianness+Static.swift
 
-extension DataEndianness {
+extension ByteOrder {
     @_documentation(visibility: internal)
     @available(*, deprecated, renamed: "platformDefault")
     @inline(__always)
