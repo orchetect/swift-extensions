@@ -157,12 +157,6 @@ extension StringProtocol {
 // MARK: - Character tests
 
 extension StringProtocol {
-    /// Returns `true` if the string is entirely comprised of ASCII characters (0-127).
-    @inlinable @_disfavoredOverload
-    public var isASCII: Bool {
-        allSatisfy(\.isASCII)
-    }
-    
     /// Returns `true` if all characters in the string are contained in the character set.
     @_disfavoredOverload
     public func isOnly(

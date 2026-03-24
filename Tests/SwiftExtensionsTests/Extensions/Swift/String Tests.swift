@@ -159,6 +159,16 @@ import Testing
     }
     
     @Test
+    func isASCII() {
+        let asciiString = (0 ... 127)
+            .map { UnicodeScalar($0)! }
+            .map { "\($0)" }
+            .joined()
+        
+        #expect(asciiString.isASCII)
+    }
+    
+    @Test
     func optionalString() {
         #expect(
             SwiftExtensions.optionalString(
