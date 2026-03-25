@@ -193,6 +193,15 @@ extension StringProtocol {
         copy.uppercaseFirstCharacter()
         return copy
     }
+    
+    /// Returns a copy of the string with the first cased character uppercased.
+    @_disfavoredOverload
+    public func uppercasingFirstCasedCharacter() -> String {
+        guard !isEmpty else { return "" }
+        var copy = String(self)
+        copy.uppercaseFirstCasedCharacter()
+        return copy
+    }
 }
 
 extension String {
