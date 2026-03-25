@@ -237,4 +237,15 @@ extension String {
         
         replaceSubrange(startIndex ... startIndex, with: uppercasedChar)
     }
+    
+    /// Uppercases the first cased character in-place.
+    @_disfavoredOverload
+    public mutating func uppercaseFirstCasedCharacter() {
+        guard !isEmpty,
+              let index = firstIndex(where: { $0.isCased })
+        else { return }
+        let uppercasedChar = String(self[index]).localizedUppercase
+        
+        replaceSubrange(index ... index, with: uppercasedChar)
+    }
 }
