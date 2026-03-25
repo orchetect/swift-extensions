@@ -107,3 +107,16 @@ extension StringProtocol {
         return words.joined(separator: " ")
     }
 }
+
+// MARK: - First Character Casing
+
+extension StringProtocol {
+    /// Returns a copy of the string with the first character lowercased.
+    @_disfavoredOverload
+    public func lowercasingFirstCharacter() -> String {
+        guard !isEmpty else { return "" }
+        var copy = String(self)
+        copy.lowercaseFirstCharacter()
+        return copy
+    }
+}
