@@ -24,26 +24,82 @@ extension StringProtocol {
     /// Example:
     ///
     /// ```swift
-    /// "what to capitalize in a title".titleCased
-    /// // "What to Capitalize in a Title"
+    /// "the astRoNaut worked At NASA".titleCased
+    /// // "The Astronaut Worked at NASA"
     /// ```
     ///
     /// (English localization only at this time.)
     @available(macOS 10.11, *)
     @_disfavoredOverload
     public var titleCased: String {
-        var words =
-            localizedCapitalized
-                .split(separator: " ")
-                .map { String($0) }
+        titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: true)
+    }
+    
+    /// Returns a representation of the string in title case capitalization style.
+    ///
+    /// Example:
+    ///
+    /// ```swift
+    /// let string = "the astRoNaut worked At NASA"
+    ///
+    /// string.titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: false)
+    /// // "The Astronaut Worked at Nasa"
+    ///
+    /// string.titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: true)
+    /// // "The Astronaut Worked at NASA"
+    ///
+    /// string.titleCased(firstCharacterOfWordsOnly: true, preserveUppercaseWords: false)
+    /// // "The AstRoNaut Worked at Nasa"
+    ///
+    /// string.titleCased(firstCharacterOfWordsOnly: true, preserveUppercaseWords: true)
+    /// // "The AstRoNaut Worked at NASA"
+    /// ```
+    ///
+    /// (English localization only at this time.)
+    ///
+    /// - Parameters:
+    ///   - firstCharacterOfWordsOnly: When `true`, only modify the case of the first character
+    ///     of each non-particle word. The existing case is preserved for all characters following
+    ///     the first character.
+    ///   - preserveUppercaseWords: When `true`, any words (including particles) that are entirely
+    ///     uppercase will be preserved as-is and not modified. This allows preserving acronyms, for example.
+    @available(macOS 10.11, *)
+    @_disfavoredOverload
+    public func titleCased(
+        firstCharacterOfWordsOnly: Bool,
+        preserveUppercaseWords: Bool
+    ) -> String {
+        var words: [String] = String(self)
+            .split(separator: " ")
+            .map(String.init)
         
-        // only process if there are more than 2 words
-        if words.count > 2 {
-            for idx in 1 ... words.count - 2 {
-                let currentWord = words[idx].localizedLowercase
+        for index in words.indices {
+            let word = words[index]
+            
+            if preserveUppercaseWords,
+               word.isUppercase(ignoreWhitespace: false, ignoreNonCased: true)
+            {
+                // leave word as-is
+            } else {
+                let lowercaseWord = word.localizedLowercase
+                let isParticle = String.titleCasedParticles.contains(lowercaseWord)
                 
-                if String.titleCasedParticles.contains(currentWord) {
-                    words[idx] = currentWord
+                if isParticle {
+                    if index == words.startIndex || index == words.indices.last { // first or last word?
+                        if firstCharacterOfWordsOnly {
+                            words[index].uppercaseFirstCharacter()
+                        } else {
+                            words[index] = words[index].localizedCapitalized
+                        }
+                    } else { // between the first word and the last word
+                        words[index] = lowercaseWord
+                    }
+                } else { // not a particle
+                    if firstCharacterOfWordsOnly {
+                        words[index].uppercaseFirstCharacter()
+                    } else {
+                        words[index] = word.localizedCapitalized
+                    }
                 }
             }
         }
