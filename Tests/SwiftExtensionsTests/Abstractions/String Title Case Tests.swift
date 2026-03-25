@@ -37,6 +37,8 @@ import Testing
         #expect(cased("B") == "B")
         #expect(cased("a b c") == "A B C")
         #expect(cased("c b a") == "C B A")
+        #expect(cased("a-b-c") == "A-B-C")
+        #expect(cased("c-b-a") == "C-B-A")
         
         #expect(cased("this") == "This")
         #expect(cased("THIs") == "This")
@@ -47,6 +49,13 @@ import Testing
         #expect(cased("THIS is A test") == "This is a Test")
         #expect(cased("THIS is B test") == "This is B Test")
         #expect(cased("this IS a TEST") == "This is a Test")
+        
+        #expect(cased("this-is-a-test") == "This-is-a-Test")
+        #expect(cased("this-is a-test") == "This-is a-Test")
+        #expect(cased("this-is-a-test") == "This-is-a-Test")
+        #expect(cased("this-iS-a-test") == "This-is-a-Test")
+        #expect(cased("THIS-is-a-BIG-test") == "This-is-a-Big-Test")
+        #expect(cased("THis-Is-a-BIG-test") == "This-is-a-Big-Test")
         
         #expect(cased(" this   is a  test  ") == "This is a Test")
         
@@ -74,6 +83,8 @@ import Testing
         #expect(cased("B") == "B")
         #expect(cased("a b c") == "A B C")
         #expect(cased("c b a") == "C B A")
+        #expect(cased("a-b-c") == "A-B-C")
+        #expect(cased("c-b-a") == "C-B-A")
         
         #expect(cased("this") == "This")
         #expect(cased("THIs") == "THIs")
@@ -84,6 +95,13 @@ import Testing
         #expect(cased("THIS is A test") == "THIS is a Test")
         #expect(cased("THIS is B test") == "THIS is B Test")
         #expect(cased("this IS a TEST") == "This is a TEST")
+        
+        #expect(cased("this-is-a-test") == "This-is-a-Test")
+        #expect(cased("this-is a-test") == "This-is a-Test")
+        #expect(cased("this-is-a-test") == "This-is-a-Test")
+        #expect(cased("this-iS-a-test") == "This-is-a-Test")
+        #expect(cased("THIS-is-a-BIG-test") == "THIS-is-a-BIG-Test")
+        #expect(cased("THis-Is-a-BIG-test") == "THis-is-a-BIG-Test")
         
         #expect(cased(" this   is a  test  ") == "This is a Test")
         
@@ -111,6 +129,8 @@ import Testing
         #expect(cased("B") == "B")
         #expect(cased("a b c") == "A B C")
         #expect(cased("c b a") == "C B A")
+        #expect(cased("a-b-c") == "A-B-C")
+        #expect(cased("c-b-a") == "C-B-A")
         
         #expect(cased("this") == "This")
         #expect(cased("THIs") == "This")
@@ -121,6 +141,13 @@ import Testing
         #expect(cased("THIS is A test") == "THIS is A Test")
         #expect(cased("THIS is B test") == "THIS is B Test")
         #expect(cased("this IS a TEST") == "This IS a TEST")
+        
+        #expect(cased("this-is-a-test") == "This-is-a-Test")
+        #expect(cased("this-is a-test") == "This-is a-Test")
+        #expect(cased("this-is-a-test") == "This-is-a-Test")
+        #expect(cased("this-iS-a-test") == "This-is-a-Test")
+        #expect(cased("THIS-is-a-BIG-test") == "THIS-is-a-BIG-Test")
+        #expect(cased("THis-Is-a-BIG-test") == "This-is-a-BIG-Test")
         
         #expect(cased(" this   is a  test  ") == "This is a Test")
         
@@ -148,6 +175,8 @@ import Testing
         #expect(cased("B") == "B")
         #expect(cased("a b c") == "A B C")
         #expect(cased("c b a") == "C B A")
+        #expect(cased("a-b-c") == "A-B-C")
+        #expect(cased("c-b-a") == "C-B-A")
         
         #expect(cased("this") == "This")
         #expect(cased("THIs") == "THIs")
@@ -158,6 +187,13 @@ import Testing
         #expect(cased("THIS is A test") == "THIS is A Test")
         #expect(cased("THIS is B test") == "THIS is B Test")
         #expect(cased("this IS a TEST") == "This IS a TEST")
+        
+        #expect(cased("this-is-a-test") == "This-is-a-Test")
+        #expect(cased("this-is a-test") == "This-is a-Test")
+        #expect(cased("this-is-a-test") == "This-is-a-Test")
+        #expect(cased("this-iS-a-test") == "This-is-a-Test")
+        #expect(cased("THIS-is-a-BIG-test") == "THIS-is-a-BIG-Test")
+        #expect(cased("THis-Is-a-BIG-test") == "THis-is-a-BIG-Test")
         
         #expect(cased(" this   is a  test  ") == "This is a Test")
         
