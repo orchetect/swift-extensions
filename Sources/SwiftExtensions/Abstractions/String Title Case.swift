@@ -120,3 +120,16 @@ extension StringProtocol {
         return copy
     }
 }
+
+extension String {
+    /// Lowercases the first character in-place.
+    @_disfavoredOverload
+    public mutating func lowercaseFirstCharacter() {
+        guard !isEmpty,
+              let firstChar = first
+        else { return }
+        let lowercasedChar = String(firstChar).localizedLowercase
+        
+        replaceSubrange(startIndex ... startIndex, with: lowercasedChar)
+    }
+}
