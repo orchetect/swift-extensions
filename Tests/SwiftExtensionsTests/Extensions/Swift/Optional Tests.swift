@@ -17,7 +17,7 @@ extension Collection where Element: SwiftExtensionsOptionalTyped, Element.Wrappe
 
 @Suite struct Extensions_Swift_Optional_Tests {
     @Test
-    func optionalType() {
+    func optionalType() async {
         // basic test
         
         let num: Int? = 1
@@ -36,7 +36,7 @@ extension Collection where Element: SwiftExtensionsOptionalTyped, Element.Wrappe
     }
     
     @Test
-    func ifNilDefault() {
+    func ifNilDefault() async {
         let val1: Int? = 1
         
         #expect(val1.ifNil(2) == 1)
@@ -47,7 +47,7 @@ extension Collection where Element: SwiftExtensionsOptionalTyped, Element.Wrappe
     }
     
     @Test
-    func optionalProperty() {
+    func optionalProperty() async {
         var val: Int? = 1
         
         #expect(val.optional == 1)

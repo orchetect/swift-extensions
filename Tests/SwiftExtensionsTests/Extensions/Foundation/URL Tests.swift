@@ -15,7 +15,7 @@ import TestingExtensions
     // MARK: - URL Manipulation
     
     @Test
-    func hasPrefixURL() {
+    func hasPrefixURL() async {
         #expect(
             URL(fileURLWithPath: "/temp1/temp2/file.txt")
                 .hasPrefix(url: URL(fileURLWithPath: "/"))
@@ -67,7 +67,7 @@ import TestingExtensions
     }
     
     @Test
-    func hasPathComponentsPrefix() {
+    func hasPathComponentsPrefix() async {
         #expect(
             URL(fileURLWithPath: "/temp1/temp2/file.txt")
                 .hasPathComponents(prefix: URL(fileURLWithPath: "/").pathComponents)
@@ -153,7 +153,7 @@ import TestingExtensions
     }
     
     @Test
-    func pathComponentsRemovingBase() {
+    func pathComponentsRemovingBase() async {
         #expect(
             URL(string: "file:///temp1/temp2/file.txt")!
                 .pathComponents(removingBase: URL(string: "file:///temp1/temp2/file.txt")!)
@@ -201,7 +201,7 @@ import TestingExtensions
     }
     
     @Test
-    func pathComponentsRemovingPrefix() {
+    func pathComponentsRemovingPrefix() async {
         #expect(
             URL(string: "file:///temp1/temp2/file.txt")!
                 .pathComponents(removingPrefix: URL(string: "file:///temp1/temp2/file.txt")!.pathComponents)
@@ -263,7 +263,7 @@ import TestingExtensions
     }
     
     @Test
-    func relativeToBaseURL() {
+    func relativeToBaseURL() async {
         // ensure absolute URL remains unchanged
         #expect(
             URL(string: "file:///temp1/temp2/some%20file.txt")!
@@ -290,7 +290,7 @@ import TestingExtensions
     }
     
     @Test
-    func mutatingLastPathComponent() {
+    func mutatingLastPathComponent() async {
         #expect(
             URL(string: "file:///temp1/temp2/some%20file.txt")!
                 .mutatingLastPathComponent { "a" + $0 + ".pdf" }
@@ -307,7 +307,7 @@ import TestingExtensions
     }
     
     @Test
-    func mutatingLastPathComponentExcludingExtension() {
+    func mutatingLastPathComponentExcludingExtension() async {
         #expect(
             URL(string: "file:///temp1/temp2/some%20file.txt")!
                 .mutatingLastPathComponentExcludingExtension { "a" + $0 + "b" }
@@ -324,7 +324,7 @@ import TestingExtensions
     }
     
     @Test
-    func appendingToLastPathComponentBeforeExtension() {
+    func appendingToLastPathComponentBeforeExtension() async {
         #expect(
             URL(string: "file:///temp1/temp2/some%20file.txt")!
                 .appendingToLastPathComponentBeforeExtension("-2")
@@ -336,7 +336,7 @@ import TestingExtensions
     // MARK: - File / Folder Metadata
     
     @Test
-    func fileExists() {
+    func fileExists() async {
         // guaranteed to exist
         let folder = URL(fileURLWithPath: NSHomeDirectory())
         
@@ -344,7 +344,7 @@ import TestingExtensions
     }
     
     @Test
-    func isDirectory() {
+    func isDirectory() async {
         // guaranteed to exist
         let folder = URL(fileURLWithPath: NSHomeDirectory())
         
@@ -353,7 +353,7 @@ import TestingExtensions
     
     #if os(macOS)
     @Test
-    func canonicalizeFileURL_notPartial() throws {
+    func canonicalizeFileURL_notPartial() async throws {
         // write temp file including a mix of uppercase and lowercase letters
         let file = FileManager.default.temporaryDirectory
             .appendingPathComponent("\(UUID().uuidString)-TeSt123AbC.txt")
@@ -387,7 +387,7 @@ import TestingExtensions
     
     #if os(macOS)
     @Test
-    func canonicalizeFileURL_partial() throws {
+    func canonicalizeFileURL_partial() async throws {
         let uniqueName = "\(UUID().uuidString)"
         
         // `/Users` exists on disk, but the child path component does not.
@@ -404,7 +404,7 @@ import TestingExtensions
     
     #if os(macOS)
     @Test
-    func canonicalizeFileURLIfPossible_partial() throws {
+    func canonicalizeFileURLIfPossible_partial() async throws {
         let uniqueName = "\(UUID().uuidString)"
         
         // `/Users` exists on disk, but the child path component does not.
@@ -422,7 +422,7 @@ import TestingExtensions
     
     #if os(macOS)
     @Test
-    func canonicalizingFileURL_notPartial() throws {
+    func canonicalizingFileURL_notPartial() async throws {
         // write temp file including a mix of uppercase and lowercase letters
         let file = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent("\(UUID().uuidString)-TeSt123AbC.txt")
@@ -455,7 +455,7 @@ import TestingExtensions
     
     #if os(macOS)
     @Test
-    func canonicalizingFileURL_partial() throws {
+    func canonicalizingFileURL_partial() async throws {
         let uniqueName = "\(UUID().uuidString)"
         
         // `/Users` exists on disk, but the child path component does not.
@@ -471,7 +471,7 @@ import TestingExtensions
     
     #if os(macOS)
     @Test
-    func canonicalizingFileURLIfPossible_partial() throws {
+    func canonicalizingFileURLIfPossible_partial() async throws {
         let uniqueName = "\(UUID().uuidString)"
         
         // `/Users` exists on disk, but the child path component does not.
@@ -485,7 +485,7 @@ import TestingExtensions
     
     #if os(macOS)
     @Test
-    func isEqualFileNode() throws {
+    func isEqualFileNode() async throws {
         // write temp file including a mix of uppercase and lowercase letters
         let file = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent("\(UUID().uuidString)-TeSt123AbC.txt")
@@ -505,7 +505,7 @@ import TestingExtensions
     // MARK: - File Operations
     
     @Test
-    func trashOrDelete() throws {
+    func trashOrDelete() async throws {
         // boilerplate
         
         let temporaryDirectoryURL = FileManager.default.temporaryDirectoryCompat
@@ -557,7 +557,7 @@ import TestingExtensions
     }
     
     @Test
-    func uniquedFileURL() throws {
+    func uniquedFileURL() async throws {
         // boilerplate
         
         let temporaryDirectoryURL = FileManager.default.temporaryDirectoryCompat
@@ -605,7 +605,7 @@ import TestingExtensions
     // MARK: - Finder Aliases
     
     @Test
-    func isFinderAlias() throws {
+    func isFinderAlias() async throws {
         // boilerplate
         
         let temporaryDirectoryURL = FileManager.default.temporaryDirectoryCompat
@@ -670,7 +670,7 @@ import TestingExtensions
     // MARK: - SymLinks
     
     @Test
-    func symlink() throws {
+    func symlink() async throws {
         // boilerplate
         
         let temporaryDirectoryURL = FileManager.default.temporaryDirectoryCompat
@@ -735,7 +735,7 @@ import TestingExtensions
     // MARK: - Folders
     
     @Test
-    func folders() {
+    func folders() async {
         #if os(macOS)
         
         // FileManager

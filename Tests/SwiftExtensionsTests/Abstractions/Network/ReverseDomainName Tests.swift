@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct ReverseDomainNameTests {
     @Test
-    func initString_OneTLDComponent_NoPrefix() throws {
+    func initString_OneTLDComponent_NoPrefix() async throws {
         #expect(ReverseDomainName("com.apple").components == ["com", "apple"])
         #expect(ReverseDomainName("com.apple").string == "com.apple")
         
@@ -26,7 +26,7 @@ import Testing
     }
     
     @Test
-    func initString_OneTLDComponent_OnePrefix() throws {
+    func initString_OneTLDComponent_OnePrefix() async throws {
         #expect(ReverseDomainName("com.apple.www").components == ["com", "apple", "www"])
         #expect(ReverseDomainName("com.apple.www").string == "com.apple.www")
         
@@ -43,7 +43,7 @@ import Testing
     }
     
     @Test
-    func initString_OneTLDComponent_TwoPrefixes() throws {
+    func initString_OneTLDComponent_TwoPrefixes() async throws {
         #expect(ReverseDomainName("com.apple.www.zzz").components == ["com", "apple", "www", "zzz"])
         #expect(ReverseDomainName("com.apple.www.zzz").string == "com.apple.www.zzz")
         
@@ -62,7 +62,7 @@ import Testing
     }
     
     @Test
-    func initString_TwoTLDComponents_NoPrefix() throws {
+    func initString_TwoTLDComponents_NoPrefix() async throws {
         #expect(ReverseDomainName("uk.co.apple").components == ["uk", "co", "apple"])
         #expect(ReverseDomainName("uk.co.apple").string == "uk.co.apple")
         
@@ -81,7 +81,7 @@ import Testing
     }
     
     @Test
-    func initString_TwoTLDComponents_OnePrefix() throws {
+    func initString_TwoTLDComponents_OnePrefix() async throws {
         #expect(ReverseDomainName("uk.co.apple.www").components == ["uk", "co", "apple", "www"])
         #expect(ReverseDomainName("uk.co.apple.www").string == "uk.co.apple.www")
         
@@ -100,7 +100,7 @@ import Testing
     }
     
     @Test
-    func initString_TwoTLDComponents_TwoPrefixes() throws {
+    func initString_TwoTLDComponents_TwoPrefixes() async throws {
         #expect(ReverseDomainName("uk.co.apple.www.zzz")
             .components == ["uk", "co", "apple", "www", "zzz"]
         )
@@ -123,7 +123,7 @@ import Testing
     // TODO: In future, a validation mechanism or property could determine if a domain name is formatted correctly or not.
     /// Just verify edge case behavior.
     @Test
-    func initString_EdgeCases() throws {
+    func initString_EdgeCases() async throws {
         #expect(ReverseDomainName("").components == [])
         #expect(ReverseDomainName(" ").components == [" "])
         #expect(ReverseDomainName(".").components == [])

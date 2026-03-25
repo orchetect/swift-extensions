@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct Extensions_Swift_String_Tests {
     @Test
-    func stringConstants() {
+    func stringConstants() async {
         _ = String.quote
         _ = String.tab
         _ = String.space
@@ -18,7 +18,7 @@ import Testing
     }
     
     @Test
-    func characterConstants() {
+    func characterConstants() async {
         _ = Character.quote
         _ = Character.tab
         _ = Character.space
@@ -27,7 +27,7 @@ import Testing
     }
     
     @Test
-    func stringFunctionalAppendConstants() {
+    func stringFunctionalAppendConstants() async {
         // .newLined
         
         #expect("test".newLined == "test\n")
@@ -50,7 +50,7 @@ import Testing
     }
     
     @Test
-    func repeating() {
+    func repeating() async {
         // String
         
         #expect("AB".repeating(0) == "")
@@ -72,7 +72,7 @@ import Testing
     }
     
     @Test
-    func trim() {
+    func trim() async {
         // .trim()
         
         var str = "    string    "
@@ -82,7 +82,7 @@ import Testing
     }
     
     @Test
-    func removingPrefix() {
+    func removingPrefix() async {
         // .removingPrefix
         
         let str = "///Users/user"
@@ -104,7 +104,7 @@ import Testing
     }
     
     @Test
-    func removePrefix() {
+    func removePrefix() async {
         // .removePrefix
         
         var str = "///Users/user"
@@ -129,7 +129,7 @@ import Testing
     }
     
     @Test
-    func removeSuffix() {
+    func removeSuffix() async {
         var str = "file:///Users/user///"
         
         // .removingSuffix
@@ -159,7 +159,7 @@ import Testing
     }
     
     @Test
-    func isASCII() {
+    func isASCII() async {
         let asciiString = (0 ... 127)
             .map { UnicodeScalar($0)! }
             .map { "\($0)" }
@@ -175,7 +175,7 @@ import Testing
     }
     
     @Test
-    func isLowercase() {
+    func isLowercase() async {
         // ignoreWhitespace == false, ignoreNonCased == false
         #expect("".isLowercase(ignoreWhitespace: false, ignoreNonCased: false)) // empty always == true
         #expect(!" ".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
@@ -242,7 +242,7 @@ import Testing
     }
     
     @Test
-    func isUppercase() {
+    func isUppercase() async {
         // ignoreWhitespace == false, ignoreNonCased == false
         #expect("".isUppercase(ignoreWhitespace: false, ignoreNonCased: false)) // empty always == true
         #expect(!" ".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
@@ -309,7 +309,7 @@ import Testing
     }
     
     @Test
-    func optionalString() {
+    func optionalString() async {
         #expect(
             SwiftExtensions.optionalString(
                 describing: Int(exactly: 123),
@@ -328,20 +328,20 @@ import Testing
     }
     
     @Test
-    func stringInterpolationIfNil() {
+    func stringInterpolationIfNil() async {
         #expect("\(Int(exactly: 123), ifNil: "0")" == "123")
         
         #expect("\(Int(exactly: 123.4), ifNil: "0")" == "0")
     }
     
     @Test
-    func stringInterpolationRadix() {
+    func stringInterpolationRadix() async {
         #expect("\("7F", radix: 16)" == "127")
         #expect("\("7F", radix: 2)" == "nil")
     }
     
     @Test
-    func substringToString() {
+    func substringToString() async {
         let str = "123"
         
         // form Substring
@@ -358,7 +358,7 @@ import Testing
     }
     
     @Test
-    func characterToString() {
+    func characterToString() async {
         let char = Character("1")
         
         // .string
@@ -374,7 +374,7 @@ import Testing
     // but specifically testing their implementation on String/StringProtocol here
     
     @Test
-    func startIndexOffsetBy() {
+    func startIndexOffsetBy() async {
         // .startIndex(offsetBy:)
         
         let str = "1234567890"
@@ -391,7 +391,7 @@ import Testing
     }
     
     @Test
-    func endIndexOffsetBy() {
+    func endIndexOffsetBy() async {
         // .endIndex(offsetBy:)
         
         let str = "1234567890"
@@ -408,7 +408,7 @@ import Testing
     }
     
     @Test
-    func subscriptPosition_OffsetIndex() {
+    func subscriptPosition_OffsetIndex() async {
         // String
         
         #expect("abc123"[position: 2] == "c")
@@ -420,7 +420,7 @@ import Testing
     }
     
     @Test
-    func subscriptPosition_ClosedRange() {
+    func subscriptPosition_ClosedRange() async {
         // String
         
         #expect("abc123"[position: 1 ... 3] == "bc1")
@@ -432,7 +432,7 @@ import Testing
     }
     
     @Test
-    func subscriptPosition_Range() {
+    func subscriptPosition_Range() async {
         // String
         
         #expect("abc123"[position: 1 ..< 3] == "bc")
@@ -444,7 +444,7 @@ import Testing
     }
     
     @Test
-    func subscriptPosition_PartialRangeFrom() {
+    func subscriptPosition_PartialRangeFrom() async {
         // String
         
         #expect("abc123"[position: 2...] == "c123")
@@ -456,7 +456,7 @@ import Testing
     }
     
     @Test
-    func subscriptPosition_PartialRangeThrough() {
+    func subscriptPosition_PartialRangeThrough() async {
         // String
         
         #expect("abc123"[position: ...3] == "abc1")
@@ -468,7 +468,7 @@ import Testing
     }
     
     @Test
-    func subscriptPosition_PartialRangeUpTo() {
+    func subscriptPosition_PartialRangeUpTo() async {
         // String
         
         #expect("abc123"[position: ..<3] == "abc")

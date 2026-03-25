@@ -14,7 +14,7 @@ import TestingExtensions
 // @available(macOS 10.12, iOS 10.0, watchOS 3.0, tvOS 10.0, *)
 @Suite struct Logging_Log_Tests {
     @Test
-    func loggerObjects() {
+    func loggerObjects() async {
         // this test does not assert anything, it's just to test access levels
         
         _ = [.message] as OSLogger.LogTemplate
@@ -109,7 +109,7 @@ import TestingExtensions
     }
     
     @Test
-    func logger() {
+    func logger() async {
         // this test does not assert anything, it's just for diagnostic
         
         print("---------- default config, coerceInfoAndDebugToDefault:true ----------")
@@ -154,7 +154,7 @@ import TestingExtensions
     }
     
     @Test
-    func logger_DefaultLog_NoEmojis() {
+    func logger_DefaultLog_NoEmojis() async {
         // this test does not assert anything, it's just for diagnostic
         
         print("---------- default log, no emojis ----------")
@@ -169,7 +169,7 @@ import TestingExtensions
     }
     
     @Test
-    func logger_DefaultLog_OnlyErrorEmojis() {
+    func logger_DefaultLog_OnlyErrorEmojis() async {
         // this test does not assert anything, it's just for diagnostic
         
         print("---------- default log, only error emojis ----------")
@@ -190,7 +190,7 @@ import TestingExtensions
     }
     
     @Test
-    func logger_DefaultLog_AllEmojis() {
+    func logger_DefaultLog_AllEmojis() async {
         // this test does not assert anything, it's just for diagnostic
         
         print("---------- default log, all emojis ----------")
@@ -205,7 +205,7 @@ import TestingExtensions
     }
     
     @Test
-    func logger_CustomLog_AllEmojis() {
+    func logger_CustomLog_AllEmojis() async {
         // this test does not assert anything, it's just for diagnostic
         
         print("---------- custom log, all emojis ----------")
@@ -223,7 +223,7 @@ import TestingExtensions
     }
     
     @Test
-    func logger_LogMethod() {
+    func logger_LogMethod() async {
         // this test does not assert anything, it's just for diagnostic
         
         // default log

@@ -12,7 +12,7 @@ import TestingExtensions
 
 @Suite struct Abstractions_Time_Tests {
     @Test
-    func time() {
+    func time() async {
         // current system time
         //
         // milliseconds will never match exactly because the time is being captured twice,
@@ -40,7 +40,7 @@ import TestingExtensions
     }
     
     @Test
-    func timeHMS() {
+    func timeHMS() async {
         // basic
         
         let t = Time(hours: 15, minutes: 46, seconds: 20)
@@ -53,7 +53,7 @@ import TestingExtensions
     }
     
     @Test
-    func timeHMS_Negative() {
+    func timeHMS_Negative() async {
         // basic
         
         let t = Time(hours: 15, minutes: 46, seconds: 20, sign: .minus)
@@ -66,7 +66,7 @@ import TestingExtensions
     }
     
     @Test
-    func timeHMS_Overflow() {
+    func timeHMS_Overflow() async {
         // no overflow by default; this could be modified in future to either truncate or roll up
         // values
         
@@ -80,7 +80,7 @@ import TestingExtensions
     }
     
     @Test
-    func time_SecondsA() {
+    func time_SecondsA() async {
         // basic
         
         let val: Int = 20
@@ -94,7 +94,7 @@ import TestingExtensions
     }
     
     @Test
-    func time_SecondsB() {
+    func time_SecondsB() async {
         let val: Int = (1 * 60) + 30
         let t = Time(seconds: val)
         
@@ -106,7 +106,7 @@ import TestingExtensions
     }
     
     @Test
-    func time_SecondsC() {
+    func time_SecondsC() async {
         let val: Int = (1 * 60 * 60) + (1 * 60) + 30
         let t = Time(seconds: val)
         
@@ -118,7 +118,7 @@ import TestingExtensions
     }
     
     @Test
-    func time_SecondsD() {
+    func time_SecondsD() async {
         let val: Double = (1 * 60 * 60) + (1 * 60) + 30.125
         let t = Time(seconds: val)
         
@@ -130,7 +130,7 @@ import TestingExtensions
     }
     
     @Test
-    func time_SecondsE() {
+    func time_SecondsE() async {
         let val: Double = (1 * 60 * 60) + (1 * 60) + 30.125
         let t = Time(seconds: -val)
         
@@ -142,7 +142,7 @@ import TestingExtensions
     }
     
     @Test
-    func time_MillisecondsA() {
+    func time_MillisecondsA() async {
         let val: Int = 20
         let t = Time(milliseconds: val)
         
@@ -154,7 +154,7 @@ import TestingExtensions
     }
         
     @Test
-    func time_MillisecondsB() {
+    func time_MillisecondsB() async {
         let val: Int = (((1 * 60) + 30) * 1000) + 200
         let t = Time(milliseconds: val)
         
@@ -166,8 +166,13 @@ import TestingExtensions
     }
     
     @Test
-    func time_MillisecondsC() {
-        let val: Int = (((1 * 60 * 60) + (1 * 60) + 30) * 1000) + 200
+    func time_MillisecondsC() async {
+        let val: Int = {
+            var val: Int = (1 * 60 * 60) + (1 * 60) + 30
+            val *= 1000
+            val += 200
+            return val
+        }()
         let t = Time(milliseconds: val)
         
         #expect(t.hours == 1)
@@ -178,8 +183,13 @@ import TestingExtensions
     }
     
     @Test
-    func time_MillisecondsD() {
-        let val: Double = (((1 * 60 * 60) + (1 * 60) + 30) * 1000) + 200.7
+    func time_MillisecondsD() async {
+        let val: Double = {
+            var val: Double = (1 * 60 * 60) + (1 * 60) + 30
+            val *= 1000
+            val += 200.7
+            return val
+        }()
         let t = Time(milliseconds: val)
         
         #expect(t.hours == 1)
@@ -190,8 +200,13 @@ import TestingExtensions
     }
     
     @Test
-    func time_MillisecondsE() {
-        let val: Double = (((1 * 60 * 60) + (1 * 60) + 30) * 1000) + 200.7
+    func time_MillisecondsE() async {
+        let val: Double = {
+            var val: Double = (1 * 60 * 60) + (1 * 60) + 30
+            val *= 1000
+            val += 200.7
+            return val
+        }()
         let t = Time(milliseconds: -val)
         
         #expect(t.hours == 1)
@@ -205,7 +220,7 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func time_DurationA() {
+    func time_DurationA() async {
         let duration: Duration = .milliseconds(20)
         let t = Time(duration: duration)
         
@@ -218,7 +233,7 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func time_DurationB() {
+    func time_DurationB() async {
         let ms = (((1 * 60) + 30) * 1000) + 200
         let duration: Duration = .milliseconds(ms)
         let t = Time(duration: duration)
@@ -232,8 +247,13 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func time_DurationC() {
-        let ms = (((1 * 60 * 60) + (1 * 60) + 30) * 1000) + 200
+    func time_DurationC() async {
+        let ms = {
+            var val: Double = (1 * 60 * 60) + (1 * 60) + 30
+            val *= 1000
+            val += 200
+            return val
+        }()
         let duration: Duration = .milliseconds(ms)
         let t = Time(duration: duration)
         
@@ -246,8 +266,13 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func time_DurationD() {
-        let ms: Double = (((1 * 60 * 60) + (1 * 60) + 30) * 1000) + 200.7
+    func time_DurationD() async {
+        let ms: Double = {
+            var val: Double = (1 * 60 * 60) + (1 * 60) + 30
+            val *= 1000
+            val += 200.7
+            return val
+        }()
         let duration: Duration = .milliseconds(ms)
         let t = Time(duration: duration)
         
@@ -260,8 +285,13 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func time_DurationE() {
-        let ms = (((1 * 60 * 60) + (1 * 60) + 30) * 1000) + 200
+    func time_DurationE() async {
+        let ms = {
+            var val: Double = (1 * 60 * 60) + (1 * 60) + 30
+            val *= 1000
+            val += 200
+            return val
+        }()
         let duration: Duration = .milliseconds(-ms)
         let t = Time(duration: duration)
         
@@ -276,13 +306,13 @@ import TestingExtensions
     
     /// default CustomStringConvertible
     @Test
-    func timeStringValue_Default() {
+    func timeStringValue_Default() async {
         let t = Time(hours: 5, minutes: 46, seconds: 20, milliseconds: 49)
         #expect("\(t)" == "5:46:20")
     }
     
     @Test
-    func initString() {
+    func initString() async {
         // main components
         #expect(Time(string: "0") == Time(hours: 0, minutes: 0, seconds: 0))
         #expect(Time(string: "00") == Time(hours: 0, minutes: 0, seconds: 0))
@@ -362,7 +392,7 @@ import TestingExtensions
     }
     
     @Test
-    func timeStringValueA() {
+    func timeStringValueA() async {
         let t = Time(hours: 15, minutes: 46, seconds: 20, milliseconds: 49)
         
         for fmt in Time.Format.allCases {
@@ -389,7 +419,7 @@ import TestingExtensions
     }
     
     @Test
-    func timeStringValueB() {
+    func timeStringValueB() async {
         let t = Time(hours: 5, minutes: 6, seconds: 20)
         
         for fmt in Time.Format.allCases {
@@ -416,7 +446,7 @@ import TestingExtensions
     }
     
     @Test
-    func timeStringValue_Zero() {
+    func timeStringValue_Zero() async {
         let t = Time(hours: 0, minutes: 0, seconds: 0)
         
         for fmt in Time.Format.allCases {
@@ -443,7 +473,7 @@ import TestingExtensions
     }
     
     @Test
-    func timeStringValue_Negative() {
+    func timeStringValue_Negative() async {
         let t = Time(hours: 0, minutes: 0, seconds: 20, sign: .minus)
         
         for fmt in Time.Format.allCases {
@@ -470,7 +500,7 @@ import TestingExtensions
     }
     
     @Test
-    func timeStringValue_Shortest() {
+    func timeStringValue_Shortest() async {
         // shortest
         
         let t = Time(hours: 5, minutes: 6, seconds: 20)
@@ -490,7 +520,7 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test(.enabled(ifLocaleLanguageCode: .english))
-    func timeLocalizedStringValueA() {
+    func timeLocalizedStringValueA() async {
         let t = Time(hours: 15, minutes: 46, seconds: 20, milliseconds: 49)
         
         for fmt in Time.Format.allCases {
@@ -516,7 +546,7 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test(.enabled(ifLocaleLanguageCode: .english))
-    func timeLocalizedStringValueB() {
+    func timeLocalizedStringValueB() async {
         let t = Time(hours: 5, minutes: 6, seconds: 20)
         
         for fmt in Time.Format.allCases {
@@ -542,7 +572,7 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test(.enabled(ifLocaleLanguageCode: .english))
-    func timeLocalizedStringValue_Zero() {
+    func timeLocalizedStringValue_Zero() async {
         let t = Time(hours: 0, minutes: 0, seconds: 0)
         
         for fmt in Time.Format.allCases {
@@ -568,7 +598,7 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test(.enabled(ifLocaleLanguageCode: .english))
-    func timeLocalizedStringValue_Negative() {
+    func timeLocalizedStringValue_Negative() async {
         let t = Time(hours: 0, minutes: 0, seconds: 20, sign: .minus)
         
         for fmt in Time.Format.allCases {
@@ -594,7 +624,7 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test(.enabled(ifLocaleLanguageCode: .english))
-    func timeLocalizedStringValue_Shortest() {
+    func timeLocalizedStringValue_Shortest() async {
         // shortest
         
         let t = Time(hours: 5, minutes: 6, seconds: 20)
@@ -613,7 +643,7 @@ import TestingExtensions
     /// Spot-check a handful of locales and formats to ensure formats are localized.
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func timeLocalizedStringValue_VariousLocales() {
+    func timeLocalizedStringValue_VariousLocales() async {
         // German / Germany
         #expect(Time(hours: 1, minutes: 2, seconds: 3).localizedStringValue(format: .s, locale: .init(identifier: "de_DE")) == "3723")
         #expect(Time(hours: 1, minutes: 2, seconds: 3).localizedStringValue(format: .s_sss, locale: .init(identifier: "de_DE")) == "3723,000")
@@ -630,7 +660,7 @@ import TestingExtensions
     #endif
     
     @Test
-    func intervalGet() {
+    func intervalGet() async {
         #expect(
             Time(hours: 0, minutes: 0, seconds: 0).interval
                 == 0.0
@@ -653,7 +683,7 @@ import TestingExtensions
     }
     
     @Test
-    func millisecondsIntervalGet() {
+    func millisecondsIntervalGet() async {
         #expect(
             Time(hours: 0, minutes: 0, seconds: 0).millisecondsInterval
                 == 0
@@ -678,7 +708,7 @@ import TestingExtensions
     #if !(arch(arm) || arch(arm64_32) || arch(i386))
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func durationIntervalGet() {
+    func durationIntervalGet() async {
         #expect(
             Time(hours: 0, minutes: 0, seconds: 0).durationInterval
                 == .milliseconds(0)
@@ -702,7 +732,7 @@ import TestingExtensions
     #endif
     
     @Test
-    func intervalSetA() {
+    func intervalSetA() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.interval = 50
@@ -715,7 +745,7 @@ import TestingExtensions
     }
     
     @Test
-    func intervalSetB() {
+    func intervalSetB() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.interval = 18380.005
@@ -728,7 +758,7 @@ import TestingExtensions
     }
     
     @Test
-    func intervalSetC() {
+    func intervalSetC() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.interval = 0.0
@@ -741,7 +771,7 @@ import TestingExtensions
     }
     
     @Test
-    func intervalSetD() {
+    func intervalSetD() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.interval = -40.0
@@ -754,7 +784,7 @@ import TestingExtensions
     }
     
     @Test
-    func millisecondsIntervalSetA() {
+    func millisecondsIntervalSetA() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.millisecondsInterval = 50_000
@@ -767,7 +797,7 @@ import TestingExtensions
     }
     
     @Test
-    func millisecondsIntervalSetB() {
+    func millisecondsIntervalSetB() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.millisecondsInterval = 18_380_005
@@ -780,7 +810,7 @@ import TestingExtensions
     }
     
     @Test
-    func millisecondsIntervalSetC() {
+    func millisecondsIntervalSetC() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.millisecondsInterval = 0
@@ -793,7 +823,7 @@ import TestingExtensions
     }
     
     @Test
-    func millisecondsIntervalSetD() {
+    func millisecondsIntervalSetD() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.millisecondsInterval = -40_000
@@ -808,7 +838,7 @@ import TestingExtensions
     #if !(arch(arm) || arch(arm64_32) || arch(i386))
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func durationIntervalSetA() {
+    func durationIntervalSetA() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.durationInterval = .milliseconds(50_000)
@@ -822,7 +852,7 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func durationIntervalSetB() {
+    func durationIntervalSetB() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.durationInterval = .milliseconds(18_380_005)
@@ -836,7 +866,7 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func durationIntervalSetC() {
+    func durationIntervalSetC() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.durationInterval = .milliseconds(0)
@@ -850,7 +880,7 @@ import TestingExtensions
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func durationIntervalSetD() {
+    func durationIntervalSetD() async {
         var t = Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
         
         t.durationInterval = .milliseconds(-40_000)
@@ -864,7 +894,7 @@ import TestingExtensions
     #endif
     
     @Test
-    func valueOfComponent() {
+    func valueOfComponent() async {
         #expect(Time(seconds: 0).value(of: .hours) == 0)
         #expect(Time(seconds: 0).value(of: .minutes) == 0)
         #expect(Time(seconds: 0).value(of: .seconds) == 0)
@@ -882,7 +912,7 @@ import TestingExtensions
     }
     
     @Test
-    func setValueOfComponent() {
+    func setValueOfComponent() async {
         var time = Time(seconds: 0)
         
         time.setValue(of: .hours, to: 2)
@@ -920,7 +950,7 @@ import TestingExtensions
     }
     
     @Test
-    func stringValueOfComponentPadded() {
+    func stringValueOfComponentPadded() async {
         #expect(Time(seconds: 0).stringValue(of: .hours, padded: false) == "0")
         #expect(Time(seconds: 0).stringValue(of: .minutes, padded: false) == "0")
         #expect(Time(seconds: 0).stringValue(of: .seconds, padded: false) == "0")
@@ -943,7 +973,7 @@ import TestingExtensions
     }
     
     @Test
-    func stringValueOfComponentForFormat() {
+    func stringValueOfComponentForFormat() async {
         #expect(Time(seconds: 0).stringValue(of: .hours, format: .shortest) == "0")
         #expect(Time(seconds: 0).stringValue(of: .minutes, format: .shortest) == "0")
         #expect(Time(seconds: 0).stringValue(of: .seconds, format: .shortest) == "00")
@@ -961,7 +991,7 @@ import TestingExtensions
     }
     
     @Test
-    func equatable() {
+    func equatable() async {
         #expect(Time(seconds: 20) == Time(seconds: 20))
         #expect(
             Time(hours: 5, minutes: 6, seconds: 20, milliseconds: 5)
@@ -992,7 +1022,7 @@ import TestingExtensions
     }
     
     @Test
-    func comparable() {
+    func comparable() async {
         #expect(Time(seconds: 20) > Time(seconds: 10))
         #expect(!(Time(seconds: 10) > Time(seconds: 20)))
         
@@ -1004,7 +1034,7 @@ import TestingExtensions
     }
     
     @Test
-    func add() {
+    func add() async {
         #expect(
             Time(hours: 5, minutes: 6, seconds: 20, milliseconds: 5)
                 + Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
@@ -1043,7 +1073,7 @@ import TestingExtensions
     }
     
     @Test
-    func addAssign() {
+    func addAssign() async {
         var time = Time.zero
         
         time += .zero
@@ -1060,7 +1090,7 @@ import TestingExtensions
     }
     
     @Test
-    func subtract() {
+    func subtract() async {
         #expect(
             Time(hours: 5, minutes: 6, seconds: 20, milliseconds: 5)
                 - Time(hours: 1, minutes: 2, seconds: 3, milliseconds: 4)
@@ -1093,7 +1123,7 @@ import TestingExtensions
     }
     
     @Test
-    func subtractAssign() {
+    func subtractAssign() async {
         var time = Time.zero
         
         time -= .zero
@@ -1108,7 +1138,7 @@ import TestingExtensions
     }
     
     @Test
-    func multiplyAssign() {
+    func multiplyAssign() async {
         var time = Time.zero
         
         time *= 0 // int
@@ -1135,7 +1165,7 @@ import TestingExtensions
     }
     
     @Test
-    func divideAssign() {
+    func divideAssign() async {
         var time = Time.zero
         
         time = Time(hours: 9, minutes: 59, seconds: 59, milliseconds: 998)

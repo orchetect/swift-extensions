@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct Algorithms_CollectionBinarySearch_Tests {
     @Test
-    func binarySearch() {
+    func binarySearch() async {
         // basic checks
         
         #expect([Int]().binarySearch(forValue: 1) == nil)

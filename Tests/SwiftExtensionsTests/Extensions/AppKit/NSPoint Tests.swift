@@ -13,7 +13,7 @@ import Testing
 @Suite struct Extensions_Foundation_NSPoint_Tests {
     /// This method used to test the swift-extensions property `cgPoint` which was removed in swift-extensions 1.7.9.
     @Test
-    func cgPoint() {
+    func cgPoint() async {
         // just to confirm that the compiler sees both types as the same
         let cgPoint: CGPoint = NSPoint(x: 1.23, y: 2.5) // .cgPoint
         

@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_AppKit_URLAndAppKit_Tests {
     @Test
-    func urlIcon() {
+    func urlIcon() async {
         // on most, if not all, systems this should produce a value
         
         let url = URL(fileURLWithPath: "/")

@@ -17,7 +17,7 @@ import Testing
     // no meaningful tests applicable
     
     @Test
-    func emptyTest() {
+    func emptyTest() async {
         #expect(true)
     }
 }

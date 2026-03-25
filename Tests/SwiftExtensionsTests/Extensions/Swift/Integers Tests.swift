@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct Extensions_Swift_Integers_Tests {
     @Test
-    func typeConversions_IntsToIntsAndFloats() {
+    func typeConversions_IntsToIntsAndFloats() async {
         // Int
         
         _ = 1.int
@@ -362,7 +362,7 @@ import Testing
     }
     
     @Test
-    func typeConversions_StringToInts() {
+    func typeConversions_StringToInts() async {
         #expect("1".int == 1)
         #expect("1".uInt == UInt(1))
         #expect("1".int8 == Int8(1))
@@ -376,7 +376,7 @@ import Testing
     }
     
     @Test
-    func typeConversions_IntsToString() {
+    func typeConversions_IntsToString() async {
         #expect(1.string == "1")
         #expect(UInt(1).string == "1")
         #expect(Int8(1).string == "1")
@@ -390,7 +390,7 @@ import Testing
     }
     
     @Test
-    func rounding() {
+    func rounding() async {
         #expect((-5).roundedAwayFromZero(toMultiplesOf: 4) == -8)
         #expect((-1).roundedAwayFromZero(toMultiplesOf: 4) == -4)
         #expect(1.roundedAwayFromZero(toMultiplesOf: 1) == 1)
@@ -414,7 +414,7 @@ import Testing
     }
     
     @Test
-    func collectionRandomNumbers() {
+    func collectionRandomNumbers() async {
         // typical types
         
         _ = [Int](randomValuesBetween: 0 ... 255, count: 4)
@@ -444,7 +444,7 @@ import Testing
     }
     
     @Test
-    func wrappingNumbers() {
+    func wrappingNumbers() async {
         // ClosedRange
         
         // single value ranges
@@ -561,7 +561,7 @@ import Testing
     }
     
     @Test
-    func numberOfDigits() {
+    func numberOfDigits() async {
         #expect(0.numberOfDigits == 1)
         #expect(1.numberOfDigits == 1)
         #expect(10.numberOfDigits == 2)

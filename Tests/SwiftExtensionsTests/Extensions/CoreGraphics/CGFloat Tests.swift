@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_CoreGraphics_CGFloat_Tests {
     @Test
-    func typeConversions_BinaryIntegerToCGFloat() {
+    func typeConversions_BinaryIntegerToCGFloat() async {
         _ = Int(1).cgFloat
         _ = Int(1).cgFloatExactly
         _ = UInt(1).cgFloat
@@ -54,7 +54,7 @@ import Testing
     }
 
     @Test
-    func power() {
+    func power() async {
         #expect(CGFloat(2.0).power(3) == 8.0)
     }
 

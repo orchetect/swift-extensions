@@ -17,7 +17,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_NSAttributedString_Tests {
     @Test
-    func nsAttributedString_addingAttribute() {
+    func nsAttributedString_addingAttribute() async {
         let rawString = "Test"
         
         // vanilla NSAttributedString
@@ -32,7 +32,7 @@ import Testing
     }
     
     @Test
-    func nsAttributedString_addAttribute() {
+    func nsAttributedString_addAttribute() async {
         let rawString = "Test"
         
         // vanilla NSMutableAttributedString

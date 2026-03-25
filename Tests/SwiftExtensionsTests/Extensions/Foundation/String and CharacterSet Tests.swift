@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_StringAndCharacterSet_Tests {
     @Test
-    func splitIntoSequencesOf() {
+    func splitIntoSequencesOf() async {
         // ____ typical cases ____
         
         // complex string
@@ -108,7 +108,7 @@ import Testing
     }
     
     @Test
-    func onlyCharacterSet() {
+    func onlyCharacterSet() async {
         // .only - single character set
         
         #expect(
@@ -150,7 +150,7 @@ import Testing
     }
     
     @Test
-    func onlyCharacterSets() {
+    func onlyCharacterSets() async {
         // .only - more than one character set
         
         #expect(
@@ -161,7 +161,7 @@ import Testing
     }
     
     @Test
-    func removingCharacterSet() {
+    func removingCharacterSet() async {
         // .removing - single character set
         
         #expect(
@@ -189,7 +189,7 @@ import Testing
     }
     
     @Test
-    func removingCharacterSets() {
+    func removingCharacterSets() async {
         // .removing - more than one character set
         
         #expect(
@@ -206,7 +206,7 @@ import Testing
     }
     
     @Test
-    func containsOnlyCharacterSet() {
+    func containsOnlyCharacterSet() async {
         // .isOnly - single character set
         
         #expect("abcABC123àÀ".isOnly(.alphanumerics))
@@ -218,7 +218,7 @@ import Testing
     }
     
     @Test
-    func containsOnlyCharacterSets() {
+    func containsOnlyCharacterSets() async {
         // .isOnly - more than one character set
         
         #expect("abcABC123àÀ".isOnly(.letters, .decimalDigits))
@@ -226,7 +226,7 @@ import Testing
     }
     
     @Test
-    func containsAnyCharacterSet() {
+    func containsAnyCharacterSet() async {
         // .contains(any:) - single character set
         
         #expect("abcABC123àÀ!@#$".contains(any: .alphanumerics))
@@ -238,7 +238,7 @@ import Testing
     }
     
     @Test
-    func containsAnyCharacterSets() {
+    func containsAnyCharacterSets() async {
         // .contains(any:) - more than one character set
         
         #expect("abcABC123àÀ!@#$".contains(any: .letters, .decimalDigits))

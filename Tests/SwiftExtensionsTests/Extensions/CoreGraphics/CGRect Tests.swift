@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_CoreGraphics_CGRect_Tests {
     @Test
-    func center() {
+    func center() async {
         let rect = CGRect(x: 2, y: 3, width: 10, height: 20)
         
         let center = rect.center
@@ -22,7 +22,7 @@ import Testing
     }
     
     @Test
-    func hrow() {
+    func hrow() async {
         let rect = CGRect(x: 2, y: 3, width: 10, height: 20)
         
         let newRect = rect.grow(by: 1.5)
@@ -34,7 +34,7 @@ import Testing
     }
     
     @Test
-    func shrink() {
+    func shrink() async {
         let rect = CGRect(x: 2, y: 3, width: 10, height: 20)
         
         let newRect = rect.shrink(by: 1.5)
@@ -46,7 +46,7 @@ import Testing
     }
     
     @Test
-    func scale() {
+    func scale() async {
         do {
             let rect = CGRect(x: 2, y: 3, width: 10, height: 20)
             

@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_Collections_Tests {
     @Test
-    func comparisonResultInverted() {
+    func comparisonResultInverted() async {
         #expect(ComparisonResult.orderedAscending.inverted == .orderedDescending)
         #expect(ComparisonResult.orderedSame.inverted == .orderedSame)
         #expect(ComparisonResult.orderedDescending.inverted == .orderedAscending)

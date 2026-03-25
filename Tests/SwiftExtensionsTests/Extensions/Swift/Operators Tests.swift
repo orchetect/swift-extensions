@@ -10,7 +10,7 @@ import Testing
 
 @Suite struct Extensions_Swift_Operators_Tests {
     @Test
-    func modulo() {
+    func modulo() async {
         // Double, Float, Float80
         
         #expect(43.0 % 10.0 == 3.0)

@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Global_Globals_Tests {
     @Test
-    func bundle() {
+    func bundle() async {
         // this test could break in future versions of Xcode/XCTest
         // but we'll test what 'known values' we can here
         
@@ -82,7 +82,7 @@ import Testing
     }
     
     @Test
-    func bundle_infoDictionaryString() {
+    func bundle_infoDictionaryString() async {
         // String key name
         
         withKnownIssue(

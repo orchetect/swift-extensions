@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_StringAndFoundation_Tests {
     @Test
-    func firstIndexOfSubstring() {
+    func firstIndexOfSubstring() async {
         // .firstIndex(of:)
         
         let str = "This is an example string of an example."
@@ -46,7 +46,7 @@ import Testing
     }
     
     @Test
-    func rangeBackwards() {
+    func rangeBackwards() async {
         // .range(backwards:)
         
         let str = "This is an example string of an example."
@@ -69,7 +69,7 @@ import Testing
     }
     
     @Test
-    func rangeBackwardsCaseInsensitive() {
+    func rangeBackwardsCaseInsensitive() async {
         // .range(backwardsCaseInsensitive:)
         
         let str = "This is an example string of an example."
@@ -92,7 +92,7 @@ import Testing
     }
     
     @Test
-    func subscriptPosition_NSRange() {
+    func subscriptPosition_NSRange() async {
         let nsRange = NSMakeRange(1, 2) // (start: 1, length: 2) == 1...3
         
         // String
@@ -107,7 +107,7 @@ import Testing
     }
     
     @Test
-    func containsCaseInsensitive() {
+    func containsCaseInsensitive() async {
         // .contains(caseInsensitive:)
         
         let str = "This is an example string."
@@ -119,7 +119,7 @@ import Testing
     }
     
     @Test
-    func hasPrefixCaseInsensitive() {
+    func hasPrefixCaseInsensitive() async {
         // .hasPrefix(caseInsensitive:)
         
         let str = "This is an example string."
@@ -133,7 +133,7 @@ import Testing
     }
     
     @Test
-    func hasSuffixCaseInsensitive() {
+    func hasSuffixCaseInsensitive() async {
         // .hasSuffix(caseInsensitive:)
         
         let str = "This is an example string."
@@ -147,7 +147,7 @@ import Testing
     }
     
     @Test
-    func trimmed() {
+    func trimmed() async {
         // String
         
         #expect("    string    ".trimmed == "string")

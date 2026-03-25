@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_Decimal_Tests {
     @Test
-    func typeConversions_IntsToInts() {
+    func typeConversions_IntsToInts() async {
         _ = 1.decimal
         _ = UInt(1).decimal
         
@@ -30,22 +30,22 @@ import Testing
     }
     
     @Test
-    func boolValue() {
+    func boolValue() async {
         _ = Decimal(1).boolValue
     }
     
     @Test
-    func power() {
+    func power() async {
         #expect(Decimal(string: "2.0")!.power(3) == 8.0)
     }
     
     @Test
-    func string() {
+    func string() async {
         #expect(Decimal(1).string == "1")
     }
     
     @Test
-    func fromString() {
+    func fromString() async {
         // String
         
         let str = "1.0"
@@ -62,7 +62,7 @@ import Testing
     }
     
     @Test
-    func rounded() {
+    func rounded() async {
         // .rounded()
         
         #expect(
@@ -116,7 +116,7 @@ import Testing
     }
     
     @Test
-    func truncated() {
+    func truncated() async {
         // .truncated()
         
         #expect(
@@ -178,14 +178,14 @@ import Testing
     }
     
     @Test
-    func truncatingRemainder() {
+    func truncatingRemainder() async {
         let tr = Decimal(string: "20.5")!.truncatingRemainder(dividingBy: Decimal(8))
         
         #expect(tr == Decimal(string: "4.5")!)
     }
     
     @Test
-    func quotientAndRemainder() {
+    func quotientAndRemainder() async {
         let qr = Decimal(string: "17.5")!.quotientAndRemainder(dividingBy: 5.0)
         
         #expect(qr.quotient == Decimal(string: "3")!)
@@ -193,7 +193,7 @@ import Testing
     }
     
     @Test
-    func integralAndFraction() {
+    func integralAndFraction() async {
         let iaf = Decimal(string: "17.5")!.integralAndFraction
         
         #expect(iaf.integral == Decimal(string: "17")!)
@@ -204,7 +204,7 @@ import Testing
     }
     
     @Test
-    func integralDigitPlaces_and_fractionDigitPlaces() {
+    func integralDigitPlaces_and_fractionDigitPlaces() async {
         // we'll cast the number literals as Double to see if Decimal converts them and results are
         // still as expected
         

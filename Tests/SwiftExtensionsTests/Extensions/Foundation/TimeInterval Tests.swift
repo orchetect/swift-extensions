@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_TimeInterval_Tests {
     @Test
-    func timeInterval_init_Timespec() {
+    func timeInterval_init_Timespec() async {
         let ti = TimeInterval(timespec(tv_sec: 1, tv_nsec: 234_567_891))
         
         #expect(ti == TimeInterval(1.234_567_891))

@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_StringAndNSRegularExpression_Tests {
     @Test
-    func regExPattern() {
+    func regExPattern() async {
         let regPattern = "[0-9]+"
         
         let str = "The 45 turkeys ate 9 sandwiches."
@@ -24,7 +24,7 @@ import Testing
     }
     
     @Test
-    func regExPattern_ExtendedCharacters() {
+    func regExPattern_ExtendedCharacters() async {
         let regPattern = "[0-9]+"
         
         let str = "Thé 45 smiling 😀 túrkêÿs åte →●₩√【】♞‱ 9 Şandwiches."
@@ -37,7 +37,7 @@ import Testing
     
     /// Ensure that using a Substring as the input string works as expected.
     @Test
-    func regExPattern_InSubString() {
+    func regExPattern_InSubString() async {
         let regPattern = "^([0-9]+)X([0-9]+)$"
         
         let str: String = " 123X456 "
@@ -51,7 +51,7 @@ import Testing
     }
     
     @Test
-    func regExPatternReplacement() {
+    func regExPatternReplacement() async {
         let regPattern = "[0-9]+"
         
         let str = "The 45 turkeys ate 9 sandwiches."
@@ -66,7 +66,7 @@ import Testing
     }
     
     @Test
-    func regExPatternReplacement_ExtendedCharacters() {
+    func regExPatternReplacement_ExtendedCharacters() async {
         let regPattern = "[0-9]+"
         
         let str = "Thé 45 smiling 😀 túrkêÿs åte →●₩√【】♞‱ 9 Şandwiches."
@@ -82,7 +82,7 @@ import Testing
     
     /// Ensure that using a Substring as the input string works as expected.
     @Test
-    func regExPatternReplacement_InSubString() {
+    func regExPatternReplacement_InSubString() async {
         let regPattern = "^([0-9]+)X([0-9]+)$"
         
         let str: String = " 123X456 "
@@ -99,7 +99,7 @@ import Testing
     }
     
     @Test
-    func regExCaptureGroups() {
+    func regExCaptureGroups() async {
         let capturePattern = #"""
             ([a-zA-z\s]*)\s([0-9]+)\s([a-zA-z\s]*)\s([0-9]+)\s([a-zA-z\s.]*)
             """#
@@ -120,7 +120,7 @@ import Testing
     }
     
     @Test
-    func regExCaptureGroups_ExtendedCharacters() {
+    func regExCaptureGroups_ExtendedCharacters() async {
         let capturePattern = #"^([^\.]*)\.([^\.]*)\.([\d]+)$"#
         
         let str = "Hellõ țhiș is ǎ têst.Śtřįng 😀→●₩√【】♞‱.1234"
@@ -138,7 +138,7 @@ import Testing
 
     /// Ensure that using a Substring as the input string works as expected.
     @Test
-    func regExCaptureGroups_InSubString() {
+    func regExCaptureGroups_InSubString() async {
         let regPattern = "^([0-9]+)X([0-9]+)$"
         
         let str: String = " 123X456 "

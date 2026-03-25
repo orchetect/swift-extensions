@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_IntegersAndFoundation_Tests {
     @Test
-    func stringPaddedTo() {
+    func stringPaddedTo() async {
         // basic validation checks
         
         #expect(1.string(paddedTo: 1) == "1")
@@ -39,7 +39,7 @@ import Testing
     #if !(arch(arm) || arch(arm64_32) || arch(i386))
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
-    func durationTimeInterval() {
+    func durationTimeInterval() async {
         #expect(Duration.zero.timeInterval == 0.0)
         #expect(Duration.milliseconds(-0).timeInterval == 0.0)
         

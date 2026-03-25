@@ -12,7 +12,7 @@ import Testing
     // MARK: - Collection += Operator
     
     @Test
-    func collection_Operator_PlusEquals_Element() {
+    func collection_Operator_PlusEquals_Element() async {
         // [String]
                                                   
         var arr1: [String] = []
@@ -46,14 +46,14 @@ import Testing
     }
     
     @Test
-    func set_Operator_Plus_Set() {
+    func set_Operator_Plus_Set() async {
         var set: Set<Int> = [3]
         set = set + Set([1, 2])
         #expect(set == [1, 2, 3])
     }
     
     @Test
-    func set_Operator_PlusEquals_Set() {
+    func set_Operator_PlusEquals_Set() async {
         var set: Set<Int> = [3]
         set += Set([1, 2])
         #expect(set == [1, 2, 3])
@@ -62,7 +62,7 @@ import Testing
     // MARK: - [safe: Index]
     
     @Test
-    func subscript_Safe_Get() {
+    func subscript_Safe_Get() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
         
@@ -83,7 +83,7 @@ import Testing
     }
     
     @Test
-    func subscript_Safe_Get_EdgeCases() {
+    func subscript_Safe_Get_EdgeCases() async {
         // empty array
         #expect([Int]()[safe: -1] == nil)
         #expect([Int]()[safe:  0] == nil)
@@ -105,7 +105,7 @@ import Testing
     }
     
     @Test
-    func subscript_Safe_Set() {
+    func subscript_Safe_Set() async {
         // [Int]
         var arr = [1, 2, 3, 4, 5, 6]
         
@@ -139,7 +139,7 @@ import Testing
     }
     
     @Test
-    func subscript_Safe_Modify() {
+    func subscript_Safe_Modify() async {
         struct Foo {
             var value: Int = 0
         }
@@ -153,7 +153,7 @@ import Testing
     }
     
     @Test
-    func subscript_Safe_Modify_OptionalElement() {
+    func subscript_Safe_Modify_OptionalElement() async {
         struct Foo: Equatable {
             var value: Int = 0
         }
@@ -204,7 +204,7 @@ import Testing
     // MARK: - [safe: Index, defaultValue:]
     
     @Test
-    func subscript_Safe_Get_DefaultValue() {
+    func subscript_Safe_Get_DefaultValue() async {
         // [Int]
         let arr = [1, 2, 3]
         
@@ -225,7 +225,7 @@ import Testing
     }
     
     @Test
-    func subscript_Safe_Get_DefaultValue_EdgeCases() {
+    func subscript_Safe_Get_DefaultValue_EdgeCases() async {
         // empty array
         #expect([Int]()[safe: -1, default: 99] == 99)
         #expect([Int]()[safe:  0, default: 99] == 99)
@@ -240,7 +240,7 @@ import Testing
     // MARK: - [safe: i...i]
     
     @Test
-    func subscript_Safe_ClosedRange_Index() {
+    func subscript_Safe_ClosedRange_Index() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
         
@@ -267,7 +267,7 @@ import Testing
     }
     
     @Test
-    func subscript_Safe_ClosedRange_Index_EdgeCases() {
+    func subscript_Safe_ClosedRange_Index_EdgeCases() async {
         // empty array
         do {
             let arr: [Int] = []
@@ -308,7 +308,7 @@ import Testing
     }
     
     @Test
-    func subscript_Safe_ClosedRange_IndexInt() {
+    func subscript_Safe_ClosedRange_IndexInt() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
         
@@ -336,7 +336,7 @@ import Testing
     // MARK: - [safe: i..<i]
     
     @Test
-    func subscript_Safe_Range_Index() {
+    func subscript_Safe_Range_Index() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
         
@@ -363,7 +363,7 @@ import Testing
     }
     
     @Test
-    func subscript_Safe_Range_Index_EdgeCases() {
+    func subscript_Safe_Range_Index_EdgeCases() async {
         // empty array
         do {
             let arr: [Int] = []
@@ -413,7 +413,7 @@ import Testing
     }
     
     @Test
-    func subscript_Safe_Range_IndexInt() {
+    func subscript_Safe_Range_IndexInt() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
         
@@ -441,7 +441,7 @@ import Testing
     // MARK: - [safe: i...]
     
     @Test
-    func subscript_Safe_PartialRangeFrom_Index() {
+    func subscript_Safe_PartialRangeFrom_Index() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
         
@@ -483,7 +483,7 @@ import Testing
     }
     
     @Test
-    func subscript_Safe_PartialRangeFrom_IndexInt() {
+    func subscript_Safe_PartialRangeFrom_IndexInt() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
         
@@ -521,7 +521,7 @@ import Testing
     // MARK: - [safe: ...i]
     
     @Test
-    func subscript_Safe_PartialRangeThrough_Index() {
+    func subscript_Safe_PartialRangeThrough_Index() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
 
@@ -557,7 +557,7 @@ import Testing
     }
 
     @Test
-    func subscript_Safe_PartialRangeThrough_IndexInt() {
+    func subscript_Safe_PartialRangeThrough_IndexInt() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
 
@@ -590,7 +590,7 @@ import Testing
     // MARK: - [safe: ..<i]
     
     @Test
-    func subscript_Safe_PartialRangeUpTo_Index() {
+    func subscript_Safe_PartialRangeUpTo_Index() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
         
@@ -632,7 +632,7 @@ import Testing
     }
     
     @Test
-    func subscript_Safe_PartialRangeUpTo_IndexInt() {
+    func subscript_Safe_PartialRangeUpTo_IndexInt() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
         
@@ -670,7 +670,7 @@ import Testing
     // MARK: - [safePosition: Int]
     
     @Test
-    func subscript_SafePosition_Get() {
+    func subscript_SafePosition_Get() async {
         // [Int]
         let arr = [1, 2, 3, 4, 5, 6]
         
@@ -690,7 +690,7 @@ import Testing
     }
     
     @Test
-    func subscript_SafePosition_Get_EdgeCases() {
+    func subscript_SafePosition_Get_EdgeCases() async {
         // empty array
         #expect([Int]()[safePosition: -1] == nil)
         #expect([Int]()[safePosition:  0] == nil)
@@ -712,7 +712,7 @@ import Testing
     }
     
     @Test
-    func subscript_SafePosition_Set() {
+    func subscript_SafePosition_Set() async {
         // [Int]
         var arr = [1, 2, 3, 4, 5, 6]
         
@@ -769,7 +769,7 @@ import Testing
     }
     
     @Test
-    func subscript_SafePosition_Modify() {
+    func subscript_SafePosition_Modify() async {
         struct Foo: Equatable {
             var value: Int = 0
         }
@@ -786,7 +786,7 @@ import Testing
     }
     
     @Test
-    func subscript_SafePosition_Modify_OptionalElement() {
+    func subscript_SafePosition_Modify_OptionalElement() async {
         struct Foo: Equatable {
             var value: Int = 0
         }
@@ -809,7 +809,7 @@ import Testing
     // MARK: - [safePosition: Index, defaultValue:]
     
     @Test
-    func subscript_SafePosition_Get_DefaultValue() {
+    func subscript_SafePosition_Get_DefaultValue() async {
         // [Int]
         let arr = [1, 2, 3]
         
@@ -829,7 +829,7 @@ import Testing
     }
     
     @Test
-    func subscript_SafePosition_Get_DefaultValue_EdgeCases() {
+    func subscript_SafePosition_Get_DefaultValue_EdgeCases() async {
         // empty array
         #expect([Int]()[safePosition: -1, default: 99] == 99)
         #expect([Int]()[safePosition:  0, default: 99] == 99)
@@ -844,7 +844,7 @@ import Testing
     // MARK: - [safePosition: i...i]
     
     @Test
-    func subscript_SafePosition_ClosedRange_Int() {
+    func subscript_SafePosition_ClosedRange_Int() async {
         // [Int].SubSequence a.k.a. ArraySlice<Int>
         let slice = [1, 2, 3, 4, 5, 6][2...] // [3, 4, 5, 6]
         
@@ -875,7 +875,7 @@ import Testing
     // MARK: - [safePosition: i..<i]
     
     @Test
-    func subscript_SafePosition_Range_Int() {
+    func subscript_SafePosition_Range_Int() async {
         // [Int].SubSequence a.k.a. ArraySlice<Int>
         let slice = [1, 2, 3, 4, 5, 6][2...] // [3, 4, 5, 6]
         
@@ -913,7 +913,7 @@ import Testing
     // MARK: - [safePosition: i...]
     
     @Test
-    func subscript_SafePosition_PartialRangeFrom_Int() {
+    func subscript_SafePosition_PartialRangeFrom_Int() async {
         // [Int].SubSequence a.k.a. ArraySlice<Int>
         let slice = [1, 2, 3, 4, 5, 6][2...] // [3, 4, 5, 6]
         
@@ -928,7 +928,7 @@ import Testing
     // MARK: - [safePosition: ...i]
     
     @Test
-    func subscript_SafePosition_PartialRangeThrough_Int() {
+    func subscript_SafePosition_PartialRangeThrough_Int() async {
         // [Int].SubSequence a.k.a. ArraySlice<Int>
         let slice = [1, 2, 3, 4, 5, 6][2...] // [3, 4, 5, 6]
         
@@ -942,7 +942,7 @@ import Testing
     // MARK: - [safePosition: ..<i]
     
     @Test
-    func subscript_SafePosition_PartialRangeUpTo_Int() {
+    func subscript_SafePosition_PartialRangeUpTo_Int() async {
         // [Int].SubSequence a.k.a. ArraySlice<Int>
         let slice = [1, 2, 3, 4, 5, 6][2...] // [3, 4, 5, 6]
         
@@ -957,7 +957,7 @@ import Testing
     // MARK: - .remove(safeAt:)
     
     @Test
-    func arrayRemoveSafeAt() {
+    func arrayRemoveSafeAt() async {
         // [Int]
         var arr = [1, 2, 3]
         
@@ -975,7 +975,7 @@ import Testing
     }
     
     @Test
-    func arrayRemoveSafePositionAt() {
+    func arrayRemoveSafePositionAt() async {
         // [Int]
         let arr = [0, 0, 1, 2, 3, 4, 5, 6]
         
@@ -1000,7 +1000,7 @@ import Testing
     // MARK: - Indexes
     
     @Test
-    func startIndexOffsetBy() {
+    func startIndexOffsetBy() async {
         // .startIndex(offsetBy:)
         
         let array = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
@@ -1017,7 +1017,7 @@ import Testing
     }
     
     @Test
-    func endIndexOffsetBy() {
+    func endIndexOffsetBy() async {
         // .endIndex(offsetBy:)
         
         let array = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
@@ -1036,7 +1036,7 @@ import Testing
     // MARK: - [position: Int]
     
     @Test
-    func subscriptPosition_OffsetIndex() {
+    func subscriptPosition_OffsetIndex() async {
         let array = ["a", "b", "c", "1", "2", "3"]
         
         // [String]
@@ -1050,7 +1050,7 @@ import Testing
     // MARK: - [position: i...i]
     
     @Test
-    func subscriptPosition_ClosedRange() {
+    func subscriptPosition_ClosedRange() async {
         let array = ["a", "b", "c", "1", "2", "3"]
         
         // [String]
@@ -1064,7 +1064,7 @@ import Testing
     // MARK: - [position: i..<i]
     
     @Test
-    func subscriptPosition_Range() {
+    func subscriptPosition_Range() async {
         let array = ["a", "b", "c", "1", "2", "3"]
         
         // [String]
@@ -1078,7 +1078,7 @@ import Testing
     // MARK: - [position: i...]
     
     @Test
-    func subscriptPosition_PartialRangeFrom() {
+    func subscriptPosition_PartialRangeFrom() async {
         let array = ["a", "b", "c", "1", "2", "3"]
         
         // [String]
@@ -1092,7 +1092,7 @@ import Testing
     // MARK: - [position: ...i]
     
     @Test
-    func subscriptPosition_PartialRangeThrough() {
+    func subscriptPosition_PartialRangeThrough() async {
         let array = ["a", "b", "c", "1", "2", "3"]
         
         // [String]
@@ -1106,7 +1106,7 @@ import Testing
     // MARK: - [position: ..<i]
     
     @Test
-    func subscriptPosition_PartialRangeUpTo() {
+    func subscriptPosition_PartialRangeUpTo() async {
         let array = ["a", "b", "c", "1", "2", "3"]
         
         // [String]
@@ -1120,7 +1120,7 @@ import Testing
     // MARK: - [wrapping:]
     
     @Test
-    func wrappingIndexSubscript() {
+    func wrappingIndexSubscript() async {
         let x = ["0", "1", "2", "3", "4"]
         
         #expect(x[wrapping:  0] == "0")
@@ -1139,7 +1139,7 @@ import Testing
     // MARK: - .count(of:)
     
     @Test
-    func countOfElement() {
+    func countOfElement() async {
         let arr = [1, 1, 1, 2, 2, 3]
         
         #expect(arr.count(of: 1) == 3)
@@ -1150,7 +1150,7 @@ import Testing
     // MARK: - shortest() / shortestIndex()
     
     @Test
-    func stringProtocol_Shortest() {
+    func stringProtocol_Shortest() async {
         #expect([String]().shortest() == nil)
         #expect([""].shortest() == "")
         #expect(["A"].shortest() == "A")
@@ -1160,7 +1160,7 @@ import Testing
     }
     
     @Test
-    func stringProtocol_ShortestIndex() {
+    func stringProtocol_ShortestIndex() async {
         #expect([String]().shortestIndex() == nil)
         #expect([""].shortestIndex() == 0)
         #expect(["A"].shortestIndex() == 0)
@@ -1172,7 +1172,7 @@ import Testing
     // MARK: - longest() / longestIndex()
     
     @Test
-    func stringProtocol_Longest() {
+    func stringProtocol_Longest() async {
         #expect([String]().longest() == nil)
         #expect([""].longest() == "")
         #expect(["A"].longest() == "A")
@@ -1182,7 +1182,7 @@ import Testing
     }
     
     @Test
-    func stringProtocol_LongestIndex() {
+    func stringProtocol_LongestIndex() async {
         #expect([String]().longestIndex() == nil)
         #expect([""].longestIndex() == 0)
         #expect(["A"].longestIndex() == 0)
@@ -1194,7 +1194,7 @@ import Testing
     // MARK: - .stringValueArrayLiteral
     
     @Test
-    func stringValueArrayLiteral() {
+    func stringValueArrayLiteral() async {
         #expect([Int]().stringValueArrayLiteral == "[]")
         
         #expect([1, 2, 3].stringValueArrayLiteral == "[1, 2, 3]")
@@ -1203,7 +1203,7 @@ import Testing
     // MARK: - .firstGapValue()
     
     @Test
-    func firstGapValue() {
+    func firstGapValue() async {
         // default argument
         
         #expect([Int]().firstGapValue() == nil)
@@ -1227,7 +1227,7 @@ import Testing
     // MARK: - Set union methods
     
     @Test
-    func setUnion() {
+    func setUnion() async {
         // .union
         
         var set: Set<FooEnum> = [.fooB(1), .one]
@@ -1267,7 +1267,7 @@ import Testing
     // MARK: - .array constructor
     
     @Test
-    func arraySlice_Array() {
+    func arraySlice_Array() async {
         let sourceArray = ["A", "B", "C"]
         
         let slice = sourceArray.suffix(2)
@@ -1294,7 +1294,7 @@ import Testing
     // MARK: - .grouping(by:)
     
     @Test
-    func sequence_Grouping() {
+    func sequence_Grouping() async {
         let ungrouped = ["Bob", "Billy", "Alex", "Kevin", "Adam"]
         
         let grouped = ungrouped.grouping(by: { $0.first! })
@@ -1312,7 +1312,7 @@ import Testing
     // MARK: - .split(every:backwards:)
     
     @Test
-    func splitEvery() {
+    func splitEvery() async {
         let str = "1234567890"
         
         #expect(str.split(every: 1) == ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"])
@@ -1329,7 +1329,7 @@ import Testing
     // MARK: - .indices(splitEvery:)
     
     @Test
-    func indicesSplitEvery() {
+    func indicesSplitEvery() async {
         let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         
         #expect(arr.indices(splitEvery: -1) == [0 ... 10])
@@ -1352,7 +1352,7 @@ import Testing
     // MARK: - Duplicates
     
     @Test
-    func removingDuplicates() {
+    func removingDuplicates() async {
         #expect(([] as [Int]).removingDuplicates() == [] )
         #expect([1, 2, 3, 4].removingDuplicates() == [1, 2, 3, 4])
         #expect([1, 2, 3, 2, 4].removingDuplicates() == [1, 2, 3, 4])
@@ -1360,7 +1360,7 @@ import Testing
     }
     
     @Test
-    func removeDuplicates() {
+    func removeDuplicates() async {
         do {
             var arr = [] as [Int]
             arr.removeDuplicates()
@@ -1384,7 +1384,7 @@ import Testing
     }
     
     @Test
-    func removingDuplicatesRandomOrdering() {
+    func removingDuplicatesRandomOrdering() async {
         #expect(([] as [Int]).removingDuplicatesRandomOrdering() == [])
         #expect(
             [1, 2, 3, 4].removingDuplicatesRandomOrdering()
@@ -1401,7 +1401,7 @@ import Testing
     }
     
     @Test
-    func duplicateElements() {
+    func duplicateElements() async {
         #expect(([] as [Int]).duplicateElements() == [])
         #expect([1, 2, 3, 4].duplicateElements() == [])
         #expect([1, 2, 3, 2, 4].duplicateElements() == [2])
@@ -1410,7 +1410,7 @@ import Testing
     }
     
     @Test
-    func duplicateElementIndices() {
+    func duplicateElementIndices() async {
         #expect(([] as [Int]).duplicateElementIndices(.firstOccurrences) == [])
         #expect(([] as [Int]).duplicateElementIndices(.afterFirstOccurrences) == [])
         #expect(([] as [Int]).duplicateElementIndices(.allOccurrences) == [])
@@ -1469,7 +1469,7 @@ import Testing
     }
     
     @Test
-    func allElementsAreEqual() {
+    func allElementsAreEqual() async {
         #expect([Int]().allElementsAreEqual)
         #expect([1].allElementsAreEqual)
         #expect([1, 1].allElementsAreEqual)
@@ -1481,7 +1481,7 @@ import Testing
     }
     
     @Test
-    func elementsEqual_orderInsensitive() {
+    func elementsEqual_orderInsensitive() async {
         #expect(([] as [Int]).elementsEqual(orderInsensitive: []))
         #expect(([1] as [Int]).elementsEqual(orderInsensitive: [1]))
         #expect(([1, 2] as [Int]).elementsEqual(orderInsensitive: [1, 2]))
@@ -1500,7 +1500,7 @@ import Testing
     // MARK: - Replace
     
     @Test
-    func replacingElementsWithElement() {
+    func replacingElementsWithElement() async {
         #expect([""].replacing(elementsIn: [], with: "") == [""])
         #expect(["a"].replacing(elementsIn: [], with: "z") == ["a"])
         #expect(["a"].replacing(elementsIn: ["a"], with: "z") == ["z"])
@@ -1523,7 +1523,7 @@ import Testing
     }
     
     @Test
-    func replacingElementsWithElements() {
+    func replacingElementsWithElements() async {
         // replacing with empty collection
         
         #expect([""].replacing(elementsIn: [], with: []) == [""])
@@ -1648,7 +1648,7 @@ import Testing
     // MARK: - String Collection Duplicates
     
     @Test
-    func stringCollection_caseInsensitiveRemovingDuplicates() {
+    func stringCollection_caseInsensitiveRemovingDuplicates() async {
         #expect(["", ""].caseInsensitiveRemovingDuplicates() == [""])
         #expect(["a", "a"].caseInsensitiveRemovingDuplicates() == ["a"])
         #expect(["a", "A"].caseInsensitiveRemovingDuplicates() == ["a"])
@@ -1657,7 +1657,7 @@ import Testing
     }
     
     @Test(.enabled(ifLocaleIdentifierHasPrefix: "en"))
-    func stringCollection_localizedRemovingDuplicates() throws {
+    func stringCollection_localizedRemovingDuplicates() async throws {
         #expect(["", ""].localizedRemovingDuplicates() == [""])
         #expect(["a", "a"].localizedRemovingDuplicates() == ["a"])
         #expect(["a", "A"].localizedRemovingDuplicates() == ["a", "A"])
@@ -1669,7 +1669,7 @@ import Testing
     }
     
     @Test(.enabled(ifLocaleIdentifierHasPrefix: "en"))
-    func stringCollection_localizedCaseInsensitiveRemovingDuplicates() throws {
+    func stringCollection_localizedCaseInsensitiveRemovingDuplicates() async throws {
         #expect(["", ""].localizedCaseInsensitiveRemovingDuplicates() == [""])
         #expect(["a", "a"].localizedCaseInsensitiveRemovingDuplicates() == ["a"])
         #expect(["a", "A"].localizedCaseInsensitiveRemovingDuplicates() == ["a"])
@@ -1681,7 +1681,7 @@ import Testing
     }
     
     @Test(.enabled(ifLocaleIdentifierHasPrefix: "en"))
-    func stringCollection_localizedStandardRemovingDuplicates() throws {
+    func stringCollection_localizedStandardRemovingDuplicates() async throws {
         #expect(["", ""].localizedStandardRemovingDuplicates() == [""])
         #expect(["a", "a"].localizedStandardRemovingDuplicates() == ["a"])
         #expect(["a", "A"].localizedStandardRemovingDuplicates() == ["a", "A"])
@@ -1695,7 +1695,7 @@ import Testing
     // MARK: - .mapKeys
     
     @Test
-    func dictionary_mapKeys_SameTypes() {
+    func dictionary_mapKeys_SameTypes() async {
         let dict = [
             "One": 1,
             "Two": 2
@@ -1715,7 +1715,7 @@ import Testing
     }
     
     @Test
-    func dictionary_mapKeys_DifferentTypes() {
+    func dictionary_mapKeys_DifferentTypes() async {
         struct MyKey: Equatable, Hashable {
             var name: String
         }
@@ -1741,7 +1741,7 @@ import Testing
     // MARK: - .mapDictionary
     
     @Test
-    func dictionary_mapDictionary_SameTypes() {
+    func dictionary_mapDictionary_SameTypes() async {
         let dict = [
             "One": 1,
             "Two": 2
@@ -1761,7 +1761,7 @@ import Testing
     }
     
     @Test
-    func dictionary_mapDictionary_DifferentTypes() {
+    func dictionary_mapDictionary_DifferentTypes() async {
         struct MyKey: Equatable, Hashable {
             var name: String
         }
@@ -1805,7 +1805,7 @@ import Testing
     // MARK: - .compactMapDictionary
     
     @Test
-    func dictionary_compactMapDictionary_SameTypes() {
+    func dictionary_compactMapDictionary_SameTypes() async {
         let dict = [
             "One": 1,
             "Two": 2,
@@ -1847,7 +1847,7 @@ import Testing
     }
     
     @Test
-    func dictionary_compactMapDictionary_DifferentTypes() {
+    func dictionary_compactMapDictionary_DifferentTypes() async {
         struct MyKey: Equatable, Hashable {
             var name: String
         }
@@ -1894,7 +1894,7 @@ import Testing
     }
     
     @Test
-    func sequence_mapDictionary() {
+    func sequence_mapDictionary() async {
         let array = [
             "1. One",
             "2. Two"
@@ -1914,7 +1914,7 @@ import Testing
     }
     
     @Test
-    func sequence_compactMapDictionary() {
+    func sequence_compactMapDictionary() async {
         let array = [
             "1. One",
             "2. Two",

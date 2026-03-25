@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_AppKit_NSScreen_Tests {
     @Test
-    func emptyTest() {
+    func emptyTest() async {
         // nothing to test here
     }
 }

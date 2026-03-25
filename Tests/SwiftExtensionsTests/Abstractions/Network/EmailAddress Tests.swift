@@ -11,7 +11,7 @@ import Testing
 
 @Suite struct Abstractions_EmailAddress_Tests {
     @Test
-    func isValid() {
+    func isValid() async {
         // see isValidEmailAddress method comments for email address formatting details
         
         #expect(!EmailAddress("").isValid)

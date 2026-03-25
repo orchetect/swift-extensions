@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_FloatingPointAndFoundation_Tests {
     @Test
-    func double_stringValueHighPrecision() {
+    func double_stringValueHighPrecision() async {
         #expect(Double(0.0).stringValueHighPrecision == "0")
         #expect(
             Double(0.1).stringValueHighPrecision
@@ -28,7 +28,7 @@ import Testing
     }
     
     @Test
-    func float_stringValueHighPrecision() {
+    func float_stringValueHighPrecision() async {
         // Float
         let float: Float = 3603.59999999999990905052982270717620849609375
         #expect(float.stringValueHighPrecision == "3603.60009765625")
@@ -41,7 +41,7 @@ import Testing
     }
      
     @Test
-    func cgFloat_stringValueHighPrecision() throws {
+    func cgFloat_stringValueHighPrecision() async throws {
         let cgfloat = try #require(CGFloat(exactly: 3603.59999999999990905052982270717620849609375))
         #expect(
             cgfloat.stringValueHighPrecision
@@ -50,7 +50,7 @@ import Testing
     }
     
     @Test
-    func double_stringDecimalPlaces() {
+    func double_stringDecimalPlaces() async {
         #expect(Double(1.62456).string(decimalPlaces: -1) == "2")
         #expect(Double(1.62456).string(decimalPlaces:  0) == "2")
         #expect(Double(1.62456).string(decimalPlaces:  1) == "1.6")
@@ -84,7 +84,7 @@ import Testing
     }
     
     @Test
-    func float_stringDecimalPlaces() {
+    func float_stringDecimalPlaces() async {
         #expect(Float(1.62456).string(decimalPlaces: 1) == "1.6")
         #expect(Float.nan.string(decimalPlaces: 2) == "nan")
         #expect(Float.signalingNaN.string(decimalPlaces: 2) == "nan")
@@ -95,7 +95,7 @@ import Testing
     // Float16 is available on Apple silicon, and unavailable on Intel when targeting macOS.
     // @available(macOS 11.0, macCatalyst 14.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
     // @Test
-    // func float16_stringDecimalPlaces() {
+    // func float16_stringDecimalPlaces() async {
     //     #expect(Float16(1.62456).string(decimalPlaces:  1) == "1.6")
     //     #expect(Float16.nan.string(decimalPlaces: 2) == "nan")
     //     #expect(Float16.signalingNaN.string(decimalPlaces: 2) == "nan")
@@ -105,7 +105,7 @@ import Testing
     
     #if !(arch(arm64) || arch(arm) || os(watchOS)) // Float80 is now removed for ARM
     @Test
-    func float80_stringDecimalPlaces() {
+    func float80_stringDecimalPlaces() async {
         // (we need more thorough unit test here for Float80 because it's internally using a custom
         // implementation)
         #expect(Float80(1.62456).string(decimalPlaces: -1) == "2")
@@ -141,7 +141,7 @@ import Testing
     #endif
     
     @Test
-    func cgFloat_stringDecimalPlaces() {
+    func cgFloat_stringDecimalPlaces() async {
         #expect(CGFloat(1.62456).string(decimalPlaces: 1) == "1.6")
         #expect(CGFloat.nan.string(decimalPlaces: 2) == "nan")
         #expect(CGFloat.signalingNaN.string(decimalPlaces: 2) == "nan")

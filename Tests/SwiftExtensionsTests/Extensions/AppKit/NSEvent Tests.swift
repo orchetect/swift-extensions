@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_AppKit_NSEvent_Tests {
     @MainActor @Test
-    func locationInView() throws {
+    func locationInView() async throws {
         let view = NSView(frame: NSRect())
         let subview = NSView(frame: NSRect())
         view.addSubview(subview)

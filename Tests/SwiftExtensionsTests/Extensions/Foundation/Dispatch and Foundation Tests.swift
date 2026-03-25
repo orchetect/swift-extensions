@@ -14,7 +14,7 @@ import Testing
     // MARK: - DispatchTimeInterval
     
     @Test
-    func dispatchTimeInterval_timeInterval() {
+    func dispatchTimeInterval_timeInterval() async {
         #expect(DispatchTimeInterval.seconds(2).timeInterval == 2.0)
         
         #expect(DispatchTimeInterval.milliseconds(250).timeInterval == 0.250)

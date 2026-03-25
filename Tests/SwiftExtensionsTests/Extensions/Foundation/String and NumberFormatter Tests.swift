@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_StringAndNumberFormatter_Tests {
     @Test
-    func stringInterpolationFormatter() {
+    func stringInterpolationFormatter() async {
         #expect("\(3, format: .ordinal)" == "3rd")
         #expect("\(3, format: .spellOut)" == "three")
     }

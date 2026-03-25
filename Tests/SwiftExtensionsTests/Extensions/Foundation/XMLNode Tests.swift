@@ -13,7 +13,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_XMLNode_Tests: XMLTestSuite {
     @Test
-    func xmlLoad() throws {
+    func xmlLoad() async throws {
         let loadxml = try Self.testXMLDocument()
         
         let root = loadxml.rootElement()
@@ -26,7 +26,7 @@ import Testing
     }
     
     @Test
-    func collection_FilterElementName() {
+    func collection_FilterElementName() async {
         // prep
         
         let nodes = [

@@ -18,7 +18,7 @@ import Foundation
     #if canImport(AppKit)
     /// This method used to test the swift-extensions property `nsPoint` which was removed in swift-extensions 1.7.9.
     @Test
-    func nsPoint() {
+    func nsPoint() async {
         // just to confirm that the compiler sees both types as the same
         let nsPoint: NSPoint = CGPoint(x: 1.23, y: 2.5) // .nsPoint
         
@@ -28,7 +28,7 @@ import Foundation
     #endif
     
     @Test
-    func inverted() {
+    func inverted() async {
         // zero
         
         #expect(
@@ -84,7 +84,7 @@ import Foundation
     }
     
     @Test
-    func cgPoint_distanceToOther() {
+    func cgPoint_distanceToOther() async {
         // 0 deg
         #expect(
             CGPoint(x: 0, y: 0).distance(to: CGPoint(x: 1, y: 0))
@@ -135,7 +135,7 @@ import Foundation
     }
     
     @Test
-    func cgPoint_angleToOther() {
+    func cgPoint_angleToOther() async {
         // 0deg/360deg origin is X:1, Y: 0
         // Degrees ascend counterclockwise
         
@@ -189,7 +189,7 @@ import Foundation
     }
     
     @Test
-    func cgPoint_cardinalAngleToOther() {
+    func cgPoint_cardinalAngleToOther() async {
         // 0deg/360deg origin is X:0, Y: 1 (Cardinal North)
         // Degrees ascend clockwise
         

@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct Abstractions_StringWrapped_Tests {
     @Test
-    func wrapped() {
+    func wrapped() async {
         // .wrapped
         
         #expect("string".wrapped(with: "-") == "-string-")
@@ -23,7 +23,7 @@ import Testing
     }
     
     @Test
-    func categoryMethods() {
+    func categoryMethods() async {
         #expect("string".parenthesized == "(string)")
         #expect("string".singleQuoted == "'string'")
         #expect("string".quoted == #""string""#)

@@ -12,17 +12,17 @@ import Testing
 
 @Suite struct Extensions_Darwin_FloatingPointAndDarwin_Tests {
     @Test
-    func ceiling() {
+    func ceiling() async {
         #expect(123.45.ceiling == 124.0)
     }
     
     @Test
-    func floor() {
+    func floor() async {
         #expect(123.45.floor == 123.0)
     }
     
     @Test
-    func power() {
+    func power() async {
         // Double
         #expect(2.0.power(3) == 8.0)
         
@@ -36,7 +36,7 @@ import Testing
     }
     
     @Test
-    func truncated() {
+    func truncated() async {
         // Double .truncated()
         
         #expect(1.1234.truncated(decimalPlaces: -1) == 1.0)
@@ -74,7 +74,7 @@ import Testing
     }
     
     @Test
-    func quotientAndRemainder() {
+    func quotientAndRemainder() async {
         let qr = 17.5.quotientAndRemainder(dividingBy: 5.0)
         
         #expect(qr.quotient == 3)
@@ -82,7 +82,7 @@ import Testing
     }
     
     @Test
-    func integralAndFraction() {
+    func integralAndFraction() async {
         let iaf = 17.5.integralAndFraction
         
         #expect(iaf.integral == 17)

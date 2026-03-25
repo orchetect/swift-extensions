@@ -22,7 +22,7 @@ extension UserDefaults {
 struct Extensions_Foundation_UserDefaults_Tests {
     let ud = UserDefaults.testSuite
     
-    init() throws {
+    init() async throws {
         // since we are accessing actual UserDefaults for these tests,
         // we need to ensure resiliency and do not mutate them
         
@@ -33,7 +33,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func optionalGetters() {
+    func optionalGetters() async {
         // push sample data to volatile user defaults
         
         // prep sample key/value data
@@ -74,7 +74,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_Defaulted_NoPreviousValue() {
+    func userDefaultsStorage_Defaulted_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "defaultedPref"
             
@@ -94,7 +94,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_Defaulted_HasPreviousValue() {
+    func userDefaultsStorage_Defaulted_HasPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "defaultedPref"
             
@@ -117,7 +117,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_NonDefaulted_NoPreviousValue() {
+    func userDefaultsStorage_NonDefaulted_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "nonDefaultedPref"
             
@@ -143,7 +143,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_NonDefaulted_HasPreviousValue() {
+    func userDefaultsStorage_NonDefaulted_HasPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "nonDefaultedPref"
             
@@ -172,7 +172,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_Defaulted_Clamped_NoPreviousValue() {
+    func userDefaultsStorage_Defaulted_Clamped_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "clampedPref"
             
@@ -213,7 +213,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_Defaulted_Clamped_HasPreviousValue() {
+    func userDefaultsStorage_Defaulted_Clamped_HasPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "clampedPref"
             
@@ -257,7 +257,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_Defaulted_Validated_NoPreviousValue() {
+    func userDefaultsStorage_Defaulted_Validated_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "validatedPref"
             
@@ -302,7 +302,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_Defaulted_Validated_HasPreviousValue() {
+    func userDefaultsStorage_Defaulted_Validated_HasPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "validatedPref"
             
@@ -350,7 +350,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_Defaulted_GetSet_NoPreviousValue() {
+    func userDefaultsStorage_Defaulted_GetSet_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "transformedPref"
             
@@ -382,7 +382,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_Defaulted_GetSet_HasPreviousValue() {
+    func userDefaultsStorage_Defaulted_GetSet_HasPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "transformedPref"
             
@@ -411,7 +411,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_NonDefaulted_GetSet_NoPreviousValue() {
+    func userDefaultsStorage_NonDefaulted_GetSet_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "nonDefaultedTransformedPref"
             
@@ -442,7 +442,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_NonDefaulted_GetSet_HasPreviousValue() {
+    func userDefaultsStorage_NonDefaulted_GetSet_HasPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "nonDefaultedTransformedPref"
             
@@ -471,7 +471,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_ComputedOnly_Generic() {
+    func userDefaultsStorage_ComputedOnly_Generic() async {
         struct DummyPrefs {
             static let prefKey = "computedOnlyPref"
             
@@ -500,7 +500,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_ComputedOnly_NoPreviousValue() {
+    func userDefaultsStorage_ComputedOnly_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "computedOnlyPref"
             
@@ -526,7 +526,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_ComputedOnly_Optional_NoPreviousValue() {
+    func userDefaultsStorage_ComputedOnly_Optional_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "computedOnlyOptionalPref"
             
@@ -557,7 +557,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_ComputedOnly_HasPreviousValue() {
+    func userDefaultsStorage_ComputedOnly_HasPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "computedOnlyPref"
             
@@ -586,7 +586,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_ComputedOnly_Optional_HasPreviousValue() {
+    func userDefaultsStorage_ComputedOnly_Optional_HasPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "computedOnlyOptionalPref"
             
@@ -628,7 +628,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_ComputedOnly_URL_HasPreviousValue() {
+    func userDefaultsStorage_ComputedOnly_URL_HasPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "urlPref"
             
@@ -666,7 +666,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     // MARK: URL
     
     @Test
-    func userDefaultsStorage_URL_Defaulted_NoPreviousValue() {
+    func userDefaultsStorage_URL_Defaulted_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "urlPref"
             
@@ -687,7 +687,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_URL_Defaulted_HasPreviousValue() {
+    func userDefaultsStorage_URL_Defaulted_HasPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "urlPref"
             
@@ -710,7 +710,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_URL_NonDefaulted_Optional_NoPreviousValue() {
+    func userDefaultsStorage_URL_NonDefaulted_Optional_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "urlPref"
             
@@ -741,7 +741,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_URL_NonDefaulted_Optional_HasPreviousValue() {
+    func userDefaultsStorage_URL_NonDefaulted_Optional_HasPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "urlPref"
             
@@ -777,7 +777,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     
     @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *) // needed for Date.advanced(by:)
     @Test
-    func userDefaultsStorage_Date_Defaulted_NoPreviousValue() {
+    func userDefaultsStorage_Date_Defaulted_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "datePref"
             
@@ -802,7 +802,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     // MARK: Double
     
     @Test
-    func userDefaultsStorage_Double_Defaulted_NoPreviousValue() {
+    func userDefaultsStorage_Double_Defaulted_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "doublePref"
             
@@ -825,7 +825,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     // MARK: Float
     
     @Test
-    func userDefaultsStorage_Float_Defaulted_NoPreviousValue() {
+    func userDefaultsStorage_Float_Defaulted_NoPreviousValue() async {
         struct DummyPrefs {
             static let prefKey = "floatPref"
             
@@ -848,7 +848,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     // MARK: Codable
     
     @Test
-    func userDefaultsStorage_Codable_NonDefaulted_Optional_NoPreviousValue() {
+    func userDefaultsStorage_Codable_NonDefaulted_Optional_NoPreviousValue() async {
         struct Prefs: Codable, Equatable {
             var someString: String
             var someInt: Int
@@ -894,7 +894,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     }
     
     @Test
-    func userDefaultsStorage_Codable_Defaulted_NoPreviousValue() {
+    func userDefaultsStorage_Codable_Defaulted_NoPreviousValue() async {
         struct Prefs: Codable, Equatable {
             var someString: String
             var someInt: Int
@@ -937,7 +937,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     /// Test that a primitive type that already conforms to Codable is stored normally and
     /// not by using the Codable inits on `@UserDefaultsStorage`.
     @Test
-    func userDefaultsStorage_String_NonCodable() {
+    func userDefaultsStorage_String_NonCodable() async {
         struct DummyPrefs {
             static let prefKey = "stringPref"
             
@@ -959,7 +959,7 @@ struct Extensions_Foundation_UserDefaults_Tests {
     /// Test that a primitive type that already conforms to Codable is stored normally and
     /// not by using the Codable inits on `@UserDefaultsStorage`.
     @Test
-    func userDefaultsStorage_String_Optional_NonCodable() {
+    func userDefaultsStorage_String_Optional_NonCodable() async {
         struct DummyPrefs {
             static let prefKey = "stringPref"
             

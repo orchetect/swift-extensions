@@ -12,14 +12,14 @@ import Testing
 
 @Suite struct Extensions_Foundation_Progress_Tests {
     @Test
-    func progressParent_Nil() {
+    func progressParent_Nil() async {
         let empty = Progress()
         
         #expect(empty.parent == nil)
     }
     
     @Test
-    func progressParent() {
+    func progressParent() async {
         let master = Progress()
         let child1 = Progress(totalUnitCount: 10, parent: master, pendingUnitCount: 10)
         let child2 = Progress(totalUnitCount: 10, parent: master, pendingUnitCount: 10)
@@ -29,14 +29,14 @@ import Testing
     }
     
     @Test
-    func progressChildren_Empty() {
+    func progressChildren_Empty() async {
         let empty = Progress()
         
         #expect(empty.children == [])
     }
     
     @Test
-    func progressChildren() {
+    func progressChildren() async {
         let master = Progress()
         let child1 = Progress(totalUnitCount: 10, parent: master, pendingUnitCount: 10)
         let child2 = Progress(totalUnitCount: 10, parent: master, pendingUnitCount: 10)
@@ -45,7 +45,7 @@ import Testing
     }
     
     @Test
-    func parent_Memory() {
+    func parent_Memory() async {
         class Foo {
             weak var master: Progress?
             weak var child1: Progress?
@@ -82,7 +82,7 @@ import Testing
     }
     
     @Test
-    func children_Memory() {
+    func children_Memory() async {
         class Foo {
             var master: Progress!
             weak var child1: Progress?

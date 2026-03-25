@@ -13,7 +13,7 @@ import Testing
 @Suite struct Extensions_Darwin_Timespec_Tests {
     @available(macOS 10.12, iOS 10.0, tvOS 10.0, watchOS 3.0, *)
     @Test
-    func clock_gettime_monotonic_rawTest() {
+    func clock_gettime_monotonic_rawTest() async {
         let uptime = clock_gettime_monotonic_raw()
         
         #expect(uptime.tv_sec > 0)
@@ -21,7 +21,7 @@ import Testing
     }
     
     @Test
-    func timespec_inits() {
+    func timespec_inits() async {
         // (seconds:)
         
         let ts = timespec(seconds: 1.234_567_891)
@@ -31,7 +31,7 @@ import Testing
     }
     
     @Test
-    func timespecOperators() {
+    func timespecOperators() async {
         // assuming all tv_sec and tv_nsec values are positive integers when forming original
         // timespec()'s
         
@@ -91,7 +91,7 @@ import Testing
     }
     
     @Test
-    func timespecOperators_Boundaries() {
+    func timespecOperators_Boundaries() async {
         // - boundaries
         
         for x in Array(0 ... 10) + Array(999_999_990 ... 999_999_999) {
@@ -112,7 +112,7 @@ import Testing
     }
     
     @Test
-    func timespecEquatable() {
+    func timespecEquatable() async {
         // basic
         
         #expect(
@@ -137,7 +137,7 @@ import Testing
     }
     
     @Test
-    func timespecComparable() {
+    func timespecComparable() async {
         // basic - identical values
         
         #expect(!(

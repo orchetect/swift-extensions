@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct Extensions_Swift_Bool_Tests {
     @Test
-    func toInt() {
+    func toInt() async {
         // Bool
 
         #expect(true.intValue == 1)
@@ -36,13 +36,13 @@ import Testing
     }
 
     @Test
-    func toggled() {
+    func toggled() async {
         #expect(true.toggled() == false)
         #expect(false.toggled() == true)
     }
 
     @Test
-    func expressibleByIntegerLiteral() {
+    func expressibleByIntegerLiteral() async {
         #expect(Bool(-1) == false)
         #expect(Bool(integerLiteral: 0) == false)  // same as b: Bool = 0
         #expect(Bool(0) == false)
@@ -65,7 +65,7 @@ import Testing
         _ = b // silences 'variable was written to, but never read' warning
     }
 
-    func binaryIntegerBoolValue() {
+    func binaryIntegerBoolValue() async {
         #expect((-1).boolValue == false)
         #expect(0.boolValue == false)
         #expect(1.boolValue == true)

@@ -117,7 +117,7 @@ import TestingExtensions
     }
     
     @Test
-    func syncReturnValue() {
+    func syncReturnValue() async {
         let returnValue = DispatchGroup.sync { g in
             DispatchQueue.global().asyncAfter(deadline: .now() + .milliseconds(100)) {
                 g.leave(withValue: 1)
@@ -128,7 +128,7 @@ import TestingExtensions
     }
     
     @Test
-    func syncReturnValueOnQueue() {
+    func syncReturnValueOnQueue() async {
         let returnValue: Int = DispatchGroup.sync(asyncOn: .global()) { g in
             sleep(0.1)
             g.leave(withValue: 1)
@@ -138,7 +138,7 @@ import TestingExtensions
     }
     
     @Test
-    func syncReturnValueTimeout_timedOut() {
+    func syncReturnValueTimeout_timedOut() async {
         let result = DispatchGroup.sync(timeout: .milliseconds(100)) { g in
             DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(5)) {
                 g.leave(withValue: 1)
@@ -155,7 +155,7 @@ import TestingExtensions
     }
     
     @Test
-    func syncReturnValueTimeout_success() {
+    func syncReturnValueTimeout_success() async {
         let result = DispatchGroup.sync(timeout: .milliseconds(500)) { g in
             DispatchQueue.global().async() {
                 g.leave(withValue: 1)
@@ -172,7 +172,7 @@ import TestingExtensions
     }
     
     @Test
-    func syncReturnValueOnQueueTimeout_timedOut() {
+    func syncReturnValueOnQueueTimeout_timedOut() async {
         let result: DispatchSyncTimeoutResult<Int> =
             DispatchGroup.sync(
                 asyncOn: .global(),
@@ -192,7 +192,7 @@ import TestingExtensions
     }
     
     @Test
-    func syncReturnValueOnQueueTimeout_success() {
+    func syncReturnValueOnQueueTimeout_success() async {
         let result: DispatchSyncTimeoutResult<Int> =
             DispatchGroup.sync(
                 asyncOn: .global(),
@@ -211,7 +211,7 @@ import TestingExtensions
     }
     
     @Test
-    func nesting() {
+    func nesting() async {
         var val = 0
         
         var to1: DispatchTimeoutResult?

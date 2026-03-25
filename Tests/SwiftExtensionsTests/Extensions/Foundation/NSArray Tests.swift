@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_NSArray_Tests {
     @Test
-    func nsArray_SafeIndexSubscript_Get() {
+    func nsArray_SafeIndexSubscript_Get() async {
         let nsArr = [1, 2, 3] as NSArray
         
         #expect(nsArr[safe: -1] as? Int == nil)
@@ -37,7 +37,7 @@ import Testing
     }
     
     @Test
-    func nsMutableArray_SafeIndexSubscript_Get() {
+    func nsMutableArray_SafeIndexSubscript_Get() async {
         let nsArr = [1, 2, 3] as NSMutableArray
         
         #expect(nsArr[safe: -1] as? Int == nil)
@@ -62,7 +62,7 @@ import Testing
     }
     
     @Test
-    func nsMutableArray_SafeMutableIndexSubscript() {
+    func nsMutableArray_SafeMutableIndexSubscript() async {
         // get
         
         let nsArr = [1, 2, 3] as NSMutableArray
@@ -87,7 +87,7 @@ import Testing
     }
     
     @Test
-    func nsMutableArray_SafeIndexSubscript_Modify() {
+    func nsMutableArray_SafeIndexSubscript_Modify() async {
         struct Foo {
             var value: Int = 0
         }

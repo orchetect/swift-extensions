@@ -11,7 +11,7 @@ import Testing
 
 @Suite struct Abstractions_IPAddress_Tests {
     @Test
-    func ipAddress() {
+    func ipAddress() async {
         // MARK: IPv4
         
         // valid unspecified

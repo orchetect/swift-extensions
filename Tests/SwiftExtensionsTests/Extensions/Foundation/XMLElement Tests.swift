@@ -13,7 +13,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_XMLElement_Tests: XMLTestSuite {
     @Test
-    func ancestors_notIncludingSelf() throws {
+    func ancestors_notIncludingSelf() async throws {
         let loadxml = try Self.testXMLDocument()
         
         let tracklist = try Self.child(of: loadxml, named: "tracklist2")
@@ -28,7 +28,7 @@ import Testing
     }
     
     @Test
-    func ancestors_IncludingSelf() throws {
+    func ancestors_IncludingSelf() async throws {
         let loadxml = try Self.testXMLDocument()
         
         let tracklist = try Self.child(of: loadxml, named: "tracklist2")
@@ -43,7 +43,7 @@ import Testing
     }
     
     @Test
-    func collection_XMLNode_FilterAttribute() throws {
+    func collection_XMLNode_FilterAttribute() async throws {
         // prep
         
         let nodes = try [
@@ -67,7 +67,7 @@ import Testing
     }
     
     @Test
-    func collection_XMLNode_Lazy_FilterAttribute() throws {
+    func collection_XMLNode_Lazy_FilterAttribute() async throws {
         // prep
         
         let nodes = try [
@@ -92,7 +92,7 @@ import Testing
     }
     
     @Test
-    func firstWithAttribute() throws {
+    func firstWithAttribute() async throws {
         let loadxml = try Self.testXMLDocument()
         
         let tracklist = try Self.child(of: loadxml, named: "tracklist2")
@@ -109,7 +109,7 @@ import Testing
     }
     
     @Test
-    func firstWhereAnyAttribute() throws {
+    func firstWhereAnyAttribute() async throws {
         let loadxml = try Self.testXMLDocument()
         
         let tracklist = try Self.child(of: loadxml, named: "tracklist2")
@@ -125,7 +125,7 @@ import Testing
     }
     
     @Test
-    func xmlElement_StringValueForAttribute() throws {
+    func xmlElement_StringValueForAttribute() async throws {
         let node = XMLNode(kind: .element)
         
         let attr = XMLNode(kind: .attribute)
@@ -138,7 +138,7 @@ import Testing
     }
     
     @Test
-    func xmlElement_ObjectValueForAttribute() throws {
+    func xmlElement_ObjectValueForAttribute() async throws {
         let node = XMLNode(kind: .element)
         
         let attr = XMLNode(kind: .attribute)
@@ -151,7 +151,7 @@ import Testing
     }
     
     @Test
-    func xmlElement_AddAttributeWithNameValue() {
+    func xmlElement_AddAttributeWithNameValue() async {
         let element = XMLElement(name: "test")
         
         element.addAttribute(withName: "key1", value: "value1")
@@ -163,7 +163,7 @@ import Testing
     }
     
     @Test
-    func xmlElement_GetBool() {
+    func xmlElement_GetBool() async {
         let element = XMLElement(name: "testname", attributes: [
             ("key1", "1"),
             ("key2", "0"),
@@ -180,7 +180,7 @@ import Testing
     }
     
     @Test
-    func xmlElement_SetBool() {
+    func xmlElement_SetBool() async {
         let element = XMLElement(name: "testname")
         
         element.set(bool: true, forAttribute: "key1", useInt: false)
@@ -200,7 +200,7 @@ import Testing
     }
     
     @Test
-    func xmlElement_SetBool_removeIfDefault() {
+    func xmlElement_SetBool_removeIfDefault() async {
         let element = XMLElement(name: "testname")
         
         // default true
@@ -276,7 +276,7 @@ import Testing
     }
     
     @Test
-    func xmlElement_GetInt() {
+    func xmlElement_GetInt() async {
         let element = XMLElement(name: "testname", attributes: [
             ("key1", "0"),
             ("key2", "1"),
@@ -295,7 +295,7 @@ import Testing
     }
     
     @Test
-    func xmlElement_SetInt() {
+    func xmlElement_SetInt() async {
         let element = XMLElement(name: "testname")
         
         element.set(int: 0, forAttribute: "key1")
@@ -315,7 +315,7 @@ import Testing
     }
     
     @Test
-    func xmlElement_GetURL() {
+    func xmlElement_GetURL() async {
         let element = XMLElement(name: "testname", attributes: [
             ("key1", "file:///Users/user/Desktop/"),
             ("key2", "https://www.google.com"),
@@ -328,7 +328,7 @@ import Testing
     }
     
     @Test
-    func xmlElement_SetURL() {
+    func xmlElement_SetURL() async {
         let element = XMLElement(name: "testname")
         
         element.set(url: URL(string: "file:///Users/user/Desktop/")!, forAttribute: "key1")
@@ -348,7 +348,7 @@ import Testing
     }
     
     @Test
-    func addChildren() {
+    func addChildren() async {
         let element = XMLElement(name: "testname")
         
         #expect(element.childCount == 0)
@@ -368,7 +368,7 @@ import Testing
     }
     
     @Test
-    func removeChildren_WherePredicate() {
+    func removeChildren_WherePredicate() async {
         let element = XMLElement(name: "testname")
         
         let child1 = XMLElement(name: "child1", attributes: [("value", "123")])
@@ -390,7 +390,7 @@ import Testing
     }
     
     @Test
-    func removeAllChildren() {
+    func removeAllChildren() async {
         let element = XMLElement(name: "testname")
         
         let child1 = XMLElement(name: "child1", attributes: [("value", "123")])
@@ -408,7 +408,7 @@ import Testing
     }
     
     @Test
-    func xmlElement_InitNameAttributes() {
+    func xmlElement_InitNameAttributes() async {
         let element = XMLElement(name: "testname", attributes: [
             ("key1", "value1"),
             ("key2", "value2")

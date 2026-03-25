@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_TimespecAndTimeInterval_Tests {
     @Test
-    func timespec_inits() {
+    func timespec_inits() async {
         // timespec(_ interval:)
         
         let ts = timespec(TimeInterval(2.987_654_321))
@@ -21,7 +21,7 @@ import Testing
     }
     
     @Test
-    func timespec_doubleValue() {
+    func timespec_doubleValue() async {
         // timespec.doubleValue
         
         var ts = timespec(tv_sec: 1, tv_nsec: 234_567_891)

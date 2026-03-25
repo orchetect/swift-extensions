@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct Extensions_Swift_Ranges_Tests {
     @Test
-    func isContained_InRange() {
+    func isContained_InRange() async {
         // int
         
         #expect(0.isContained(in: 1 ... 4) == false)
@@ -73,7 +73,7 @@ import Testing
     }
     
     @Test
-    func closedRange_contains_ClosedRange() {
+    func closedRange_contains_ClosedRange() async {
         #expect((1 ... 10).contains(1 ...  1))
         #expect((1 ... 10).contains(3 ... 7))
         #expect((1 ... 10).contains(1 ... 10))
@@ -91,7 +91,7 @@ import Testing
     }
     
     @Test
-    func closedRange_contains_Range() {
+    func closedRange_contains_Range() async {
         #expect(!(1 ... 10).contains(1 ..<  1)) // empty, but in range
         #expect((1 ... 10).contains(1 ..< 10)) // 1...9
         #expect((1 ... 10).contains(3 ..< 8)) // 3...7
@@ -111,7 +111,7 @@ import Testing
     }
     
     @Test
-    func range_contains_ClosedRange() {
+    func range_contains_ClosedRange() async {
         #expect((1 ..< 10).contains(1 ... 1))
         #expect((1 ..< 10).contains(3 ... 7))
         #expect((1 ..< 10).contains(1 ... 9))
@@ -131,7 +131,7 @@ import Testing
     }
     
     @Test
-    func range_contains_Range() {
+    func range_contains_Range() async {
         #expect(!(1 ..< 10).contains(1 ..< 1)) // empty
         #expect((1 ..< 10).contains(3 ..< 8)) // 3...7
         #expect((1 ..< 10).contains(1 ..< 10)) // identical
@@ -159,7 +159,7 @@ import Testing
     }
     
     @Test
-    func partialRangeFrom_contains_ClosedRange() {
+    func partialRangeFrom_contains_ClosedRange() async {
         #expect(((-1)...).contains(1 ... 10))
         #expect((0...).contains(1 ... 10))
         #expect((1...).contains(1 ... 10))
@@ -177,7 +177,7 @@ import Testing
     }
     
     @Test
-    func partialRangeFrom_contains_Range() {
+    func partialRangeFrom_contains_Range() async {
         #expect(((-1)...).contains(1 ..< 10)) // 1...9
         #expect((0...).contains(1 ..< 10)) // 1...9
         #expect((1...).contains(1 ..< 10)) // 1...9
@@ -195,7 +195,7 @@ import Testing
     }
     
     @Test
-    func partialRangeFrom_contains_PartialRangeFrom() {
+    func partialRangeFrom_contains_PartialRangeFrom() async {
         #expect(!(1...).contains((-1)...))
         #expect(!(1...).contains(0...))
         #expect((1...).contains(1...))
@@ -211,7 +211,7 @@ import Testing
     }
     
     @Test
-    func partialRangeThrough_contains_ClosedRange() {
+    func partialRangeThrough_contains_ClosedRange() async {
         #expect((...(-1)).contains(-10 ... -1))
         #expect(!(...(-1)).contains(1 ... 10))
         #expect(!(...0).contains(1 ... 10))
@@ -231,7 +231,7 @@ import Testing
     }
     
     @Test
-    func partialRangeThrough_contains_Range() {
+    func partialRangeThrough_contains_Range() async {
         #expect((...(-1)).contains(-10 ..< 0)) // -10 ... -1
         #expect(!(...(-1)).contains(1 ..< 10)) // 1...9
         #expect(!(...0).contains(1 ..< 10)) // 1...9
@@ -252,7 +252,7 @@ import Testing
     }
 
     @Test
-    func partialRangeThrough_contains_PartialRangeThrough() {
+    func partialRangeThrough_contains_PartialRangeThrough() async {
         #expect(!(...(-1)).contains(...1))
         #expect(!(...0).contains(...1))
         #expect((...1).contains(...1))
@@ -269,7 +269,7 @@ import Testing
     }
 
     @Test
-    func partialRangeThrough_contains_PartialRangeUpTo() {
+    func partialRangeThrough_contains_PartialRangeUpTo() async {
         #expect(!(...(-1)).contains(..<1))
         #expect(!(...0).contains(..<1))
         #expect(!(...1).contains(..<1))
@@ -286,7 +286,7 @@ import Testing
     }
     
     @Test
-    func partialRangeUpTo_contains_ClosedRange() {
+    func partialRangeUpTo_contains_ClosedRange() async {
         #expect((..<(-1)).contains(-10 ... -2))
         #expect(!(..<(-1)).contains(-10 ... -1))
         #expect(!(..<(-1)).contains(1 ... 10))
@@ -307,7 +307,7 @@ import Testing
     }
     
     @Test
-    func partialRangeUpTo_contains_Range() {
+    func partialRangeUpTo_contains_Range() async {
         #expect((..<(-1)).contains(-10 ..< -1)) // -10 ... -2
         #expect(!(..<(-1)).contains(-10 ..< 0))  // -10 ... -1
         #expect(!(..<(-1)).contains(1 ..< 10)) // 1...9
@@ -329,7 +329,7 @@ import Testing
     }
     
     @Test
-    func partialRangeUpTo_contains_PartialRangeThrough() {
+    func partialRangeUpTo_contains_PartialRangeThrough() async {
         #expect(!(..<(-1)).contains(...1))
         #expect(!(..<0).contains(...1))
         #expect(!(..<1).contains(...1))
@@ -346,7 +346,7 @@ import Testing
     }
     
     @Test
-    func partialRangeUpTo_contains_PartialRangeUpTo() {
+    func partialRangeUpTo_contains_PartialRangeUpTo() async {
         #expect(!(..<(-1)).contains(..<1))
         #expect(!(..<0).contains(..<1))
         #expect((..<1).contains(..<1))
@@ -363,7 +363,7 @@ import Testing
     }
     
     @Test
-    func number_ClampedTo_Ranges() {
+    func number_ClampedTo_Ranges() async {
         // .clamped(ClosedRange)
         
         #expect(5.clamped(to: 7 ... 10) == 7)
@@ -413,7 +413,7 @@ import Testing
     }
     
     @Test
-    func firstExcluding_ClosedRange() {
+    func firstExcluding_ClosedRange() async {
         // .first(excluding:) Generic Tests
         #expect((0 ... 10).first(excluding: [2, 5]) == 0)
         #expect((0 ... 10).first(excluding: [0, 2, 5]) == 1)
@@ -564,7 +564,7 @@ import Testing
     }
     
     @Test
-    func firstExcluding_Range() {
+    func firstExcluding_Range() async {
         // .first(excluding:) Generic Tests
         
         #expect((0 ..< 10).first(excluding: [2, 5]) == 0)
@@ -716,7 +716,7 @@ import Testing
     }
     
     @Test
-    func firstExcluding_PartialRangeFrom() {
+    func firstExcluding_PartialRangeFrom() async {
         // .first(excluding: [])
         #expect((1...).first(excluding: []) == 1)
         #expect((1...).first(excluding: [-1]) == 1)
@@ -792,7 +792,7 @@ import Testing
     }
     
     @Test
-    func closedRange_SplitEvery() {
+    func closedRange_SplitEvery() async {
         #expect((0 ... 10).split(every: -1) == [0 ... 10])
         #expect((0 ... 10).split(every: 0) == [0 ... 10])
         #expect(
@@ -809,7 +809,7 @@ import Testing
     }
     
     @Test
-    func range_SplitEvery() {
+    func range_SplitEvery() async {
         #expect((0 ..< 11).split(every: -1) == [0 ... 10])
         #expect((0 ..< 11).split(every:  0) == [0 ... 10])
         #expect(
@@ -826,7 +826,7 @@ import Testing
     }
     
     @Test
-    func absoluteBounds() {
+    func absoluteBounds() async {
         func bounds<R: RangeExpression>(of r: R) -> (min: R.Bound?, max: R.Bound?) where R.Bound: Strideable {
             r.getAbsoluteBounds()
         }
@@ -875,7 +875,7 @@ import Testing
     }
     
     @Test
-    func binaryIntegerRepeatEach() {
+    func binaryIntegerRepeatEach() async {
         // basic functionality
         
         var count = 0
@@ -890,7 +890,7 @@ import Testing
     }
     
     @Test
-    func closedRangeRepeatEach() {
+    func closedRangeRepeatEach() async {
         var count = 0
         (1 ... 5).repeatEach { count += 1 }
         #expect(count == 5)
@@ -907,7 +907,7 @@ import Testing
     }
     
     @Test
-    func rangeRepeatEach() {
+    func rangeRepeatEach() async {
         var count = 0
         (1 ..< 5).repeatEach { count += 1 }
         #expect(count == 4)

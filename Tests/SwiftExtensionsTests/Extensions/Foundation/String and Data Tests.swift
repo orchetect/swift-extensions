@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_StringAndData_Tests {
     @Test
-    func base64() throws {
+    func base64() async throws {
         // encode and decode
         
         let sourceString =

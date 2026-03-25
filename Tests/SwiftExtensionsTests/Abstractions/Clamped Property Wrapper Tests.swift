@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct Abstractions_Clamped_Tests {
     @Test
-    func clampedPropertyWrapper_ClosedRange() {
+    func clampedPropertyWrapper_ClosedRange() async {
         struct SomeStruct {
             @Clamped(to: 5 ... 10) var value = 1
         }
@@ -31,7 +31,7 @@ import Testing
     }
     
     @Test
-    func clampedPropertyWrapper_ClosedRange_EdgeCase() {
+    func clampedPropertyWrapper_ClosedRange_EdgeCase() async {
         struct SomeStruct {
             @Clamped(to: 5 ... 5) var value = 1
         }
@@ -50,7 +50,7 @@ import Testing
     }
     
     @Test
-    func clampedPropertyWrapper_Range() {
+    func clampedPropertyWrapper_Range() async {
         struct SomeStruct {
             @Clamped(to: 5 ..< 10) var value = 1
         }
@@ -72,7 +72,7 @@ import Testing
     }
     
     @Test
-    func clampedPropertyWrapper_Range_EdgeCase() {
+    func clampedPropertyWrapper_Range_EdgeCase() async {
         struct SomeStruct {
             @Clamped(to: 5 ..< 5) var value = 1
         }
@@ -94,7 +94,7 @@ import Testing
     }
     
     @Test
-    func clampedPropertyWrapper_PartialRangeUpTo() {
+    func clampedPropertyWrapper_PartialRangeUpTo() async {
         struct SomeStruct {
             @Clamped(to: ..<10) var value = 15
         }
@@ -116,7 +116,7 @@ import Testing
     }
     
     @Test
-    func clampedPropertyWrapper_PartialRangeUpTo_EdgeCase() {
+    func clampedPropertyWrapper_PartialRangeUpTo_EdgeCase() async {
         struct SomeStruct {
             @Clamped(to: ..<Int.min) var value = 15
         }
@@ -127,7 +127,7 @@ import Testing
     }
     
     @Test
-    func clampedPropertyWrapper_PartialRangeThrough() {
+    func clampedPropertyWrapper_PartialRangeThrough() async {
         struct SomeStruct {
             @Clamped(to: ...10) var value = 15
         }
@@ -149,7 +149,7 @@ import Testing
     }
     
     @Test
-    func clampedPropertyWrapper_PartialRangeThrough_EdgeCase1() {
+    func clampedPropertyWrapper_PartialRangeThrough_EdgeCase1() async {
         struct SomeStruct {
             @Clamped(to: ...Int.min) var value = 15
         }
@@ -162,7 +162,7 @@ import Testing
     }
     
     @Test
-    func clampedPropertyWrapper_PartialRangeThrough_EdgeCase2() {
+    func clampedPropertyWrapper_PartialRangeThrough_EdgeCase2() async {
         struct SomeStruct {
             @Clamped(to: ...Int.max) var value = 15
         }
@@ -178,7 +178,7 @@ import Testing
     }
     
     @Test
-    func clampedPropertyWrapper_PartialRangeFrom() {
+    func clampedPropertyWrapper_PartialRangeFrom() async {
         struct SomeStruct {
             @Clamped(to: 10...) var value = 2
         }
@@ -200,7 +200,7 @@ import Testing
     }
     
     @Test
-    func clampedPropertyWrapper_PartialRangeFrom_EdgeCase() {
+    func clampedPropertyWrapper_PartialRangeFrom_EdgeCase() async {
         struct SomeStruct {
             @Clamped(to: Int.max...) var value = 2
         }

@@ -12,27 +12,27 @@ import Testing
 
 @Suite struct Extensions_AppKit_NSControl_Tests {
     @Test
-    func bool_stateValue() {
+    func bool_stateValue() async {
         #expect(true.stateValue == .on)
         #expect(false.stateValue == .off)
     }
     
     @Test
-    func stateValue_prefixOperator_Not() {
+    func stateValue_prefixOperator_Not() async {
         #expect(!NSControl.StateValue.on == .off)
         #expect(!NSControl.StateValue.off == .on)
         #expect(!NSControl.StateValue.mixed == .off)
     }
     
     @Test
-    func stateValue_toggled() {
+    func stateValue_toggled() async {
         #expect(NSControl.StateValue.on.toggled() == .off)
         #expect(NSControl.StateValue.off.toggled() == .on)
         #expect(NSControl.StateValue.mixed.toggled() == .off)
     }
     
     @Test
-    func stateValue_toggle() {
+    func stateValue_toggle() async {
         var stateValue: NSControl.StateValue
         
         stateValue = .on

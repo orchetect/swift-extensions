@@ -170,7 +170,7 @@ import System
     
     #if os(macOS)
     @Test
-    func canonicalizeIfPossible_partial() throws {
+    func canonicalizeIfPossible_partial() async throws {
         let uniqueName = "\(UUID().uuidString)"
         
         // `/Users` exists on disk, but the child path component does not.
@@ -223,7 +223,7 @@ import System
     
     #if os(macOS)
     @Test
-    func canonicalized_partial() throws {
+    func canonicalized_partial() async throws {
         let uniqueName = "\(UUID().uuidString)"
         
         // `/Users` exists on disk, but the child path component does not.
@@ -239,7 +239,7 @@ import System
     
     #if os(macOS)
     @Test
-    func canonicalizedIfPossible_partial() throws {
+    func canonicalizedIfPossible_partial() async throws {
         let uniqueName = "\(UUID().uuidString)"
         
         // `/Users` exists on disk, but the child path component does not.

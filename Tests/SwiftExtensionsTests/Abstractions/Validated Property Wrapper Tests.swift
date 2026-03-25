@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct Abstractions_Validated_Tests {
     @Test
-    func validated() {
+    func validated() async {
         struct SomeStruct {
             @Validated({
                 $0.clamped(to: 5 ... 10)

@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct Abstractions_ZeroIndexedCollection_Tests {
     @Test
-    func zeroIndexedCollection() {
+    func zeroIndexedCollection() async {
         let arr = ["A", "B", "C"]
         let filtered = arr.lazy.filter { $0 != "A" }
         
@@ -22,7 +22,7 @@ import Testing
     }
     
     @Test
-    func zeroIndexedMutableCollection() {
+    func zeroIndexedMutableCollection() async {
         var coll = ZeroIndexedMutableCollection(["A", "B", "C"][1...])
         
         #expect(!coll.isEmpty)
@@ -51,7 +51,7 @@ import Testing
     }
     
     @Test
-    func zeroIndexedRangeReplaceableCollection() {
+    func zeroIndexedRangeReplaceableCollection() async {
         var coll = ZeroIndexedRangeReplaceableCollection(["A", "B", "C", "D", "E"][1...])
         
         #expect(!coll.isEmpty)

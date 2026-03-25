@@ -23,19 +23,19 @@ import Testing
     }
     
     @Test
-    func resultSuccessValue() {
+    func resultSuccessValue() async {
         #expect(doStuff(true).successValue == "we succeeded")
         #expect(doStuff(true).successValue != "blah blah")
     }
     
     @Test
-    func resultFailureValue() {
+    func resultFailureValue() async {
         #expect(doStuff(false).failureValue == .short)
         #expect(doStuff(false).failureValue != .simple)
     }
     
     @Test
-    func resultIsSuccess() {
+    func resultIsSuccess() async {
         #expect(doStuff(true).isSuccess)
         #expect(!doStuff(false).isSuccess)
     }

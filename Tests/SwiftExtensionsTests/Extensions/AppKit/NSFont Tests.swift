@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_AppKit_NSFont_Tests {
     @Test
-    func cgFont() {
+    func cgFont() async {
         let nsFont = NSFont.systemFont(ofSize: 10)
         
         let cgFont = nsFont.cgFont

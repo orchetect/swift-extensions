@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct Abstractions_CollectionSetLikeMethods_Tests {
     @Test
-    func arraySetFunctionality_Insert() {
+    func arraySetFunctionality_Insert() async {
         // .insert
         
         var arr = [1, 2, 3]
@@ -28,7 +28,7 @@ import Testing
     }
     
     @Test
-    func arraySetFunctionality_Update_UniqueAssociatedValues() {
+    func arraySetFunctionality_Update_UniqueAssociatedValues() async {
         // .update
         
         var arr: [FooEnum] = [.foo(1), .foo(2), .foo(3)]
@@ -53,7 +53,7 @@ import Testing
     }
     
     @Test
-    func arraySetFunctionality_Update_NonUniqueAssociatedValues() {
+    func arraySetFunctionality_Update_NonUniqueAssociatedValues() async {
         // .update
         
         var arr: [FooEnum] = [.foo(1), .fooB(1), .one]
@@ -114,7 +114,7 @@ import Testing
     }
     
     @Test
-    func arraySetFunctionality_RemoveAll() {
+    func arraySetFunctionality_RemoveAll() async {
         // .removeAll
         
         var arr = [1, 1, 2, 2, 3, 3]
@@ -124,7 +124,7 @@ import Testing
     }
     
     @Test
-    func arraySetFunctionality_Union() {
+    func arraySetFunctionality_Union() async {
         // .union
         
         var arr1: [FooEnum] = []

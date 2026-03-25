@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Extensions_Foundation_CharacterSet_Tests {
     @Test
-    func initCharactersArray() {
+    func initCharactersArray() async {
         let chars: [Character] = ["a", "á", "e", "ö", "1", "%", "😄", "👨‍👩‍👦"]
         
         let cs = CharacterSet(chars)
@@ -26,7 +26,7 @@ import Testing
     }
     
     @Test
-    func initCharactersVariadic() {
+    func initCharactersVariadic() async {
         let chars: [Character] = ["a", "á", "e", "ö", "1", "%", "😄", "👨‍👩‍👦"]
         
         // variadic parameter
@@ -41,7 +41,7 @@ import Testing
     }
     
     @Test
-    func containsCharacter() {
+    func containsCharacter() async {
         let charset = CharacterSet.alphanumerics
         
         let a: Character = "a"
@@ -54,7 +54,7 @@ import Testing
     }
     
     @Test
-    func operators() {
+    func operators() async {
         // +
         
         let added: CharacterSet = .letters + .decimalDigits
@@ -91,7 +91,7 @@ import Testing
     }
     
     @Test
-    func consonants() {
+    func consonants() async {
         // random sampling of test characters
         let matchingChars = "bckmzBCKMZĜǧ"
         
@@ -108,7 +108,7 @@ import Testing
     }
     
     @Test
-    func vowels() {
+    func vowels() async {
         // random sampling of test characters
         let matchingChars = "aeiouàëïöùAEIOUÀËÏÖÙ"
         
@@ -125,7 +125,7 @@ import Testing
     }
     
     @Test
-    func lowercaseVowels() {
+    func lowercaseVowels() async {
         // random sampling of test characters
         let matchingChars = "aeiouàëïöù"
         
@@ -142,7 +142,7 @@ import Testing
     }
     
     @Test
-    func uppercaseVowels() {
+    func uppercaseVowels() async {
         // random sampling of test characters
         let matchingChars = "AEIOUÀËÏÖÙ"
         

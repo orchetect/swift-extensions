@@ -10,7 +10,7 @@ import Testing
 
 @Suite struct Extensions_Swift_FloatingPoint_Tests {
     @Test
-    func typeConversions_FloatsToInts() {
+    func typeConversions_FloatsToInts() async {
         // Double
         
         let double = 123.456
@@ -163,7 +163,7 @@ import Testing
     }
     
     @Test
-    func boolValue() {
+    func boolValue() async {
         // double
         #expect(Double(-1.0).boolValue == false)
         #expect(Double(0.0).boolValue == false)
@@ -204,7 +204,7 @@ import Testing
     }
     
     @Test
-    func rounded() {
+    func rounded() async {
         // Double .rounded(decimalPlaces:)
         
         #expect(Double(1.62456).rounded(decimalPlaces: -1) == 2.0)
@@ -249,7 +249,7 @@ import Testing
     }
     
     @Test
-    func round() {
+    func round() async {
         // Double .round(decimalPlaces:)
         
         var dbl = 0.1264
@@ -262,7 +262,7 @@ import Testing
     }
     
     @Test
-    func wrappingNumbers() {
+    func wrappingNumbers() async {
         // ClosedRange
         
         // single value ranges
@@ -385,7 +385,7 @@ import Testing
     }
     
     @Test
-    func degreesToRadians() {
+    func degreesToRadians() async {
         // Double
         #expect(360.0.degreesToRadians == 6.28318530717958647693)
         #expect(6.28318530717958647693.radiansToDegrees == 360.0)
@@ -411,7 +411,7 @@ import Testing
     }
     
     @Test
-    func typeConversions_FloatsToString() {
+    func typeConversions_FloatsToString() async {
         #expect(Double(1.0).string == "1.0")
         #expect(Double.nan.string == "nan")
         #expect(Double.signalingNaN.string == "nan")
@@ -436,7 +436,7 @@ import Testing
     }
     
     @Test
-    func typeConversions_StringToFloats() {
+    func typeConversions_StringToFloats() async {
         // String
         
         let str = "1.0"

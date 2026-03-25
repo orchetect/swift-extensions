@@ -12,7 +12,7 @@ import Testing
 
 @Suite struct Abstractions_DateComponentsFromString_Tests {
     @Test
-    func dateComponents_Init_String() {
+    func dateComponents_Init_String() async {
         let parsed = DateComponents(fuzzy: "Mar 26, 2019")
         #expect(parsed?.year ==    2019)
         #expect(parsed?.month ==   3)
@@ -20,7 +20,7 @@ import Testing
     }
     
     @Test
-    func stringParsing() {
+    func stringParsing() async {
         var parsed: DateComponents?
         
         // test basic delimiters: space , . / \
@@ -211,7 +211,7 @@ import Testing
     #if compiler(>=6.2) // Swift 6.2 Foundation required
     @available(macOS 26.0, iOS 26.0, tvOS 26.0, watchOS 26.0, visionOS 26.0, *) // DateComponents(_, strategy:) requirement
     @Test
-    func dateComponentsParseStrategy() throws {
+    func dateComponentsParseStrategy() async throws {
         let parsed = try DateComponents("Mar 26, 2019", strategy: .fuzzyDate)
         #expect(parsed.year ==    2019)
         #expect(parsed.month ==   3)
@@ -221,7 +221,7 @@ import Testing
     
     @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     @Test
-    func dateParseStrategy() throws {
+    func dateParseStrategy() async throws {
         let parsed = try Date(
             "Mar 26, 2019",
             strategy: .fuzzyDate(calendar: .current, timeZone: .init(secondsFromGMT: 0)!)
@@ -230,7 +230,7 @@ import Testing
     }
     
     @Test
-    func dateComponents_StringWithMask() {
+    func dateComponents_StringWithMask() async {
         // empty/nil components
         
         #expect(

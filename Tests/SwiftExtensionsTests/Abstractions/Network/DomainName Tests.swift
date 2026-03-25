@@ -9,7 +9,7 @@ import Testing
 
 @Suite struct Abstractions_DomainNameTests {
     @Test
-    func initString_OneTLDComponent_NoPrefix() throws {
+    func initString_OneTLDComponent_NoPrefix() async throws {
         #expect(DomainName("apple.com").components == ["apple", "com"])
         #expect(DomainName("apple.com").string == "apple.com")
         
@@ -26,7 +26,7 @@ import Testing
     }
     
     @Test
-    func initString_OneTLDComponent_OnePrefix() throws {
+    func initString_OneTLDComponent_OnePrefix() async throws {
         #expect(DomainName("www.apple.com").components == ["www", "apple", "com"])
         #expect(DomainName("www.apple.com").string == "www.apple.com")
         
@@ -43,7 +43,7 @@ import Testing
     }
     
     @Test
-    func initString_OneTLDComponent_TwoPrefixes() throws {
+    func initString_OneTLDComponent_TwoPrefixes() async throws {
         #expect(DomainName("zzz.www.apple.com").components == ["zzz", "www", "apple", "com"])
         #expect(DomainName("zzz.www.apple.com").string == "zzz.www.apple.com")
         
@@ -60,7 +60,7 @@ import Testing
     }
     
     @Test
-    func initString_TwoTLDComponents_NoPrefix() throws {
+    func initString_TwoTLDComponents_NoPrefix() async throws {
         #expect(DomainName("apple.co.uk").components == ["apple", "co", "uk"])
         #expect(DomainName("apple.co.uk").string == "apple.co.uk")
         
@@ -77,7 +77,7 @@ import Testing
     }
     
     @Test
-    func initString_TwoTLDComponents_OnePrefix() throws {
+    func initString_TwoTLDComponents_OnePrefix() async throws {
         #expect(DomainName("www.apple.co.uk").components == ["www", "apple", "co", "uk"])
         #expect(DomainName("www.apple.co.uk").string == "www.apple.co.uk")
         
@@ -94,7 +94,7 @@ import Testing
     }
     
     @Test
-    func initString_TwoTLDComponents_TwoPrefixes() throws {
+    func initString_TwoTLDComponents_TwoPrefixes() async throws {
         #expect(DomainName("zzz.www.apple.co.uk").components == ["zzz", "www", "apple", "co", "uk"])
         #expect(DomainName("zzz.www.apple.co.uk").string == "zzz.www.apple.co.uk")
         
@@ -115,7 +115,7 @@ import Testing
     // TODO: In future, a validation mechanism or property could determine if a domain name is formatted correctly or not.
     /// Just verify edge case behavior.
     @Test
-    func initString_EdgeCases() throws {
+    func initString_EdgeCases() async throws {
         #expect(DomainName("").components == [])
         #expect(DomainName(" ").components == [" "])
         #expect(DomainName(".").components == [])
