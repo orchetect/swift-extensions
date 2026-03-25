@@ -247,6 +247,40 @@ import Testing
         #expect("tHE".lowercasingFirstCharacter() == "tHE")
     }
     
+    // MARK: - StringProtocol.lowercaseFirstCasedCharacter / lowercasingFirstCasedCharacter
+    
+    @Test
+    func lowercaseFirstCasedCharacter() async {
+        #expect({ var s = ""; s.lowercaseFirstCasedCharacter(); return s }() == "")
+        #expect({ var s = " "; s.lowercaseFirstCasedCharacter(); return s }() == " ")
+        #expect({ var s = "a"; s.lowercaseFirstCasedCharacter(); return s }() == "a")
+        #expect({ var s = "A"; s.lowercaseFirstCasedCharacter(); return s }() == "a")
+        #expect({ var s = " a"; s.lowercaseFirstCasedCharacter(); return s }() == " a")
+        #expect({ var s = " A"; s.lowercaseFirstCasedCharacter(); return s }() == " a")
+        #expect({ var s = "-A"; s.lowercaseFirstCasedCharacter(); return s }() == "-a")
+        #expect({ var s = "1A"; s.lowercaseFirstCasedCharacter(); return s }() == "1a")
+        #expect({ var s = "(A"; s.lowercaseFirstCasedCharacter(); return s }() == "(a")
+        #expect({ var s = "[A"; s.lowercaseFirstCasedCharacter(); return s }() == "[a")
+        #expect({ var s = "123_A"; s.lowercaseFirstCasedCharacter(); return s }() == "123_a")
+        #expect({ var s = "123AB4567"; s.lowercaseFirstCasedCharacter(); return s }() == "123aB4567")
+    }
+    
+    @Test
+    func lowercasingFirstCasedCharacter() async {
+        #expect("".lowercasingFirstCasedCharacter() == "")
+        #expect(" ".lowercasingFirstCasedCharacter() == " ")
+        #expect("a".lowercasingFirstCasedCharacter() == "a")
+        #expect("A".lowercasingFirstCasedCharacter() == "a")
+        #expect(" a".lowercasingFirstCasedCharacter() == " a")
+        #expect(" A".lowercasingFirstCasedCharacter() == " a")
+        #expect("-A".lowercasingFirstCasedCharacter() == "-a")
+        #expect("1A".lowercasingFirstCasedCharacter() == "1a")
+        #expect("(A".lowercasingFirstCasedCharacter() == "(a")
+        #expect("[A".lowercasingFirstCasedCharacter() == "[a")
+        #expect("123_A".lowercasingFirstCasedCharacter() == "123_a")
+        #expect("123AB4567".lowercasingFirstCasedCharacter() == "123aB4567")
+    }
+    
     // MARK: - StringProtocol.uppercaseFirstCharacter / uppercasingFirstCharacter
     
     @Test
@@ -285,5 +319,39 @@ import Testing
         #expect("The".uppercasingFirstCharacter() == "The")
         #expect("THE".uppercasingFirstCharacter() == "THE")
         #expect("tHE".uppercasingFirstCharacter() == "THE")
+    }
+    
+    // MARK: - StringProtocol.uppercaseFirstCasedCharacter / uppercasingFirstCasedCharacter
+    
+    @Test
+    func uppercaseFirstCasedCharacter() async {
+        #expect({ var s = ""; s.uppercaseFirstCasedCharacter(); return s }() == "")
+        #expect({ var s = " "; s.uppercaseFirstCasedCharacter(); return s }() == " ")
+        #expect({ var s = "a"; s.uppercaseFirstCasedCharacter(); return s }() == "A")
+        #expect({ var s = "A"; s.uppercaseFirstCasedCharacter(); return s }() == "A")
+        #expect({ var s = " a"; s.uppercaseFirstCasedCharacter(); return s }() == " A")
+        #expect({ var s = " A"; s.uppercaseFirstCasedCharacter(); return s }() == " A")
+        #expect({ var s = "-A"; s.uppercaseFirstCasedCharacter(); return s }() == "-A")
+        #expect({ var s = "1A"; s.uppercaseFirstCasedCharacter(); return s }() == "1A")
+        #expect({ var s = "(A"; s.uppercaseFirstCasedCharacter(); return s }() == "(A")
+        #expect({ var s = "[A"; s.uppercaseFirstCasedCharacter(); return s }() == "[A")
+        #expect({ var s = "123_A"; s.uppercaseFirstCasedCharacter(); return s }() == "123_A")
+        #expect({ var s = "123AB4567"; s.uppercaseFirstCasedCharacter(); return s }() == "123AB4567")
+    }
+    
+    @Test
+    func uppercasingFirstCasedCharacter() async {
+        #expect("".uppercasingFirstCasedCharacter() == "")
+        #expect(" ".uppercasingFirstCasedCharacter() == " ")
+        #expect("a".uppercasingFirstCasedCharacter() == "A")
+        #expect("A".uppercasingFirstCasedCharacter() == "A")
+        #expect(" a".uppercasingFirstCasedCharacter() == " A")
+        #expect(" A".uppercasingFirstCasedCharacter() == " A")
+        #expect("-A".uppercasingFirstCasedCharacter() == "-A")
+        #expect("1A".uppercasingFirstCasedCharacter() == "1A")
+        #expect("(A".uppercasingFirstCasedCharacter() == "(A")
+        #expect("[A".uppercasingFirstCasedCharacter() == "[A")
+        #expect("123_A".uppercasingFirstCasedCharacter() == "123_A")
+        #expect("123AB4567".uppercasingFirstCasedCharacter() == "123AB4567")
     }
 }
