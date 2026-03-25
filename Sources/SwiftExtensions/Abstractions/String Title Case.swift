@@ -6,16 +6,18 @@
 
 // MARK: - Title Case
 
-extension String {
-    /// Used by `titleCased`.
+extension StringProtocol {
+    /// Used by ``titleCased``.
     /// Private array of title case particles to leave as lowercase
-    private static let titleCasedParticles = [
-        "a", "an", "the",              // articles
-        "and", "but", "for",           // coordinating conjunctions
-        "at", "by", "of", "in", "on",  // prepositions
-        "to", "with",
-        "is"
-    ]
+    private static var titleCasedParticles: [Self] {
+        [
+            "a", "an", "the",              // articles
+            "and", "but", "for",           // coordinating conjunctions
+            "at", "by", "of", "in", "on",  // prepositions
+            "to", "with",
+            "is"
+        ]
+    }
     
     /// Returns a representation of the string in title case capitalization style.
     ///
