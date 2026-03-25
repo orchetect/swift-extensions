@@ -69,42 +69,98 @@ extension StringProtocol {
         firstCharacterOfWordsOnly: Bool,
         preserveUppercaseWords: Bool
     ) -> String {
-        var words: [String] = String(self)
-            .split(separator: " ")
-            .map(String.init)
+        let wordsSplitByHyphens: [Word] = String(self)
+            .split(separator: "-")
+            .map { Word.word(String($0)) }
+        let wordsWithHyphens = wordsSplitByHyphens.map { [$0] }
+            .joined(separator: [Word.hyphen])
+            .compactMap(\.self)
+        var words: [Word] = wordsWithHyphens
+            .flatMap { w -> [Word] in
+                switch w {
+                case .hyphen:
+                    [w]
+                case let .word(string):
+                    string
+                        .split(separator: " ")
+                        .map { .word(String($0)) }
+                }
+            }
         
         for index in words.indices {
-            let word = words[index]
+            guard case let .word(word) = words[index] else { continue }
             
-            if preserveUppercaseWords,
-               word.isUppercase(ignoreWhitespace: false, ignoreNonCased: true)
-            {
-                // leave word as-is
-            } else {
-                let lowercaseWord = word.localizedLowercase
-                let isParticle = String.titleCasedParticles.contains(lowercaseWord)
-                
-                if isParticle {
-                    if index == words.startIndex || index == words.indices.last { // first or last word?
-                        if firstCharacterOfWordsOnly {
-                            words[index].uppercaseFirstCharacter()
-                        } else {
-                            words[index] = words[index].localizedCapitalized
-                        }
-                    } else { // between the first word and the last word
-                        words[index] = lowercaseWord
-                    }
-                } else { // not a particle
+            if preserveUppercaseWords {
+                guard !word.isUppercase(ignoreWhitespace: false, ignoreNonCased: true) else {
+                    // leave word as-is
+                    continue
+                }
+            }
+            let lowercaseWord = word.localizedLowercase
+            let isParticle = String.titleCasedParticles.contains(lowercaseWord)
+            
+            if isParticle {
+                if index == words.startIndex || index == words.indices.last { // first or last word?
                     if firstCharacterOfWordsOnly {
-                        words[index].uppercaseFirstCharacter()
+                        words[index].replace(with: word.uppercasingFirstCharacter())
                     } else {
-                        words[index] = word.localizedCapitalized
+                        words[index].replace(with: word.localizedCapitalized)
                     }
+                } else { // between the first word and the last word
+                    words[index].replace(with: lowercaseWord)
+                }
+            } else { // not a particle
+                if firstCharacterOfWordsOnly {
+                    words[index].replace(with: word.uppercasingFirstCharacter())
+                } else {
+                    words[index].replace(with: word.localizedCapitalized)
                 }
             }
         }
         
-        return words.joined(separator: " ")
+        return words
+            .joined(separator: " ")
+    }
+}
+
+private enum Word: Equatable {
+    case hyphen
+    case word(String)
+    
+    var string: String {
+        switch self {
+        case .hyphen: "-"
+        case let .word(string): string
+        }
+    }
+    
+    mutating func replace(with string: String) {
+        self = .word(string)
+    }
+    
+    mutating func modify(_ block: (_ string: String) -> String) {
+        let newString = block(string)
+        
+        switch newString {
+        case "-": self = .hyphen
+        default: self = .word(newString)
+        }
+    }
+}
+
+extension Collection<Word> {
+    func joined(separator: String = "") -> String {
+        var output: String = ""
+        for index in indices {
+            switch self[index] {
+            case .hyphen: 
+                output += "-"
+            case let .word(string):
+                if let lastChar = output.last, lastChar != "-" { output += separator }
+                output += string
+            }
+        }
+        return output
     }
 }
 
