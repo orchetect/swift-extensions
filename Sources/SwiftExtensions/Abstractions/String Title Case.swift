@@ -141,4 +141,15 @@ extension String {
         
         replaceSubrange(startIndex ... startIndex, with: lowercasedChar)
     }
+    
+    /// Uppercases the first character in-place.
+    @_disfavoredOverload
+    public mutating func uppercaseFirstCharacter() {
+        guard !isEmpty,
+              let firstChar = first
+        else { return }
+        let uppercasedChar = String(firstChar).localizedUppercase
+        
+        replaceSubrange(startIndex ... startIndex, with: uppercasedChar)
+    }
 }
