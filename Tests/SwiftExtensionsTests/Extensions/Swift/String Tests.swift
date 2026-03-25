@@ -166,6 +166,79 @@ import Testing
             .joined()
         
         #expect(asciiString.isASCII)
+        
+        // edge cases
+        
+        #expect("".isASCII)
+        #expect(!"ABCD👍".isASCII)
+        #expect(!"👍".isASCII)
+    }
+    
+    @Test
+    func isLowercase() {
+        // ignoreWhitespace == false, ignoreNonCased == false
+        #expect("".isLowercase(ignoreWhitespace: false, ignoreNonCased: false)) // empty always == true
+        #expect(!" ".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect("a".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"a ".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!" a".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect("abc".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"a b c".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"a-b-c".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"abc123".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"123".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"A".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"Abc".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"ABC".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"👍".isLowercase(ignoreWhitespace: false, ignoreNonCased: false))
+        
+        // ignoreWhitespace == true, ignoreNonCased == false
+        #expect("".isLowercase(ignoreWhitespace: true, ignoreNonCased: false)) // empty always == true
+        #expect(" ".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect("a".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect("a ".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(" a".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect("abc".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect("a b c".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"a-b-c".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"abc123".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"123".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"A".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"Abc".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"ABC".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"👍".isLowercase(ignoreWhitespace: true, ignoreNonCased: false))
+        
+        // ignoreWhitespace == false, ignoreNonCased == true
+        #expect("".isLowercase(ignoreWhitespace: false, ignoreNonCased: true)) // empty always == true
+        #expect(!" ".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect("a".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!"a ".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!" a".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect("abc".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!"a b c".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect("a-b-c".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect("abc123".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect("123".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!"A".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!"Abc".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!"ABC".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect("👍".isLowercase(ignoreWhitespace: false, ignoreNonCased: true))
+        
+        // ignoreWhitespace == true, ignoreNonCased == true
+        #expect("".isLowercase(ignoreWhitespace: true, ignoreNonCased: true)) // empty always == true
+        #expect(" ".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("a".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("a ".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect(" a".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("abc".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("a b c".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("a-b-c".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("abc123".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("123".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect(!"A".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect(!"Abc".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect(!"ABC".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("👍".isLowercase(ignoreWhitespace: true, ignoreNonCased: true))
     }
     
     @Test
