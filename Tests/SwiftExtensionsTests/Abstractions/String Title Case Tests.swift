@@ -59,6 +59,12 @@ import Testing
         
         #expect(cased(" this   is a  test  ") == "This is a Test")
         
+        #expect(cased("(this is a test)") == "(This is a Test)")
+        #expect(cased("this (is a test)") == "This (Is a Test)")
+        #expect(cased("this (test)") == "This (Test)")
+        #expect(cased("this (tESt)") == "This (Test)")
+        #expect(cased("this (a REAL test)") == "This (A Real Test)")
+        
         #expect(cased("a matrix") == "A Matrix")
         #expect(cased("the matrix") == "The Matrix")
         #expect(cased("tHe matrix") == "The Matrix")
@@ -104,6 +110,12 @@ import Testing
         #expect(cased("THis-Is-a-BIG-test") == "THis-is-a-BIG-Test")
         
         #expect(cased(" this   is a  test  ") == "This is a Test")
+        
+        #expect(cased("(this is a test)") == "(This is a Test)")
+        #expect(cased("this (is a test)") == "This (Is a Test)")
+        #expect(cased("this (test)") == "This (Test)")
+        #expect(cased("this (tESt)") == "This (TESt)")
+        #expect(cased("this (a REAL test)") == "This (A REAL Test)")
         
         #expect(cased("a matrix") == "A Matrix")
         #expect(cased("the matrix") == "The Matrix")
@@ -151,6 +163,12 @@ import Testing
         
         #expect(cased(" this   is a  test  ") == "This is a Test")
         
+        #expect(cased("(this is a test)") == "(This is a Test)")
+        #expect(cased("this (is a test)") == "This (Is a Test)")
+        #expect(cased("this (test)") == "This (Test)")
+        #expect(cased("this (tESt)") == "This (Test)")
+        #expect(cased("this (a REAL test)") == "This (A REAL Test)")
+        
         #expect(cased("a matrix") == "A Matrix")
         #expect(cased("the matrix") == "The Matrix")
         #expect(cased("tHe matrix") == "The Matrix")
@@ -196,6 +214,12 @@ import Testing
         #expect(cased("THis-Is-a-BIG-test") == "THis-is-a-BIG-Test")
         
         #expect(cased(" this   is a  test  ") == "This is a Test")
+        
+        #expect(cased("(this is a test)") == "(This is a Test)")
+        #expect(cased("this (is a test)") == "This (Is a Test)")
+        #expect(cased("this (test)") == "This (Test)")
+        #expect(cased("this (tESt)") == "This (TESt)")
+        #expect(cased("this (a REAL test)") == "This (A REAL Test)")
         
         #expect(cased("a matrix") == "A Matrix")
         #expect(cased("the matrix") == "The Matrix")
