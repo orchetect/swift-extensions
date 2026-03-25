@@ -102,7 +102,7 @@ extension StringProtocol {
             if isParticle {
                 if index == words.startIndex || index == words.indices.last { // first or last word?
                     if firstCharacterOfWordsOnly {
-                        words[index].replace(with: word.uppercasingFirstCharacter())
+                        words[index].replace(with: word.uppercasingFirstCasedCharacter())
                     } else {
                         words[index].replace(with: word.localizedCapitalized)
                     }
@@ -111,7 +111,7 @@ extension StringProtocol {
                 }
             } else { // not a particle
                 if firstCharacterOfWordsOnly {
-                    words[index].replace(with: word.uppercasingFirstCharacter())
+                    words[index].replace(with: word.uppercasingFirstCasedCharacter())
                 } else {
                     words[index].replace(with: word.localizedCapitalized)
                 }
