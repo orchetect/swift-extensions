@@ -242,6 +242,73 @@ import Testing
     }
     
     @Test
+    func isUppercase() {
+        // ignoreWhitespace == false, ignoreNonCased == false
+        #expect("".isUppercase(ignoreWhitespace: false, ignoreNonCased: false)) // empty always == true
+        #expect(!" ".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect("A".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"A ".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!" A".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect("ABC".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"A B C".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"A-B-C".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"ABC123".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"123".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"a".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"aBC".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"abc".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        #expect(!"👍".isUppercase(ignoreWhitespace: false, ignoreNonCased: false))
+        
+        // ignoreWhitespace == true, ignoreNonCased == false
+        #expect("".isUppercase(ignoreWhitespace: true, ignoreNonCased: false)) // empty always == true
+        #expect(" ".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect("A".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect("A ".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(" A".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect("ABC".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect("A B C".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"A-B-C".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"ABC123".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"123".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"a".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"aBC".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"abc".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        #expect(!"👍".isUppercase(ignoreWhitespace: true, ignoreNonCased: false))
+        
+        // ignoreWhitespace == false, ignoreNonCased == true
+        #expect("".isUppercase(ignoreWhitespace: false, ignoreNonCased: true)) // empty always == true
+        #expect(!" ".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect("A".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!"A ".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!" A".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect("ABC".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!"A B C".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect("A-B-C".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect("ABC123".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect("123".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!"a".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!"aBC".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect(!"abc".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        #expect( "👍".isUppercase(ignoreWhitespace: false, ignoreNonCased: true))
+        
+        // ignoreWhitespace == true, ignoreNonCased == true
+        #expect("".isUppercase(ignoreWhitespace: true, ignoreNonCased: true)) // empty always == true
+        #expect(" ".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("A".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("A ".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect(" A".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("ABC".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("A B C".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("A-B-C".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("ABC123".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("123".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect(!"a".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect(!"aBC".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect(!"abc".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+        #expect("👍".isUppercase(ignoreWhitespace: true, ignoreNonCased: true))
+    }
+    
+    @Test
     func optionalString() {
         #expect(
             SwiftExtensions.optionalString(
