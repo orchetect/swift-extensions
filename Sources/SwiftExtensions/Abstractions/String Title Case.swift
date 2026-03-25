@@ -176,6 +176,15 @@ extension StringProtocol {
         return copy
     }
     
+    /// Returns a copy of the string with the first cased character lowercased.
+    @_disfavoredOverload
+    public func lowercasingFirstCasedCharacter() -> String {
+        guard !isEmpty else { return "" }
+        var copy = String(self)
+        copy.lowercaseFirstCasedCharacter()
+        return copy
+    }
+    
     /// Returns a copy of the string with the first character uppercased.
     @_disfavoredOverload
     public func uppercasingFirstCharacter() -> String {
