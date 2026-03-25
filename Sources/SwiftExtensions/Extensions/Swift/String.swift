@@ -196,6 +196,25 @@ extension StringProtocol {
             return $0.isLowercase
         }
     }
+    
+    /// Returns `true` if all characters within the string are uppercase characters.
+    /// By default, non-cased characters are ignored.
+    ///
+    /// An empty string always evaluates to `true`.
+    ///
+    /// - Parameters:
+    ///   - ignoreWhitespace: When `true`, any whitespace characters are ignored.
+    ///   - ignoreNonCased: When `true`, any non-whitespace characters that cannot be cased
+    ///     (symbols, emojis, etc.) are ignored and only characters that can be cased are included
+    ///     in the evaluation. When `false`, all characters must strictly match as uppercase.
+    @inlinable @_disfavoredOverload
+    public func isUppercase(ignoreWhitespace: Bool = true, ignoreNonCased: Bool = true) -> Bool {
+        allSatisfy {
+            if $0.isWhitespace { return ignoreWhitespace }
+            if ignoreNonCased, !$0.isCased { return true }
+            return $0.isUppercase
+        }
+    }
 }
 
 // MARK: - String Optionals
