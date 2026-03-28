@@ -265,6 +265,16 @@ extension Sequence where Element: Comparable {
             }
         }
     }
+    
+    /// Returns a Boolean value indicating whether the sequence contains any of the elements within
+    /// the specified range.
+    @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
+    @inlinable @_disfavoredOverload
+    public func contains(anyElementsIn ranges: RangeSet<Element>) -> Bool {
+        contains { element in
+            ranges.contains(element)
+        }
+    }
 }
 
 // MARK: - .count(ofElementsIn:) ClosedRange
