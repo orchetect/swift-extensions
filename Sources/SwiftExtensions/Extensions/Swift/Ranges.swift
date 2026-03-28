@@ -297,6 +297,15 @@ extension Sequence where Element: Comparable {
             }
         }
     }
+    
+    /// Returns the number of elements that match any of the elements within the specified ranges.
+    @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
+    @inlinable @_disfavoredOverload
+    public func count(ofElementsIn ranges: RangeSet<Element>) -> Int {
+        count { element in
+            ranges.contains(element)
+        }
+    }
 }
 
 // MARK: - .first(excluding:) ClosedRange
