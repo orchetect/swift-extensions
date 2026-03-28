@@ -243,6 +243,19 @@ extension Strideable where Self.Stride: SignedInteger {
     }
 }
 
+// MARK: - .contains(anyElementsIn:) ClosedRange
+
+extension Sequence where Element: Comparable {
+    /// Returns a Boolean value indicating whether the sequence contains any of the elements within
+    /// the specified range.
+    @inlinable @_disfavoredOverload
+    public func contains(anyElementsIn range: ClosedRange<Element>) -> Bool {
+        contains { element in
+            range.contains(element)
+        }
+    }
+}
+
 // MARK: - .first(excluding:) ClosedRange
 
 extension ClosedRange where Bound: SignedInteger, Bound.Stride: SignedInteger {
