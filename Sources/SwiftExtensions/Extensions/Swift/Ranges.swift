@@ -254,6 +254,17 @@ extension Sequence where Element: Comparable {
             range.contains(element)
         }
     }
+    
+    /// Returns a Boolean value indicating whether the sequence contains any of the elements within
+    /// the specified ranges.
+    @inlinable @_disfavoredOverload
+    public func contains(anyElementsIn ranges: [ClosedRange<Element>]) -> Bool {
+        contains { element in
+            ranges.contains { range in
+                range.contains(element)
+            }
+        }
+    }
 }
 
 // MARK: - .first(excluding:) ClosedRange
