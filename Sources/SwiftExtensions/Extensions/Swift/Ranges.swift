@@ -267,6 +267,18 @@ extension Sequence where Element: Comparable {
     }
 }
 
+// MARK: - .count(ofElementsIn:) ClosedRange
+
+extension Sequence where Element: Comparable {
+    /// Returns the number of elements that match any of the elements within the specified range.
+    @inlinable @_disfavoredOverload
+    public func count(ofElementsIn range: ClosedRange<Element>) -> Int {
+        count { element in
+            range.contains(element)
+        }
+    }
+}
+
 // MARK: - .first(excluding:) ClosedRange
 
 extension ClosedRange where Bound: SignedInteger, Bound.Stride: SignedInteger {
