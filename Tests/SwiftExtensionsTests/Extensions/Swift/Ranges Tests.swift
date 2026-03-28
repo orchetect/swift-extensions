@@ -488,6 +488,58 @@ import Testing
         #expect([0, 0, 1, 1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
     }
     
+    @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
+    @Test
+    func contains_anyElementsIn_RangeSet_noRanges() async {
+        #expect(!([] as [Int]).contains(anyElementsIn: RangeSet([])))
+        #expect(![0].contains(anyElementsIn: RangeSet([])))
+        #expect(![0, 1].contains(anyElementsIn: RangeSet([])))
+    }
+    
+    @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
+    @Test
+    func contains_anyElementsIn_RangeSet() async {
+        #expect(!([] as [Int]).contains(anyElementsIn: RangeSet([0 ..< 1])))
+        #expect([0].contains(anyElementsIn: RangeSet([0 ..< 1])))
+        #expect(![1].contains(anyElementsIn: RangeSet([0 ..< 1])))
+        
+        #expect(![0].contains(anyElementsIn: RangeSet([1 ..< 255])))
+        #expect([1].contains(anyElementsIn: RangeSet([1 ..< 255])))
+        #expect([10].contains(anyElementsIn: RangeSet([1 ..< 255])))
+        #expect([254].contains(anyElementsIn: RangeSet([1 ..< 255])))
+        #expect(![254].contains(anyElementsIn: RangeSet([1 ..< 254])))
+        
+        #expect([0, 1].contains(anyElementsIn: RangeSet([1 ..< 255])))
+        #expect([1, 0].contains(anyElementsIn: RangeSet([1 ..< 255])))
+        #expect([0, 254].contains(anyElementsIn: RangeSet([1 ..< 255])))
+        #expect(![0, 254].contains(anyElementsIn: RangeSet([1 ..< 254])))
+        #expect([0, 10, 20, 30, 254].contains(anyElementsIn: RangeSet([1 ..< 255])))
+        
+        // test other strideable types
+        #expect(["a"].contains(anyElementsIn: RangeSet(["a" ..< "z"])))
+        #expect(!["1"].contains(anyElementsIn: RangeSet(["a" ..< "z"])))
+        #expect(["a", "1"].contains(anyElementsIn: RangeSet(["a" ..< "z"])))
+        #expect(["1", "a"].contains(anyElementsIn: RangeSet(["a" ..< "z"])))
+    }
+    
+    @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
+    @Test
+    func contains_anyElementsIn_RangeSet_multipleRanges() async {
+        #expect(!([] as [Int]).contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        
+        #expect([0].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect(![2].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([3].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([4].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect(![5].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        
+        #expect(![5, 6].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([0, 1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([0, 1, 2, 3, 4, 5].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([0, 0, 1, 1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+    }
+    
     @Test
     func count_ofElementsIn_ClosedRange() async {
         #expect(([] as [Int]).count(ofElementsIn: 0 ... 1) == 0)
@@ -564,6 +616,60 @@ import Testing
         #expect([0, 1].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 2)
         #expect([0, 1, 2, 3, 4, 5].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 4)
         #expect([0, 0, 1, 1].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 4)
+    }
+    
+    @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
+    @Test
+    func count_ofElementsIn_RangeSet_noRanges() async {
+        #expect(([] as [Int]).count(ofElementsIn: RangeSet([])) == 0)
+        #expect([0].count(ofElementsIn: RangeSet([])) == 0)
+        #expect([0, 1].count(ofElementsIn: RangeSet([])) == 0)
+    }
+    
+    @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
+    @Test
+    func count_ofElementsIn_RangeSet_oneRange() async {
+        #expect(([] as [Int]).count(ofElementsIn: RangeSet([0 ..< 1])) == 0)
+        #expect([0].count(ofElementsIn: RangeSet([0 ..< 1])) == 1)
+        #expect([1].count(ofElementsIn: RangeSet([0 ..< 1])) == 0)
+        #expect([0].count(ofElementsIn: RangeSet([1 ..< 2])) == 0)
+        
+        #expect([0].count(ofElementsIn: RangeSet([1 ..< 255])) == 0)
+        #expect([1].count(ofElementsIn: RangeSet([1 ..< 255])) == 1)
+        #expect([10].count(ofElementsIn: RangeSet([1 ..< 255])) == 1)
+        #expect([254].count(ofElementsIn: RangeSet([1 ..< 255])) == 1)
+        #expect([254].count(ofElementsIn: RangeSet([1 ..< 254])) == 0)
+        
+        #expect([0, 1].count(ofElementsIn: RangeSet([1 ..< 255])) == 1)
+        #expect([1, 0].count(ofElementsIn: RangeSet([1 ..< 255])) == 1)
+        #expect([0, 254].count(ofElementsIn: RangeSet([1 ..< 255])) == 1)
+        #expect([0, 254].count(ofElementsIn: RangeSet([1 ..< 254])) == 0)
+        #expect([0, 10, 20, 30, 255].count(ofElementsIn: RangeSet([1 ..< 255])) == 3)
+        
+        // test other strideable types
+        #expect(["a"].count(ofElementsIn: RangeSet(["a" ..< "z"])) == 1)
+        #expect(["1"].count(ofElementsIn: RangeSet(["a" ..< "z"])) == 0)
+        #expect(["a", "1"].count(ofElementsIn: RangeSet(["a" ..< "z"])) == 1)
+        #expect(["1", "a"].count(ofElementsIn: RangeSet(["a" ..< "z"])) == 1)
+        #expect(["b", "a"].count(ofElementsIn: RangeSet(["a" ..< "z"])) == 2)
+    }
+    
+    @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
+    @Test
+    func count_ofElementsIn_RangeSet_multipleRanges() async {
+        #expect(([] as [Int]).count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 0)
+        
+        #expect([0].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 1)
+        #expect([1].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 1)
+        #expect([2].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 0)
+        #expect([3].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 1)
+        #expect([4].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 1)
+        #expect([5].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 0)
+        
+        #expect([5, 6].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 0)
+        #expect([0, 1].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 2)
+        #expect([0, 1, 2, 3, 4, 5].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 4)
+        #expect([0, 0, 1, 1].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 4)
     }
     
     @Test
