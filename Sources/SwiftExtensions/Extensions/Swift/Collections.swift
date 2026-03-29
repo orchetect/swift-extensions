@@ -1435,13 +1435,15 @@ extension Sequence {
     /// Returns a new dictionary by mapping elements to key/value pairs.
     /// Analogous to Swift's standard `compactMap` method.
     @inlinable @_disfavoredOverload
-    public func compactMapDictionary<K: Hashable, V: Any>(
-        _ transform: (_ element: Element) throws -> (K, V)?
-    ) rethrows -> [K: V] {
-        try reduce(into: [:]) { partialResult, element in
+    public func compactMapDictionary<K: Hashable, V: Any, E: Error>(
+        _ transform: (_ element: Element) throws(E) -> (K, V)?
+    ) throws(E) -> [K: V] {
+        var dict: [K: V] = [:]
+        for element in self {
             if let keyPair = try transform(element) {
-                partialResult[keyPair.0] = keyPair.1
+                dict[keyPair.0] = keyPair.1
             }
         }
+        return dict
     }
 }
