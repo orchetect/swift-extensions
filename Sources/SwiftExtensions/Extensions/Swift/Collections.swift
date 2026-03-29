@@ -1390,13 +1390,15 @@ extension Dictionary {
     /// Returns a new dictionary by transforming keys and values using a closure.
     /// Analogous to Swift's standard `map` method.
     @inlinable @_disfavoredOverload
-    public func mapDictionary<K: Hashable, V: Any>(
-        _ transform: (_ key: Key, _ value: Value) throws -> (K, V)
-    ) rethrows -> [K: V] {
-        try reduce(into: [:]) { partialResult, keyValuePair in
-            let transformedKeyPair = try transform(keyValuePair.0, keyValuePair.1)
-            partialResult[transformedKeyPair.0] = transformedKeyPair.1
+    public func mapDictionary<K: Hashable, V: Any, E: Error>(
+        _ transform: (_ key: Key, _ value: Value) throws(E) -> (K, V)
+    ) throws(E) -> [K: V] {
+        var dict: [K: V] = [:]
+        for (key, value) in self {
+            let transformedKeyPair = try transform(key, value)
+            dict[transformedKeyPair.0] = transformedKeyPair.1
         }
+        return dict
     }
     
     /// Returns a new dictionary by transforming keys and values using a closure.
