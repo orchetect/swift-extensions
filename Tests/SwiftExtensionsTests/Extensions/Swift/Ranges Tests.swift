@@ -8,6 +8,8 @@ import SwiftExtensions
 import Testing
 
 @Suite struct Extensions_Swift_Ranges_Tests {
+    // MARK: - Comparable .isContained
+    
     @Test
     func isContained_InRange() async {
         // int
@@ -72,6 +74,8 @@ import Testing
         #expect("e".isContained(in: "a" ... "d") == false)
     }
     
+    // MARK: - ClosedRange.contains(range)
+    
     @Test
     func closedRange_contains_ClosedRange() async {
         #expect((1 ... 10).contains(1 ...  1))
@@ -109,6 +113,8 @@ import Testing
 
         #expect(!(1 ... 10).contains(-1 ..< 1))
     }
+    
+    // MARK: - Range.contains(range)
     
     @Test
     func range_contains_ClosedRange() async {
@@ -157,6 +163,8 @@ import Testing
         #expect((Int.min ..< Int.max).contains(Int.min ..< Int.max))
         #expect(!(Int.max ..< Int.max).contains(Int.min ..< Int.max))
     }
+    
+    // MARK: - PartialRangeFrom.contains(range)
     
     @Test
     func partialRangeFrom_contains_ClosedRange() async {
@@ -209,6 +217,8 @@ import Testing
         #expect(!(Int.max...).contains(Int.min...))
         #expect((Int.max...).contains(Int.max...))
     }
+    
+    // MARK: - PartialRangeThrough.contains(range)
     
     @Test
     func partialRangeThrough_contains_ClosedRange() async {
@@ -284,6 +294,8 @@ import Testing
         #expect((...Int.max).contains(..<Int.min))
         #expect(!(...Int.max).contains(..<Int.max))
     }
+    
+    // MARK: - PartialRangeUpTo.contains(range)
     
     @Test
     func partialRangeUpTo_contains_ClosedRange() async {
@@ -362,6 +374,8 @@ import Testing
         #expect((..<Int.max).contains(..<Int.max))
     }
     
+    // MARK: - .clamped(to:)
+    
     @Test
     func number_ClampedTo_Ranges() async {
         // .clamped(ClosedRange)
@@ -412,81 +426,7 @@ import Testing
         #expect(400.clamped(to: ..<300) == 299)
     }
     
-    @Test
-    func contains_anyElementsIn_ClosedRange() async {
-        #expect(!([] as [Int]).contains(anyElementsIn: 0 ... 1))
-        #expect([0].contains(anyElementsIn: 0 ... 0))
-        #expect(![1].contains(anyElementsIn: 0 ... 0))
-        #expect(![0].contains(anyElementsIn: 1 ... 1))
-        
-        #expect(![0].contains(anyElementsIn: 1 ... 255))
-        #expect([1].contains(anyElementsIn: 1 ... 255))
-        #expect([10].contains(anyElementsIn: 1 ... 255))
-        #expect([255].contains(anyElementsIn: 1 ... 255))
-        #expect(![255].contains(anyElementsIn: 1 ... 254))
-        
-        #expect([0, 1].contains(anyElementsIn: 1 ... 255))
-        #expect([1, 0].contains(anyElementsIn: 1 ... 255))
-        #expect([0, 255].contains(anyElementsIn: 1 ... 255))
-        #expect(![0, 255].contains(anyElementsIn: 1 ... 254))
-        #expect([0, 10, 20, 30, 255].contains(anyElementsIn: 1 ... 255))
-        
-        // test other strideable types
-        #expect(["a"].contains(anyElementsIn: "a" ... "z"))
-        #expect(!["1"].contains(anyElementsIn: "a" ... "z"))
-        #expect(["a", "1"].contains(anyElementsIn: "a" ... "z"))
-        #expect(["1", "a"].contains(anyElementsIn: "a" ... "z"))
-    }
-    
-    @Test
-    func contains_anyElementsIn_ClosedRanges_noRanges() async {
-        #expect(!([] as [Int]).contains(anyElementsIn: []))
-        #expect(![0].contains(anyElementsIn: []))
-        #expect(![0, 1].contains(anyElementsIn: []))
-    }
-    
-    @Test
-    func contains_anyElementsIn_ClosedRanges_oneRange() async {
-        #expect(!([] as [Int]).contains(anyElementsIn: [0 ... 1]))
-        #expect([0].contains(anyElementsIn: [0 ... 0]))
-        #expect(![1].contains(anyElementsIn: [0 ... 0]))
-        #expect(![0].contains(anyElementsIn: [1 ... 1]))
-        
-        #expect(![0].contains(anyElementsIn: [1 ... 255]))
-        #expect([1].contains(anyElementsIn: [1 ... 255]))
-        #expect([10].contains(anyElementsIn: [1 ... 255]))
-        #expect([255].contains(anyElementsIn: [1 ... 255]))
-        #expect(![255].contains(anyElementsIn: [1 ... 254]))
-        
-        #expect([0, 1].contains(anyElementsIn: [1 ... 255]))
-        #expect([1, 0].contains(anyElementsIn: [1 ... 255]))
-        #expect([0, 255].contains(anyElementsIn: [1 ... 255]))
-        #expect(![0, 255].contains(anyElementsIn: [1 ... 254]))
-        #expect([0, 10, 20, 30, 255].contains(anyElementsIn: [1 ... 255]))
-        
-        // test other strideable types
-        #expect(["a"].contains(anyElementsIn: ["a" ... "z"]))
-        #expect(!["1"].contains(anyElementsIn: ["a" ... "z"]))
-        #expect(["a", "1"].contains(anyElementsIn: ["a" ... "z"]))
-        #expect(["1", "a"].contains(anyElementsIn: ["a" ... "z"]))
-    }
-    
-    @Test
-    func contains_anyElementsIn_ClosedRanges_multipleRanges() async {
-        #expect(!([] as [Int]).contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        
-        #expect([0].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect(![2].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([3].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([4].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect(![5].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        
-        #expect(![5, 6].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([0, 1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([0, 1, 2, 3, 4, 5].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([0, 0, 1, 1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-    }
+    // MARK: - contains(anyElementsIn:)
     
     @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
     @Test
@@ -515,7 +455,7 @@ import Testing
         #expect(![0, 254].contains(anyElementsIn: RangeSet([1 ..< 254])))
         #expect([0, 10, 20, 30, 254].contains(anyElementsIn: RangeSet([1 ..< 255])))
         
-        // test other strideable types
+        // test other types
         #expect(["a"].contains(anyElementsIn: RangeSet(["a" ..< "z"])))
         #expect(!["1"].contains(anyElementsIn: RangeSet(["a" ..< "z"])))
         #expect(["a", "1"].contains(anyElementsIn: RangeSet(["a" ..< "z"])))
@@ -525,98 +465,22 @@ import Testing
     @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
     @Test
     func contains_anyElementsIn_RangeSet_multipleRanges() async {
-        #expect(!([] as [Int]).contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect(!([] as [Int]).contains(anyElementsIn: RangeSet([0 ..< 2, 3 ..< 5])))
         
-        #expect([0].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect(![2].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([3].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([4].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect(![5].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([0].contains(anyElementsIn: RangeSet([0 ..< 2, 3 ..< 5])))
+        #expect([1].contains(anyElementsIn: RangeSet([0 ..< 2, 3 ..< 5])))
+        #expect(![2].contains(anyElementsIn: RangeSet([0 ..< 2, 3 ..< 5])))
+        #expect([3].contains(anyElementsIn: RangeSet([0 ..< 2, 3 ..< 5])))
+        #expect([4].contains(anyElementsIn: RangeSet([0 ..< 2, 3 ..< 5])))
+        #expect(![5].contains(anyElementsIn: RangeSet([0 ..< 2, 3 ..< 5])))
         
-        #expect(![5, 6].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([0, 1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([0, 1, 2, 3, 4, 5].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
-        #expect([0, 0, 1, 1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect(![5, 6].contains(anyElementsIn: RangeSet([0 ..< 2, 3 ..< 5])))
+        #expect([0, 1].contains(anyElementsIn: RangeSet([0 ..< 2, 3 ..< 5])))
+        #expect([0, 1, 2, 3, 4, 5].contains(anyElementsIn: RangeSet([0 ..< 2, 3 ..< 5])))
+        #expect([0, 0, 1, 1].contains(anyElementsIn: RangeSet([0 ..< 2, 3 ..< 5])))
     }
     
-    @Test
-    func count_ofElementsIn_ClosedRange() async {
-        #expect(([] as [Int]).count(ofElementsIn: 0 ... 1) == 0)
-        #expect([0].count(ofElementsIn: 0 ... 0) == 1)
-        #expect([1].count(ofElementsIn: 0 ... 0) == 0)
-        #expect([0].count(ofElementsIn: 1 ... 1) == 0)
-        
-        #expect([0].count(ofElementsIn: 1 ... 255) == 0)
-        #expect([1].count(ofElementsIn: 1 ... 255) == 1)
-        #expect([10].count(ofElementsIn: 1 ... 255) == 1)
-        #expect([255].count(ofElementsIn: 1 ... 255) == 1)
-        #expect([255].count(ofElementsIn: 1 ... 254) == 0)
-        
-        #expect([0, 1].count(ofElementsIn: 1 ... 255) == 1)
-        #expect([1, 0].count(ofElementsIn: 1 ... 255) == 1)
-        #expect([0, 255].count(ofElementsIn: 1 ... 255) == 1)
-        #expect([0, 255].count(ofElementsIn: 1 ... 254) == 0)
-        #expect([0, 10, 20, 30, 255].count(ofElementsIn: 1 ... 254) == 3)
-        
-        // test other strideable types
-        #expect(["a"].count(ofElementsIn: "a" ... "z") == 1)
-        #expect(["1"].count(ofElementsIn: "a" ... "z") == 0)
-        #expect(["a", "1"].count(ofElementsIn: "a" ... "z") == 1)
-        #expect(["1", "a"].count(ofElementsIn: "a" ... "z") == 1)
-        #expect(["b", "a"].count(ofElementsIn: "a" ... "z") == 2)
-    }
-    
-    @Test
-    func count_ofElementsIn_ClosedRanges_noRanges() async {
-        #expect(([] as [Int]).count(ofElementsIn: []) == 0)
-        #expect([0].count(ofElementsIn: []) == 0)
-        #expect([0, 1].count(ofElementsIn: []) == 0)
-    }
-    
-    @Test
-    func count_ofElementsIn_ClosedRanges_oneRange() async {
-        #expect(([] as [Int]).count(ofElementsIn: [0 ... 1]) == 0)
-        #expect([0].count(ofElementsIn: [0 ... 0]) == 1)
-        #expect([1].count(ofElementsIn: [0 ... 0]) == 0)
-        #expect([0].count(ofElementsIn: [1 ... 1]) == 0)
-        
-        #expect([0].count(ofElementsIn: [1 ... 255]) == 0)
-        #expect([1].count(ofElementsIn: [1 ... 255]) == 1)
-        #expect([10].count(ofElementsIn: [1 ... 255]) == 1)
-        #expect([255].count(ofElementsIn: [1 ... 255]) == 1)
-        #expect([255].count(ofElementsIn: [1 ... 254]) == 0)
-        
-        #expect([0, 1].count(ofElementsIn: [1 ... 255]) == 1)
-        #expect([1, 0].count(ofElementsIn: [1 ... 255]) == 1)
-        #expect([0, 255].count(ofElementsIn: [1 ... 255]) == 1)
-        #expect([0, 255].count(ofElementsIn: [1 ... 254]) == 0)
-        #expect([0, 10, 20, 30, 255].count(ofElementsIn: [1 ... 254]) == 3)
-        
-        // test other strideable types
-        #expect(["a"].count(ofElementsIn: ["a" ... "z"]) == 1)
-        #expect(["1"].count(ofElementsIn: ["a" ... "z"]) == 0)
-        #expect(["a", "1"].count(ofElementsIn: ["a" ... "z"]) == 1)
-        #expect(["1", "a"].count(ofElementsIn: ["a" ... "z"]) == 1)
-        #expect(["b", "a"].count(ofElementsIn: ["a" ... "z"]) == 2)
-    }
-    
-    @Test
-    func count_ofElementsIn_ClosedRanges_multipleRanges() async {
-        #expect(([] as [Int]).count(ofElementsIn: [0 ... 1, 3 ... 4]) == 0)
-        
-        #expect([0].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 1)
-        #expect([1].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 1)
-        #expect([2].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 0)
-        #expect([3].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 1)
-        #expect([4].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 1)
-        #expect([5].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 0)
-        
-        #expect([5, 6].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 0)
-        #expect([0, 1].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 2)
-        #expect([0, 1, 2, 3, 4, 5].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 4)
-        #expect([0, 0, 1, 1].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 4)
-    }
+    // MARK: - count(ofElementsIn:)
     
     @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
     @Test
@@ -646,7 +510,7 @@ import Testing
         #expect([0, 254].count(ofElementsIn: RangeSet([1 ..< 254])) == 0)
         #expect([0, 10, 20, 30, 255].count(ofElementsIn: RangeSet([1 ..< 255])) == 3)
         
-        // test other strideable types
+        // test other types
         #expect(["a"].count(ofElementsIn: RangeSet(["a" ..< "z"])) == 1)
         #expect(["1"].count(ofElementsIn: RangeSet(["a" ..< "z"])) == 0)
         #expect(["a", "1"].count(ofElementsIn: RangeSet(["a" ..< "z"])) == 1)
@@ -671,6 +535,8 @@ import Testing
         #expect([0, 1, 2, 3, 4, 5].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 4)
         #expect([0, 0, 1, 1].count(ofElementsIn: RangeSet([0 ..< 2, 3 ..< 5])) == 4)
     }
+    
+    // MARK: - .first(excluding:) ClosedRange
     
     @Test
     func firstExcluding_ClosedRange() async {
@@ -822,6 +688,8 @@ import Testing
         // zero element ranges
         #expect((0 ... 0).first(excluding: 0 ... 5) == nil)
     }
+    
+    // MARK: - .first(excluding:) Range
     
     @Test
     func firstExcluding_Range() async {
@@ -975,6 +843,8 @@ import Testing
         #expect((0 ..< 0).first(excluding: 0 ... 5) == nil)
     }
     
+    // MARK: - .first(excluding:) PartialRangeFrom
+    
     @Test
     func firstExcluding_PartialRangeFrom() async {
         // .first(excluding: [])
@@ -1051,6 +921,8 @@ import Testing
         #expect((1...).first(excluding: ..<3) == 3)
     }
     
+    // MARK: - Split
+    
     @Test
     func closedRange_SplitEvery() async {
         #expect((0 ... 10).split(every: -1) == [0 ... 10])
@@ -1084,6 +956,8 @@ import Testing
         #expect((0 ..< 11).split(every: 11) == [0 ... 10])
         #expect((0 ..< 11).split(every: 12) == [0 ... 10])
     }
+    
+    // MARK: - @Clamped Property Wrapper
     
     @Test
     func absoluteBounds() async {
@@ -1133,6 +1007,8 @@ import Testing
         #expect(bounds(of:   ...1).min == nil)
         #expect(bounds(of:   ...1).max == 1)
     }
+    
+    // MARK: - .repeatEach { }
     
     @Test
     func binaryIntegerRepeatEach() async {

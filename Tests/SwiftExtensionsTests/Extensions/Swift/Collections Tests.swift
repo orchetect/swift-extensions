@@ -1497,6 +1497,138 @@ import Testing
         #expect(!([1, 2] as [Int]).elementsEqual(orderInsensitive: [2, 2]))
     }
     
+    // MARK: - contains(anyElementsIn:)
+    
+    @Test
+    func contains_anyElementsIn_ClosedRange() async {
+        #expect(!([] as [Int]).contains(anyElementsIn: 0 ... 1))
+        #expect([0].contains(anyElementsIn: 0 ... 0))
+        #expect(![1].contains(anyElementsIn: 0 ... 0))
+        #expect(![0].contains(anyElementsIn: 1 ... 1))
+        
+        #expect(![0].contains(anyElementsIn: 1 ... 255))
+        #expect([1].contains(anyElementsIn: 1 ... 255))
+        #expect([10].contains(anyElementsIn: 1 ... 255))
+        #expect([255].contains(anyElementsIn: 1 ... 255))
+        #expect(![255].contains(anyElementsIn: 1 ... 254))
+        
+        #expect([0, 1].contains(anyElementsIn: 1 ... 255))
+        #expect([1, 0].contains(anyElementsIn: 1 ... 255))
+        #expect([0, 255].contains(anyElementsIn: 1 ... 255))
+        #expect(![0, 255].contains(anyElementsIn: 1 ... 254))
+        #expect([0, 10, 20, 30, 255].contains(anyElementsIn: 1 ... 255))
+    }
+    
+    @Test
+    func contains_anyElementsIn_ClosedRanges_noRanges() async {
+        #expect(!([] as [Int]).contains(anyElementsIn: []))
+        #expect(![0].contains(anyElementsIn: []))
+        #expect(![0, 1].contains(anyElementsIn: []))
+    }
+    
+    @Test
+    func contains_anyElementsIn_ClosedRanges_oneRange() async {
+        #expect(!([] as [Int]).contains(anyElementsIn: [0 ... 1]))
+        #expect([0].contains(anyElementsIn: [0 ... 0]))
+        #expect(![1].contains(anyElementsIn: [0 ... 0]))
+        #expect(![0].contains(anyElementsIn: [1 ... 1]))
+        
+        #expect(![0].contains(anyElementsIn: [1 ... 255]))
+        #expect([1].contains(anyElementsIn: [1 ... 255]))
+        #expect([10].contains(anyElementsIn: [1 ... 255]))
+        #expect([255].contains(anyElementsIn: [1 ... 255]))
+        #expect(![255].contains(anyElementsIn: [1 ... 254]))
+        
+        #expect([0, 1].contains(anyElementsIn: [1 ... 255]))
+        #expect([1, 0].contains(anyElementsIn: [1 ... 255]))
+        #expect([0, 255].contains(anyElementsIn: [1 ... 255]))
+        #expect(![0, 255].contains(anyElementsIn: [1 ... 254]))
+        #expect([0, 10, 20, 30, 255].contains(anyElementsIn: [1 ... 255]))
+    }
+    
+    @Test
+    func contains_anyElementsIn_ClosedRanges_multipleRanges() async {
+        #expect(!([] as [Int]).contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        
+        #expect([0].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect(![2].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([3].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([4].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect(![5].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        
+        #expect(![5, 6].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([0, 1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([0, 1, 2, 3, 4, 5].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+        #expect([0, 0, 1, 1].contains(anyElementsIn: [0 ... 1, 3 ... 4]))
+    }
+    
+    // MARK: - count(ofElementsIn:)
+    
+    @Test
+    func count_ofElementsIn_ClosedRange() async {
+        #expect(([] as [Int]).count(ofElementsIn: 0 ... 1) == 0)
+        #expect([0].count(ofElementsIn: 0 ... 0) == 1)
+        #expect([1].count(ofElementsIn: 0 ... 0) == 0)
+        #expect([0].count(ofElementsIn: 1 ... 1) == 0)
+        
+        #expect([0].count(ofElementsIn: 1 ... 255) == 0)
+        #expect([1].count(ofElementsIn: 1 ... 255) == 1)
+        #expect([10].count(ofElementsIn: 1 ... 255) == 1)
+        #expect([255].count(ofElementsIn: 1 ... 255) == 1)
+        #expect([255].count(ofElementsIn: 1 ... 254) == 0)
+        
+        #expect([0, 1].count(ofElementsIn: 1 ... 255) == 1)
+        #expect([1, 0].count(ofElementsIn: 1 ... 255) == 1)
+        #expect([0, 255].count(ofElementsIn: 1 ... 255) == 1)
+        #expect([0, 255].count(ofElementsIn: 1 ... 254) == 0)
+        #expect([0, 10, 20, 30, 255].count(ofElementsIn: 1 ... 254) == 3)
+    }
+    
+    @Test
+    func count_ofElementsIn_ClosedRanges_noRanges() async {
+        #expect(([] as [Int]).count(ofElementsIn: []) == 0)
+        #expect([0].count(ofElementsIn: []) == 0)
+        #expect([0, 1].count(ofElementsIn: []) == 0)
+    }
+    
+    @Test
+    func count_ofElementsIn_ClosedRanges_oneRange() async {
+        #expect(([] as [Int]).count(ofElementsIn: [0 ... 1]) == 0)
+        #expect([0].count(ofElementsIn: [0 ... 0]) == 1)
+        #expect([1].count(ofElementsIn: [0 ... 0]) == 0)
+        #expect([0].count(ofElementsIn: [1 ... 1]) == 0)
+        
+        #expect([0].count(ofElementsIn: [1 ... 255]) == 0)
+        #expect([1].count(ofElementsIn: [1 ... 255]) == 1)
+        #expect([10].count(ofElementsIn: [1 ... 255]) == 1)
+        #expect([255].count(ofElementsIn: [1 ... 255]) == 1)
+        #expect([255].count(ofElementsIn: [1 ... 254]) == 0)
+        
+        #expect([0, 1].count(ofElementsIn: [1 ... 255]) == 1)
+        #expect([1, 0].count(ofElementsIn: [1 ... 255]) == 1)
+        #expect([0, 255].count(ofElementsIn: [1 ... 255]) == 1)
+        #expect([0, 255].count(ofElementsIn: [1 ... 254]) == 0)
+        #expect([0, 10, 20, 30, 255].count(ofElementsIn: [1 ... 254]) == 3)
+    }
+    
+    @Test
+    func count_ofElementsIn_ClosedRanges_multipleRanges() async {
+        #expect(([] as [Int]).count(ofElementsIn: [0 ... 1, 3 ... 4]) == 0)
+        
+        #expect([0].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 1)
+        #expect([1].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 1)
+        #expect([2].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 0)
+        #expect([3].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 1)
+        #expect([4].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 1)
+        #expect([5].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 0)
+        
+        #expect([5, 6].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 0)
+        #expect([0, 1].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 2)
+        #expect([0, 1, 2, 3, 4, 5].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 4)
+        #expect([0, 0, 1, 1].count(ofElementsIn: [0 ... 1, 3 ... 4]) == 4)
+    }
+    
     // MARK: - Replace
     
     @Test
