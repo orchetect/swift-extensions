@@ -240,31 +240,6 @@ extension SemanticVersion {
     
     /// Initialize from individual version components.
     ///
-    /// - Parameters:
-    ///   - major: Major version component. Must be `0` or greater. (Required)
-    ///   - minor: Minor version component. Must be `0` or greater. (Required)
-    ///   - patch: Patch version component. Must be `0` or greater. (Required)
-    ///   - preRelease: Pre-release information. (Optional)
-    ///   - build: Build metadata. (Optional)
-    ///
-    /// See [SemVer 2.0 Spec](https://semver.org/spec/v2.0.0.html).
-    ///
-    /// - Returns: This initializer will fail if either `major`, `minor`, or `patch` components are `< 0`.
-    ///   This will also fail if `preRelease` or `build` are invalid strings.
-    @_disfavoredOverload
-    public init?(
-        _ major: Int,
-        _ minor: Int,
-        _ patch: Int,
-        preRelease: String? = nil,
-        build: String? = nil
-    ) {
-        guard major >= 0, minor >= 0, patch >= 0 else { return nil }
-        self.init(UInt(major), UInt(minor), UInt(patch), preRelease: preRelease, build: build)
-    }
-    
-    /// Initialize from individual version components.
-    ///
     /// See [SemVer 2.0 Spec](https://semver.org/spec/v2.0.0.html).
     ///
     /// - Parameters:
@@ -292,17 +267,19 @@ extension SemanticVersion {
     ///
     /// See [SemVer 2.0 Spec](https://semver.org/spec/v2.0.0.html).
     ///
-    /// - Returns: This initializer will fail if `preRelease` or `build` are invalid strings.
-    public init?(
-        _ major: UInt,
-        _ minor: UInt,
-        _ patch: UInt,
+    /// - Returns: This initializer will fail if either `major`, `minor`, or `patch` components are `< 0`.
+    ///   This will also fail if `preRelease` or `build` are invalid strings.
+    @_disfavoredOverload
+    public init?<V: SignedInteger>(
+        _ major: V,
+        _ minor: V,
+        _ patch: V,
         preRelease: String? = nil,
         build: String? = nil
     ) {
-        self.major = Int(major)
-        self.minor = Int(minor)
-        self.patch = Int(patch)
+        guard major >= 0, minor >= 0, patch >= 0 else { return nil }
+        
+        self.init(UInt(major), UInt(minor), UInt(patch))
         
         if let preRelease, !preRelease.isEmpty {
             guard Self.isPreReleaseValid(preRelease) else { return nil }
