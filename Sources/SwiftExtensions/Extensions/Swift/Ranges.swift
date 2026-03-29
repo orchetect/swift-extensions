@@ -32,6 +32,8 @@ extension Comparable {
     where Self == R.Bound {
         range.contains(self)
     }
+    
+    // TODO: Add `isContained(in: RangeSet)` overload
 }
 
 // MARK: - ClosedRange.contains(range)
@@ -243,29 +245,9 @@ extension Strideable where Self.Stride: SignedInteger {
     }
 }
 
-// MARK: - .contains(anyElementsIn:) ClosedRange
+// MARK: - contains(anyElementsIn:) ClosedRange
 
 extension Sequence where Element: Comparable {
-    /// Returns a Boolean value indicating whether the sequence contains any of the elements within
-    /// the specified range.
-    @inlinable @_disfavoredOverload
-    public func contains(anyElementsIn range: ClosedRange<Element>) -> Bool {
-        contains { element in
-            range.contains(element)
-        }
-    }
-    
-    /// Returns a Boolean value indicating whether the sequence contains any of the elements within
-    /// the specified ranges.
-    @inlinable @_disfavoredOverload
-    public func contains(anyElementsIn ranges: [ClosedRange<Element>]) -> Bool {
-        contains { element in
-            ranges.contains { range in
-                range.contains(element)
-            }
-        }
-    }
-    
     /// Returns a Boolean value indicating whether the sequence contains any of the elements within
     /// the specified range.
     @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
@@ -277,27 +259,9 @@ extension Sequence where Element: Comparable {
     }
 }
 
-// MARK: - .count(ofElementsIn:) ClosedRange
+// MARK: - count(ofElementsIn:) ClosedRange
 
 extension Sequence where Element: Comparable {
-    /// Returns the number of elements that match any of the elements within the specified range.
-    @inlinable @_disfavoredOverload
-    public func count(ofElementsIn range: ClosedRange<Element>) -> Int {
-        count { element in
-            range.contains(element)
-        }
-    }
-    
-    /// Returns the number of elements that match any of the elements within the specified ranges.
-    @inlinable @_disfavoredOverload
-    public func count(ofElementsIn ranges: [ClosedRange<Element>]) -> Int {
-        count { element in
-            ranges.contains { range in
-                range.contains(element)
-            }
-        }
-    }
-    
     /// Returns the number of elements that match any of the elements within the specified ranges.
     @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
     @inlinable @_disfavoredOverload
