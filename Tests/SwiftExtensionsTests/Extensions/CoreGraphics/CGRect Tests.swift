@@ -62,8 +62,8 @@ import Testing
             
             let newRect = rect.scale(factor: 1.5)
             
-            #expect(newRect.origin.x == 2.0 - 2.5)
-            #expect(newRect.origin.y == 3.0 - 5.0)
+            #expect(newRect.origin.x == -0.5) // 2.0 - 2.5
+            #expect(newRect.origin.y == -2.0) // 3.0 - 5.0
             #expect(newRect.width == 15.0)
             #expect(newRect.height == 30.0)
         }
@@ -72,8 +72,8 @@ import Testing
             
             let newRect = rect.scale(factor: 0.5)
             
-            #expect(newRect.origin.x == 2.0 + 2.5)
-            #expect(newRect.origin.y == 3.0 + 5.0)
+            #expect(newRect.origin.x == 4.5) // 2.0 + 2.5
+            #expect(newRect.origin.y == 8.0) // 3.0 + 5.0
             #expect(newRect.width == 5.0)
             #expect(newRect.height == 10.0)
         }
