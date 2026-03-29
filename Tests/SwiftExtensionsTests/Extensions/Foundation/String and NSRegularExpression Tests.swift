@@ -106,17 +106,16 @@ import Testing
         
         let str = "The 45 turkeys ate 9 sandwiches."
         
-        #expect(
-            str.regexMatches(captureGroupsFromPattern: capturePattern)
-                == [
-                    Optional(Substring(str)),
-                    Optional("The"),
-                    Optional("45"),
-                    Optional("turkeys ate"),
-                    Optional("9"),
-                    Optional("sandwiches."),
-                ]
-        )
+        let matches = str.regexMatches(captureGroupsFromPattern: capturePattern)
+        let expectedMatches: [Substring?] = [
+            Optional(Substring(str)),
+            Optional("The"),
+            Optional("45"),
+            Optional("turkeys ate"),
+            Optional("9"),
+            Optional("sandwiches."),
+        ]
+        #expect(matches == expectedMatches)
     }
     
     @Test
@@ -125,15 +124,14 @@ import Testing
         
         let str = "Hellõ țhiș is ǎ têst.Śtřįng 😀→●₩√【】♞‱.1234"
         
-        #expect(
-            str.regexMatches(captureGroupsFromPattern: capturePattern)
-                == [
-                    Optional(Substring(str)),
-                    Optional("Hellõ țhiș is ǎ têst"),
-                    Optional("Śtřįng 😀→●₩√【】♞‱"),
-                    Optional("1234"),
-                ]
-        )
+        let matches = str.regexMatches(captureGroupsFromPattern: capturePattern)
+        let expectedMatches: [Substring?] = [
+            Optional(Substring(str)),
+            Optional("Hellõ țhiș is ǎ têst"),
+            Optional("Śtřįng 😀→●₩√【】♞‱"),
+            Optional("1234"),
+        ]
+        #expect(matches == expectedMatches)
     }
 
     /// Ensure that using a Substring as the input string works as expected.
