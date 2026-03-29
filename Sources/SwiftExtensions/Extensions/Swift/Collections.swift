@@ -1376,13 +1376,15 @@ extension Dictionary {
     /// Returns a new dictionary containing the values of this dictionary with the keys transformed
     /// by the given closure.
     @inlinable @_disfavoredOverload
-    public func mapKeys<K: Hashable>(
-        _ transform: (_ key: Key) throws -> K
-    ) rethrows -> [K: Value] {
-        try reduce(into: [:]) { partialResult, keyValuePair in
-            let transformedKey = try transform(keyValuePair.0)
-            partialResult[transformedKey] = keyValuePair.1
+    public func mapKeys<K: Hashable, E: Error>(
+        _ transform: (_ key: Key) throws(E) -> K
+    ) throws(E) -> [K: Value] {
+        var dict: [K: Value] = [:]
+        for (key, value) in self {
+            let transformedKey = try transform(key)
+            dict[transformedKey] = value
         }
+        return dict
     }
     
     /// Returns a new dictionary by transforming keys and values using a closure.
