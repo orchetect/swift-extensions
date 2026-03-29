@@ -218,13 +218,20 @@ extension XMLElement {
     ///
     /// - Complexity: O(*n*), where *n* is the length of the collection.
     @inlinable @_disfavoredOverload
-    public func removeChildren(
-        where shouldBeRemoved: (_ child: XMLElement) throws -> Bool
-    ) rethrows {
+    public func removeChildren<E: Error>(
+        where shouldBeRemoved: (_ child: XMLElement) throws(E) -> Bool
+    ) throws(E) {
         guard childCount > 0 else { return }
         
-        let indicesToRemove = try childElements
-            .filter { try shouldBeRemoved($0) }
+        var filtered: [XMLNode] = []
+        for child in childElements {
+            let isForRemoval = try shouldBeRemoved(child)
+            if isForRemoval {
+                filtered.append(child)
+            }
+        }
+        
+        let indicesToRemove = filtered
             .map(\.index)
             .sorted() // may be unnecessary
             .reversed() // remove in order from last to first
