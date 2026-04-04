@@ -160,7 +160,7 @@ extension BinaryFloatingPoint {
 extension FloatingPoint where Self: FloatingPointPowerComputable {
     /// Rounds to `decimalPlaces` number of decimal places using rounding `rule`.
     ///
-    /// If `decimalPlaces <= 0`, `trunc(self)` is returned.
+    /// If `decimalPlaces <= 0`, `self.rounded(.towardZero)` is returned.
     @_disfavoredOverload
     public func rounded(
         _ rule: FloatingPointRoundingRule = .toNearestOrAwayFromZero,
@@ -178,7 +178,7 @@ extension FloatingPoint where Self: FloatingPointPowerComputable {
     /// Replaces this value by rounding it to `decimalPlaces` number of decimal places using
     /// rounding `rule`.
     ///
-    /// If `decimalPlaces <= 0,` `trunc(self)` is used.
+    /// If `decimalPlaces <= 0,` `self.rounded(.towardZero)` is used.
     @_disfavoredOverload
     public mutating func round(
         _ rule: FloatingPointRoundingRule = .toNearestOrAwayFromZero,

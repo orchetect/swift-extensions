@@ -64,7 +64,7 @@ extension Float80: FloatingPointPowerComputable {
 extension FloatingPoint where Self: FloatingPointPowerComputable {
     /// Replaces this value by truncating it to `decimalPlaces` number of decimal places.
     ///
-    /// If `decimalPlaces <= 0`, then `trunc(self)` is returned.
+    /// If `decimalPlaces <= 0`, then `self.rounded(.towardZero)` is returned.
     @_disfavoredOverload
     public mutating func truncate(decimalPlaces: Int) {
         self = truncated(decimalPlaces: decimalPlaces)
@@ -72,15 +72,15 @@ extension FloatingPoint where Self: FloatingPointPowerComputable {
     
     /// Truncates decimal places to `decimalPlaces` number of decimal places.
     ///
-    /// If `decimalPlaces <= 0`, then `trunc(self)` is returned.
+    /// If `decimalPlaces <= 0`, then `self.rounded(.towardZero)` is returned.
     @_disfavoredOverload
     public func truncated(decimalPlaces: Int) -> Self {
         if decimalPlaces < 1 {
-            return trunc(self)
+            return rounded(.towardZero)
         }
         
         let offset = Self(10).power(Self(decimalPlaces))
-        return trunc(self * offset) / offset
+        return (self * offset).rounded(.towardZero) / offset
     }
 }
 
@@ -89,7 +89,7 @@ extension FloatingPoint {
     @_disfavoredOverload
     public func quotientAndRemainder(dividingBy rhs: Self) -> (quotient: Self, remainder: Self) {
         let calculation = self / rhs
-        let integral = trunc(calculation)
+        let integral = calculation.rounded(.towardZero)
         let fraction = self - (integral * rhs)
         return (quotient: integral, remainder: fraction)
     }
@@ -102,7 +102,7 @@ extension FloatingPoint {
     /// This method can result in a non-trivial loss of precision for the fractional part.
     @inlinable @_disfavoredOverload
     public var integralAndFraction: (integral: Self, fraction: Self) {
-        let integral = trunc(self)
+        let integral = rounded(.towardZero)
         let fraction = self - integral
         return (integral: integral, fraction: fraction)
     }
