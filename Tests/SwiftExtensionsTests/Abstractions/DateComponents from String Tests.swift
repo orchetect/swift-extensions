@@ -163,6 +163,73 @@ import Testing
         #expect(parsed?.month ==   3)
         #expect(parsed?.day ==     10)
         
+        // ordinal days
+        
+        parsed = "March 1st 2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     1)
+        
+        parsed = "March 2nd 2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     2)
+        
+        parsed = "March 3rd 2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     3)
+        
+        parsed = "March 4th 2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     4)
+        
+        parsed = "March 31st 2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     31)
+        
+        parsed = "March 10th 2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     10)
+        
+        parsed = "March 10th, 2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     10)
+        
+        parsed = "March-10th-2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     10)
+        
+        parsed = "10th March 2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     10)
+        
+        parsed = "10th March, 2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     10)
+        
+        parsed = "10th-March-2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     10)
+        
+        parsed = "MARCH 10TH 2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     10)
+        
+        parsed = "10TH MARCH 2019".dateComponents
+        #expect(parsed?.year ==    2019)
+        #expect(parsed?.month ==   3)
+        #expect(parsed?.day ==     10)
+        
         // missing year
         
         let currentYear = Calendar.current.component(.year, from: Date())
@@ -236,7 +303,7 @@ import Testing
         #expect(
             DateComponents()
                 .string(withMask: .YYYYMMDD)
-            == "00000000"
+                == "00000000"
         )
         
         // typical components
@@ -244,7 +311,7 @@ import Testing
         #expect(
             DateComponents(year: 2019, month: 3, day: 26)
                 .string(withMask: .YYYYMMDD)
-            == "20190326"
+                == "20190326"
         )
     }
 }
