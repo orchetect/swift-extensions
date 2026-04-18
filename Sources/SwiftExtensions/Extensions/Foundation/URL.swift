@@ -500,7 +500,8 @@ extension URL {
     public var isFinderAlias: Bool {
         guard isFileURL else { return false }
         
-        return (try? URL.bookmarkData(withContentsOf: self)) != nil
+        let values = try? resourceValues(forKeys: [.isAliasFileKey])
+        return values?.isAliasFile == true
     }
     
     /// Creates an alias of the base URL file or folder `at` the supplied target location. Will
@@ -525,7 +526,7 @@ extension URL {
     /// - does not exist.
     @_disfavoredOverload
     public var resolvedFinderAlias: URL? {
-        guard isFileURL else { return nil }
+        guard isFinderAlias else { return nil }
         
         guard let data = try? URL.bookmarkData(withContentsOf: self)
         else { return nil }
