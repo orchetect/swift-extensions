@@ -36,6 +36,13 @@ extension DateComponents {
     /// - "21 Oct 2020"
     /// - "21 October 2020"
     ///
+    /// - "Oct 21st, 2020"
+    /// - "Oct 21st 2020"
+    /// - "Oct-21st-2020"
+    /// - "21st Oct, 2020"
+    /// - "21st Oct 2020"
+    /// - "21st-Oct-2020"
+    ///
     /// - "21Oct2020"
     /// - "2020Oct21"
     ///
@@ -49,9 +56,9 @@ extension DateComponents {
     public init?<S: StringProtocol>(fuzzy string: S) {
         self.init()
         
-        var year = 0
-        var month = 0
-        var day = 0
+        var year: Int? = nil
+        var month: Int? = nil
+        var day: Int? = nil
         
         let prepped = string
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -115,7 +122,7 @@ extension DateComponents {
         }
         
         // named month (not numerical month)
-        for idx in split.startIndex ..< split.endIndex {
+        for idx in split.indices {
             let getValue = String(split[idx]).trimmingCharacters(in: .whitespacesAndNewlines)
             
             // long month names
@@ -137,6 +144,18 @@ extension DateComponents {
             }
         }
         
+        // check for ordinal numbers which will only be the day of the month
+        // ie: "1st", "15th"
+        for idx in split.indices {
+            if let (dayValue, _) = Self.ordinalDays
+                .first(where: { $0.value.localizedCaseInsensitiveCompare(split[idx]) == .orderedSame })
+            {
+                day = dayValue
+                split.remove(at: idx)
+                break
+            }
+        }
+        
         // process remaining values as numbers only
         
         var remaining = split.compactMap { Int($0) }
@@ -148,29 +167,31 @@ extension DateComponents {
         
         // day > 12 (obvious)
         
-        for idx in remaining.startIndex ..< remaining.endIndex {
-            let getValue = remaining[idx]
-            
-            if (13 ... 31).contains(getValue) {
-                day = getValue
-                remaining.remove(at: idx)
-                break
+        if day == nil {
+            for idx in remaining.indices {
+                let getValue = remaining[idx]
+                
+                if (13 ... 31).contains(getValue) {
+                    day = getValue
+                    remaining.remove(at: idx)
+                    break
+                }
             }
         }
         
         switch remaining.count {
         case 1:
             // this is likely the month, or the day 12 or under
-            if month == 0, (1 ... 12).contains(remaining[0]) {
+            if month == nil, (1 ... 12).contains(remaining[0]) {
                 month = remaining[0]
                 remaining.remove(at: 0)
-            } else if day == 0, (1 ... 31).contains(remaining[0]) {
+            } else if day == nil, (1 ... 31).contains(remaining[0]) {
                 day = remaining[0]
                 remaining.remove(at: 0)
             }
-
+            
         case 2:
-            guard month == 0, day == 0 else { return nil }
+            guard month == nil, day == nil else { return nil }
             
             // assume M,D order (US-based, more common?)
             
@@ -179,22 +200,36 @@ extension DateComponents {
             remaining.remove(at: 1)
             remaining.remove(at: 0)
             
-        default: break
+        default:
+            break
         }
         
         // finally, if there was no year, then assume the year is the current year
-        if year == 0 { year = Calendar.current.component(.year, from: Date()) }
+        if year == nil { year = Calendar.current.component(.year, from: Date()) }
         
         // if there are components remaining, something went wrong
         guard remaining.isEmpty else { return nil }
-        guard year > 0 else { return nil }
-        guard month > 0 else { return nil }
-        guard day > 0 else { return nil }
+        guard let year, year > 0 else { return nil }
+        guard let month, month > 0 else { return nil }
+        guard let day, day > 0 else { return nil }
         
         self.year = year
         self.month = month
         self.day = day
     }
+    
+    /// Generates ordinal day strings.
+    static let ordinalDays: [Int: String] = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .ordinal
+        let dict: [Int: String] = (1 ... 31)
+            .compactMapDictionary { day in
+                guard let string = formatter.string(from: day as NSNumber) else { return nil }
+                return (day, string)
+            }
+        assert(dict.count == 31)
+        return dict
+    }()
     
     /// Internal use.
     fileprivate static func getUCMatchIndex(for findStr: String, in array: [String]) -> Int? {
