@@ -1,0 +1,2 @@
+--disable noForceTryInTests,noForceUnwrapInTests,redundantSwiftTestingSuite,swiftTestingTestCaseNames
+--enable preferSwiftTesting
