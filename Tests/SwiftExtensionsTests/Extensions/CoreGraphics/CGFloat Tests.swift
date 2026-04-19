@@ -1,7 +1,7 @@
 //
 //  CGFloat Tests.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(CoreGraphics)
@@ -10,9 +10,10 @@ import CoreGraphics
 @testable import SwiftExtensions
 import Testing
 
-@Suite struct Extensions_CoreGraphics_CGFloat_Tests {
+@Suite
+struct Extensions_CoreGraphics_CGFloat_Tests {
     @Test
-    func typeConversions_BinaryIntegerToCGFloat() async {
+    func typeConversions_BinaryIntegerToCGFloat() {
         _ = Int(1).cgFloat
         _ = Int(1).cgFloatExactly
         _ = UInt(1).cgFloat
@@ -54,7 +55,7 @@ import Testing
     }
 
     @Test
-    func power() async {
+    func power() {
         #expect(CGFloat(2.0).power(3) == 8.0)
     }
 

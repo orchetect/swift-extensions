@@ -1,7 +1,7 @@
 //
 //  OSLogger Tests.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -12,21 +12,22 @@ import Testing
 import TestingExtensions
 
 // @available(macOS 10.12, iOS 10.0, watchOS 3.0, tvOS 10.0, *)
-@Suite struct Logging_Log_Tests {
+@Suite
+struct Logging_Log_Tests {
     @Test
-    func loggerObjects() async {
+    func loggerObjects() {
         // this test does not assert anything, it's just to test access levels
-        
+
         _ = [.message] as OSLogger.LogTemplate
-        
+
         _ = OSLogger.Config()
-        
+
         var config = OSLogger.Config(
             defaultLog: .default,
             defaultTemplate: .withEmoji()
         )
         config.defaultLog = .default
-        
+
         _ = OSLogger.Config(
             defaultLog: .default,
             defaultTemplate: .default(),
@@ -37,49 +38,53 @@ import TestingExtensions
             error: nil,
             fault: nil
         )
-        
+
         _ = OSLogger.LogToken.function
-        
+
         let logger = OSLogger {
             $0.coerceInfoAndDebugToDefault = true
         }
         #expect(logger.config.coerceInfoAndDebugToDefault == true)
-        
+
         let logger2 = OSLogger(enabled: false)
             .configure {
                 $0.coerceInfoAndDebugToDefault = true
             }
         #expect(logger2.config.coerceInfoAndDebugToDefault == true)
-        
+
         _ = logger.enabled
     }
-    
+
     /// Dev test: Check concurrency behavior.
     /// This test is only useful with Thread Sanitizer on.
     ///
     /// This test tends to be flakey on GitHub Actions runners, so skip it if running on Actions.
     @Test(.enabled(if: !isRunningOnGitHubActions() && isSystemTimingStable()))
-    func threading() async throws {
+    func threading() async {
         let iterations = 2000
-        
-        @TestActor final class Counter {
+
+        @TestActor
+        final class Counter {
             var count = 0
-            func inc() { count += 1 }
+            func inc() {
+                count += 1
+            }
+
             nonisolated init() { }
         }
         let counter = Counter()
-        
+
         // log operations
-        
+
         let logger = OSLogger { $0.coerceInfoAndDebugToDefault = false }
-        
+
         let thread1 = DispatchQueue(label: "thread1", target: .global())
         let thread2 = DispatchQueue(label: "thread2", target: .global())
-        
+
         for index in 0 ..< iterations {
             thread1.async { [counter] in
                 logger.debug("Log thread 1 test # \(index)")
-                
+
                 // it's useful to note that os_log output to
                 // Xcode's console when called rapidly
                 // can sometimes produce jumbled messages
@@ -87,12 +92,12 @@ import TestingExtensions
                 //       log: .default,
                 //       type: .debug,
                 //       "Log thread 1 test # \(index)")
-                
+
                 Task { @TestActor in counter.inc() }
             }
             thread2.async {
                 logger.debug("Log thread 2 test # \(index)")
-                
+
                 // it's useful to note that os_log output to
                 // Xcode's console when called rapidly
                 // can sometimes produce jumbled messages
@@ -100,34 +105,34 @@ import TestingExtensions
                 //       log: .default,
                 //       type: .debug,
                 //       "Log thread 2 test # \(index)")
-                
+
                 Task { @TestActor in counter.inc() }
             }
         }
-        
+
         await wait(expect: { await counter.count == iterations * 2 }, timeout: 30.0)
     }
-    
+
     @Test
-    func logger() async {
+    func logger() {
         // this test does not assert anything, it's just for diagnostic
-        
+
         print("---------- default config, coerceInfoAndDebugToDefault:true ----------")
-        
+
         let logger = OSLogger { $0.coerceInfoAndDebugToDefault = true }
-        
+
         logger.debug("Test Log.debug()", 123)
         logger.info("Test Log.info()", 123)
         logger.default("Test Log.default()", 123)
         logger.error("Test Log.error()", 123)
         logger.fault("Test Log.fault()", 123)
-        
+
         logger.log("Test Log.log(.debug)", 123, level: .debug)
         logger.log("Test Log.log(.info)", 123, level: .info)
         logger.log("Test Log.log(.default)", 123, level: .default)
         logger.log("Test Log.log(.error)", 123, level: .error)
         logger.log("Test Log.log(.fault)", 123, level: .fault)
-        
+
         logger.debug(
             "Test Log.debug() in loggerTestLog",
             123,
@@ -139,7 +144,7 @@ import TestingExtensions
             level: .debug,
             log: .loggerTestLog
         )
-        
+
         logger.error(
             "Test Log.error() in loggerTestLog",
             123,
@@ -152,86 +157,86 @@ import TestingExtensions
             log: .loggerTestLog
         )
     }
-    
+
     @Test
-    func logger_DefaultLog_NoEmojis() async {
+    func logger_DefaultLog_NoEmojis() {
         // this test does not assert anything, it's just for diagnostic
-        
+
         print("---------- default log, no emojis ----------")
-        
+
         let logger = OSLogger()
-        
+
         logger.debug("Test logger.debug()", 123)
         logger.info("Test logger.info()", 123)
         logger.default("Test logger.default()", 123)
         logger.error("Test logger.error()", 123)
         logger.fault("Test logger.fault()", 123)
     }
-    
+
     @Test
-    func logger_DefaultLog_OnlyErrorEmojis() async {
+    func logger_DefaultLog_OnlyErrorEmojis() {
         // this test does not assert anything, it's just for diagnostic
-        
+
         print("---------- default log, only error emojis ----------")
-        
+
         let logger = OSLogger {
             $0.defaultTemplate = .withEmoji()
-            
+
             $0.levelDebug.emoji = nil
             $0.levelInfo.emoji = nil
             $0.levelDefault.emoji = nil
         }
-        
+
         logger.debug("Test logger.debug()", 123)
         logger.info("Test logger.info()", 123)
         logger.default("Test logger.default()", 123)
         logger.error("Test logger.error()", 123)
         logger.fault("Test logger.fault()", 123)
     }
-    
+
     @Test
-    func logger_DefaultLog_AllEmojis() async {
+    func logger_DefaultLog_AllEmojis() {
         // this test does not assert anything, it's just for diagnostic
-        
+
         print("---------- default log, all emojis ----------")
-        
+
         let logger = OSLogger { $0.defaultTemplate = .withEmoji() }
-        
+
         logger.debug("Test logger.debug()", 123)
         logger.info("Test logger.info()", 123)
         logger.default("Test logger.default()", 123)
         logger.error("Test logger.error()", 123)
         logger.fault("Test logger.fault()", 123)
     }
-    
+
     @Test
-    func logger_CustomLog_AllEmojis() async {
+    func logger_CustomLog_AllEmojis() {
         // this test does not assert anything, it's just for diagnostic
-        
+
         print("---------- custom log, all emojis ----------")
-        
+
         let logger = OSLogger {
             $0.defaultLog = .loggerTestLog // custom log
             $0.defaultTemplate = .withEmoji()
         }
-        
+
         logger.debug("Test logger.debug()", 123)
         logger.info("Test logger.info()", 123)
         logger.default("Test logger.default()", 123)
         logger.error("Test logger.error()", 123)
         logger.fault("Test logger.fault()", 123)
     }
-    
+
     @Test
-    func logger_LogMethod() async {
+    func logger_LogMethod() {
         // this test does not assert anything, it's just for diagnostic
-        
+
         // default log
-        
+
         print("---------- default log, .log(), all emojis ----------")
-        
+
         let logger = OSLogger { $0.defaultTemplate = .withEmoji() }
-        
+
         logger.log("Test logger.log(... , level: .debug)", 123, level: .debug)
         logger.log("Test logger.log(... , level: .info)", 123, level: .info)
         logger.log("Test logger.log(... , level: .default)", 123, level: .default)

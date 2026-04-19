@@ -1,34 +1,35 @@
 //
 //  String Title Case Tests.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 import SwiftExtensions
 import Testing
 
-@Suite struct Abstractions_StringTitleCase_Tests {
+@Suite
+struct Abstractions_StringTitleCase_Tests {
     @Test
-    func titleCasedProperty() async {
+    func titleCasedProperty() {
         #expect("this".titleCased == "This")
         #expect("THIs".titleCased == "This")
         #expect("THIS".titleCased == "THIS") // preserve all-uppercase words by default
-        
+
         #expect("this thing".titleCased == "This Thing")
-        
+
         #expect("this is a test".titleCased == "This is a Test")
         #expect("tHis is A test".titleCased == "This is A Test") // force lowercase after first character of each word by default
         #expect("THIS is A test".titleCased == "THIS is A Test") // preserve all-uppercase words by default
-        
+
         #expect(" this   is a  test  ".titleCased == "This is a Test")
     }
-    
+
     @Test
     func titleCased() {
         func cased(_ string: String) -> String {
             string.titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: false)
         }
-        
+
         #expect(cased("") == "")
         #expect(cased(" ") == "")
         #expect(cased("a") == "A")
@@ -39,32 +40,32 @@ import Testing
         #expect(cased("c b a") == "C B A")
         #expect(cased("a-b-c") == "A-B-C")
         #expect(cased("c-b-a") == "C-B-A")
-        
+
         #expect(cased("this") == "This")
         #expect(cased("THIs") == "This")
         #expect(cased("THIS") == "This")
-        
+
         #expect(cased("this is a test") == "This is a Test")
         #expect(cased("tHis iS A test") == "This is a Test")
         #expect(cased("THIS is A test") == "This is a Test")
         #expect(cased("THIS is B test") == "This is B Test")
         #expect(cased("this IS a TEST") == "This is a Test")
-        
+
         #expect(cased("this-is-a-test") == "This-is-a-Test")
         #expect(cased("this-is a-test") == "This-is a-Test")
         #expect(cased("this-is-a-test") == "This-is-a-Test")
         #expect(cased("this-iS-a-test") == "This-is-a-Test")
         #expect(cased("THIS-is-a-BIG-test") == "This-is-a-Big-Test")
         #expect(cased("THis-Is-a-BIG-test") == "This-is-a-Big-Test")
-        
+
         #expect(cased(" this   is a  test  ") == "This is a Test")
-        
+
         #expect(cased("(this is a test)") == "(This is a Test)")
         #expect(cased("this (is a test)") == "This (Is a Test)")
         #expect(cased("this (test)") == "This (Test)")
         #expect(cased("this (tESt)") == "This (Test)")
         #expect(cased("this (a REAL test)") == "This (A Real Test)")
-        
+
         #expect(cased("a matrix") == "A Matrix")
         #expect(cased("the matrix") == "The Matrix")
         #expect(cased("tHe matrix") == "The Matrix")
@@ -74,13 +75,13 @@ import Testing
         #expect(cased("enter tHe matrix") == "Enter the Matrix")
         #expect(cased("enter THE matrix") == "Enter the Matrix")
     }
-    
+
     @Test
-    func titleCased_firstCharacterOfWordsOnly() async {
+    func titleCased_firstCharacterOfWordsOnly() {
         func cased(_ string: String) -> String {
             string.titleCased(firstCharacterOfWordsOnly: true, preserveUppercaseWords: false)
         }
-        
+
         #expect(cased("") == "")
         #expect(cased(" ") == "")
         #expect(cased("a") == "A")
@@ -91,32 +92,32 @@ import Testing
         #expect(cased("c b a") == "C B A")
         #expect(cased("a-b-c") == "A-B-C")
         #expect(cased("c-b-a") == "C-B-A")
-        
+
         #expect(cased("this") == "This")
         #expect(cased("THIs") == "THIs")
         #expect(cased("THIS") == "THIS")
-        
+
         #expect(cased("this is a test") == "This is a Test")
         #expect(cased("tHis iS A test") == "THis is a Test")
         #expect(cased("THIS is A test") == "THIS is a Test")
         #expect(cased("THIS is B test") == "THIS is B Test")
         #expect(cased("this IS a TEST") == "This is a TEST")
-        
+
         #expect(cased("this-is-a-test") == "This-is-a-Test")
         #expect(cased("this-is a-test") == "This-is a-Test")
         #expect(cased("this-is-a-test") == "This-is-a-Test")
         #expect(cased("this-iS-a-test") == "This-is-a-Test")
         #expect(cased("THIS-is-a-BIG-test") == "THIS-is-a-BIG-Test")
         #expect(cased("THis-Is-a-BIG-test") == "THis-is-a-BIG-Test")
-        
+
         #expect(cased(" this   is a  test  ") == "This is a Test")
-        
+
         #expect(cased("(this is a test)") == "(This is a Test)")
         #expect(cased("this (is a test)") == "This (Is a Test)")
         #expect(cased("this (test)") == "This (Test)")
         #expect(cased("this (tESt)") == "This (TESt)")
         #expect(cased("this (a REAL test)") == "This (A REAL Test)")
-        
+
         #expect(cased("a matrix") == "A Matrix")
         #expect(cased("the matrix") == "The Matrix")
         #expect(cased("tHe matrix") == "THe Matrix")
@@ -126,13 +127,13 @@ import Testing
         #expect(cased("enter tHe matrix") == "Enter the Matrix")
         #expect(cased("enter THE matrix") == "Enter the Matrix")
     }
-    
+
     @Test
-    func titleCased_preserveUppercaseWords() async {
+    func titleCased_preserveUppercaseWords() {
         func cased(_ string: String) -> String {
             string.titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: true)
         }
-        
+
         #expect(cased("") == "")
         #expect(cased(" ") == "")
         #expect(cased("a") == "A")
@@ -143,32 +144,32 @@ import Testing
         #expect(cased("c b a") == "C B A")
         #expect(cased("a-b-c") == "A-B-C")
         #expect(cased("c-b-a") == "C-B-A")
-        
+
         #expect(cased("this") == "This")
         #expect(cased("THIs") == "This")
         #expect(cased("THIS") == "THIS")
-        
+
         #expect(cased("this is a test") == "This is a Test")
         #expect(cased("tHis iS A test") == "This is A Test")
         #expect(cased("THIS is A test") == "THIS is A Test")
         #expect(cased("THIS is B test") == "THIS is B Test")
         #expect(cased("this IS a TEST") == "This IS a TEST")
-        
+
         #expect(cased("this-is-a-test") == "This-is-a-Test")
         #expect(cased("this-is a-test") == "This-is a-Test")
         #expect(cased("this-is-a-test") == "This-is-a-Test")
         #expect(cased("this-iS-a-test") == "This-is-a-Test")
         #expect(cased("THIS-is-a-BIG-test") == "THIS-is-a-BIG-Test")
         #expect(cased("THis-Is-a-BIG-test") == "This-is-a-BIG-Test")
-        
+
         #expect(cased(" this   is a  test  ") == "This is a Test")
-        
+
         #expect(cased("(this is a test)") == "(This is a Test)")
         #expect(cased("this (is a test)") == "This (Is a Test)")
         #expect(cased("this (test)") == "This (Test)")
         #expect(cased("this (tESt)") == "This (Test)")
         #expect(cased("this (a REAL test)") == "This (A REAL Test)")
-        
+
         #expect(cased("a matrix") == "A Matrix")
         #expect(cased("the matrix") == "The Matrix")
         #expect(cased("tHe matrix") == "The Matrix")
@@ -178,13 +179,13 @@ import Testing
         #expect(cased("enter tHe matrix") == "Enter the Matrix")
         #expect(cased("enter THE matrix") == "Enter THE Matrix")
     }
-    
+
     @Test
-    func titleCased_firstCharacterOfWordsOnly_preserveUppercaseWords() async {
+    func titleCased_firstCharacterOfWordsOnly_preserveUppercaseWords() {
         func cased(_ string: String) -> String {
             string.titleCased(firstCharacterOfWordsOnly: true, preserveUppercaseWords: true)
         }
-        
+
         #expect(cased("") == "")
         #expect(cased(" ") == "")
         #expect(cased("a") == "A")
@@ -195,32 +196,32 @@ import Testing
         #expect(cased("c b a") == "C B A")
         #expect(cased("a-b-c") == "A-B-C")
         #expect(cased("c-b-a") == "C-B-A")
-        
+
         #expect(cased("this") == "This")
         #expect(cased("THIs") == "THIs")
         #expect(cased("THIS") == "THIS")
-        
+
         #expect(cased("this is a test") == "This is a Test")
         #expect(cased("tHis iS A test") == "THis is A Test")
         #expect(cased("THIS is A test") == "THIS is A Test")
         #expect(cased("THIS is B test") == "THIS is B Test")
         #expect(cased("this IS a TEST") == "This IS a TEST")
-        
+
         #expect(cased("this-is-a-test") == "This-is-a-Test")
         #expect(cased("this-is a-test") == "This-is a-Test")
         #expect(cased("this-is-a-test") == "This-is-a-Test")
         #expect(cased("this-iS-a-test") == "This-is-a-Test")
         #expect(cased("THIS-is-a-BIG-test") == "THIS-is-a-BIG-Test")
         #expect(cased("THis-Is-a-BIG-test") == "THis-is-a-BIG-Test")
-        
+
         #expect(cased(" this   is a  test  ") == "This is a Test")
-        
+
         #expect(cased("(this is a test)") == "(This is a Test)")
         #expect(cased("this (is a test)") == "This (Is a Test)")
         #expect(cased("this (test)") == "This (Test)")
         #expect(cased("this (tESt)") == "This (TESt)")
         #expect(cased("this (a REAL test)") == "This (A REAL Test)")
-        
+
         #expect(cased("a matrix") == "A Matrix")
         #expect(cased("the matrix") == "The Matrix")
         #expect(cased("tHe matrix") == "THe Matrix")
@@ -230,11 +231,11 @@ import Testing
         #expect(cased("enter tHe matrix") == "Enter the Matrix")
         #expect(cased("enter THE matrix") == "Enter THE Matrix")
     }
-    
+
     // MARK: - StringProtocol.lowercaseFirstCharacter / lowercasingFirstCharacter
-    
+
     @Test
-    func lowercaseFirstCharacter() async {
+    func lowercaseFirstCharacter() {
         #expect({ var s = ""; s.lowercaseFirstCharacter(); return s }() == "")
         #expect({ var s = " "; s.lowercaseFirstCharacter(); return s }() == " ")
         #expect({ var s = "a"; s.lowercaseFirstCharacter(); return s }() == "a")
@@ -251,9 +252,9 @@ import Testing
         #expect({ var s = "THE"; s.lowercaseFirstCharacter(); return s }() == "tHE")
         #expect({ var s = "tHE"; s.lowercaseFirstCharacter(); return s }() == "tHE")
     }
-    
+
     @Test
-    func lowercasingFirstCharacter() async {
+    func lowercasingFirstCharacter() {
         #expect("".lowercasingFirstCharacter() == "")
         #expect(" ".lowercasingFirstCharacter() == " ")
         #expect("a".lowercasingFirstCharacter() == "a")
@@ -270,11 +271,11 @@ import Testing
         #expect("THE".lowercasingFirstCharacter() == "tHE")
         #expect("tHE".lowercasingFirstCharacter() == "tHE")
     }
-    
+
     // MARK: - StringProtocol.lowercaseFirstCasedCharacter / lowercasingFirstCasedCharacter
-    
+
     @Test
-    func lowercaseFirstCasedCharacter() async {
+    func lowercaseFirstCasedCharacter() {
         #expect({ var s = ""; s.lowercaseFirstCasedCharacter(); return s }() == "")
         #expect({ var s = " "; s.lowercaseFirstCasedCharacter(); return s }() == " ")
         #expect({ var s = "a"; s.lowercaseFirstCasedCharacter(); return s }() == "a")
@@ -288,9 +289,9 @@ import Testing
         #expect({ var s = "123_A"; s.lowercaseFirstCasedCharacter(); return s }() == "123_a")
         #expect({ var s = "123AB4567"; s.lowercaseFirstCasedCharacter(); return s }() == "123aB4567")
     }
-    
+
     @Test
-    func lowercasingFirstCasedCharacter() async {
+    func lowercasingFirstCasedCharacter() {
         #expect("".lowercasingFirstCasedCharacter() == "")
         #expect(" ".lowercasingFirstCasedCharacter() == " ")
         #expect("a".lowercasingFirstCasedCharacter() == "a")
@@ -304,11 +305,11 @@ import Testing
         #expect("123_A".lowercasingFirstCasedCharacter() == "123_a")
         #expect("123AB4567".lowercasingFirstCasedCharacter() == "123aB4567")
     }
-    
+
     // MARK: - StringProtocol.uppercaseFirstCharacter / uppercasingFirstCharacter
-    
+
     @Test
-    func uppercaseFirstCharacter() async {
+    func uppercaseFirstCharacter() {
         #expect({ var s = ""; s.uppercaseFirstCharacter(); return s }() == "")
         #expect({ var s = " "; s.uppercaseFirstCharacter(); return s }() == " ")
         #expect({ var s = "a"; s.uppercaseFirstCharacter(); return s }() == "A")
@@ -325,9 +326,9 @@ import Testing
         #expect({ var s = "THE"; s.uppercaseFirstCharacter(); return s }() == "THE")
         #expect({ var s = "tHE"; s.uppercaseFirstCharacter(); return s }() == "THE")
     }
-    
+
     @Test
-    func uppercasingFirstCharacter() async {
+    func uppercasingFirstCharacter() {
         #expect("".uppercasingFirstCharacter() == "")
         #expect(" ".uppercasingFirstCharacter() == " ")
         #expect("a".uppercasingFirstCharacter() == "A")
@@ -344,11 +345,11 @@ import Testing
         #expect("THE".uppercasingFirstCharacter() == "THE")
         #expect("tHE".uppercasingFirstCharacter() == "THE")
     }
-    
+
     // MARK: - StringProtocol.uppercaseFirstCasedCharacter / uppercasingFirstCasedCharacter
-    
+
     @Test
-    func uppercaseFirstCasedCharacter() async {
+    func uppercaseFirstCasedCharacter() {
         #expect({ var s = ""; s.uppercaseFirstCasedCharacter(); return s }() == "")
         #expect({ var s = " "; s.uppercaseFirstCasedCharacter(); return s }() == " ")
         #expect({ var s = "a"; s.uppercaseFirstCasedCharacter(); return s }() == "A")
@@ -362,9 +363,9 @@ import Testing
         #expect({ var s = "123_A"; s.uppercaseFirstCasedCharacter(); return s }() == "123_A")
         #expect({ var s = "123AB4567"; s.uppercaseFirstCasedCharacter(); return s }() == "123AB4567")
     }
-    
+
     @Test
-    func uppercasingFirstCasedCharacter() async {
+    func uppercasingFirstCasedCharacter() {
         #expect("".uppercasingFirstCasedCharacter() == "")
         #expect(" ".uppercasingFirstCasedCharacter() == " ")
         #expect("a".uppercasingFirstCasedCharacter() == "A")

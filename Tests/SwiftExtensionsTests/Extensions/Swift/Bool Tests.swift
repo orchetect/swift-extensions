@@ -1,15 +1,16 @@
 //
 //  Bool Tests.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 import SwiftExtensions
 import Testing
 
-@Suite struct Extensions_Swift_Bool_Tests {
+@Suite
+struct Extensions_Swift_Bool_Tests {
     @Test
-    func toInt() async {
+    func toInt() {
         // Bool
 
         #expect(true.intValue == 1)
@@ -36,17 +37,17 @@ import Testing
     }
 
     @Test
-    func toggled() async {
+    func toggled() {
         #expect(true.toggled() == false)
         #expect(false.toggled() == true)
     }
 
     @Test
-    func expressibleByIntegerLiteral() async {
+    func expressibleByIntegerLiteral() {
         #expect(Bool(-1) == false)
-        #expect(Bool(integerLiteral: 0) == false)  // same as b: Bool = 0
+        #expect(Bool(integerLiteral: 0) == false) // same as b: Bool = 0
         #expect(Bool(0) == false)
-        #expect(Bool(integerLiteral: 1) == true)   // same as b: Bool = 1
+        #expect(Bool(integerLiteral: 1) == true) // same as b: Bool = 1
         #expect(Bool(1) == true)
         #expect(Bool(integerLiteral: 123) == true) // same as b: Bool = 123
         #expect(Bool(123) == true)

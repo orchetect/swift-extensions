@@ -1,7 +1,7 @@
 //
 //  FooEnum.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - Shared constants and objects for tests
@@ -25,14 +25,14 @@ extension FooEnum: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(internalHash)
     }
-    
+
     private var internalHash: Int {
         switch self {
-        case let .foo(val):  return val << 5 // each Int has different hash
-        case .fooB:          return 0b01000  // identical hash regardless of Int
-        case .one:           return 0b00010
-        case .two:           return 0b00100
-        case .three:         return 0b01000
+        case let .foo(val): val << 5 // each Int has different hash
+        case .fooB: 0b01000 // identical hash regardless of Int
+        case .one: 0b00010
+        case .two: 0b00100
+        case .three: 0b01000
         }
     }
 }
@@ -40,11 +40,11 @@ extension FooEnum: Hashable {
 extension FooEnum: CustomStringConvertible {
     var description: String {
         switch self {
-        case let .foo(val):  return "foo(\(val))"
-        case let .fooB(val): return "fooB(\(val))"
-        case .one:           return "one"
-        case .two:           return "two"
-        case .three:         return "three"
+        case let .foo(val): "foo(\(val))"
+        case let .fooB(val): "fooB(\(val))"
+        case .one: "one"
+        case .two: "two"
+        case .three: "three"
         }
     }
 }

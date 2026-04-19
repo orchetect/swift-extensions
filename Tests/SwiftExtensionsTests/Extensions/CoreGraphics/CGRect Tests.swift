@@ -1,7 +1,7 @@
 //
 //  CGRect Tests.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(CoreGraphics)
@@ -10,48 +10,49 @@ import CoreGraphics
 @testable import SwiftExtensions
 import Testing
 
-@Suite struct Extensions_CoreGraphics_CGRect_Tests {
+@Suite
+struct Extensions_CoreGraphics_CGRect_Tests {
     @Test
-    func center() async {
+    func center() {
         let rect = CGRect(x: 2, y: 3, width: 10, height: 20)
-        
+
         let center = rect.center
-        
+
         #expect(center.x == 7)
         #expect(center.y == 13)
     }
-    
+
     @Test
-    func hrow() async {
+    func hrow() {
         let rect = CGRect(x: 2, y: 3, width: 10, height: 20)
-        
+
         let newRect = rect.grow(by: 1.5)
-        
+
         #expect(newRect.origin.x == 0.5)
         #expect(newRect.origin.y == 1.5)
         #expect(newRect.width == 13.0)
         #expect(newRect.height == 23.0)
     }
-    
+
     @Test
-    func shrink() async {
+    func shrink() {
         let rect = CGRect(x: 2, y: 3, width: 10, height: 20)
-        
+
         let newRect = rect.shrink(by: 1.5)
-        
+
         #expect(newRect.origin.x == 3.5)
         #expect(newRect.origin.y == 4.5)
         #expect(newRect.width == 7.0)
         #expect(newRect.height == 17.0)
     }
-    
+
     @Test
-    func scale() async {
+    func scale() {
         do {
             let rect = CGRect(x: 2, y: 3, width: 10, height: 20)
-            
+
             let newRect = rect.scale(factor: 1)
-            
+
             #expect(newRect.origin.x == 2.0)
             #expect(newRect.origin.y == 3.0)
             #expect(newRect.width == 10.0)
@@ -59,9 +60,9 @@ import Testing
         }
         do {
             let rect = CGRect(x: 2, y: 3, width: 10, height: 20)
-            
+
             let newRect = rect.scale(factor: 1.5)
-            
+
             #expect(newRect.origin.x == -0.5) // 2.0 - 2.5
             #expect(newRect.origin.y == -2.0) // 3.0 - 5.0
             #expect(newRect.width == 15.0)
@@ -69,9 +70,9 @@ import Testing
         }
         do {
             let rect = CGRect(x: 2, y: 3, width: 10, height: 20)
-            
+
             let newRect = rect.scale(factor: 0.5)
-            
+
             #expect(newRect.origin.x == 4.5) // 2.0 + 2.5
             #expect(newRect.origin.y == 8.0) // 3.0 + 5.0
             #expect(newRect.width == 5.0)

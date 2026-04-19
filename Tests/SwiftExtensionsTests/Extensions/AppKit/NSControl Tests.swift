@@ -1,7 +1,7 @@
 //
 //  NSControl Tests.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) && !targetEnvironment(macCatalyst)
@@ -10,39 +10,40 @@ import AppKit
 @testable import SwiftExtensions
 import Testing
 
-@Suite struct Extensions_AppKit_NSControl_Tests {
+@Suite
+struct Extensions_AppKit_NSControl_Tests {
     @Test
-    func bool_stateValue() async {
+    func bool_stateValue() {
         #expect(true.stateValue == .on)
         #expect(false.stateValue == .off)
     }
-    
+
     @Test
-    func stateValue_prefixOperator_Not() async {
+    func stateValue_prefixOperator_Not() {
         #expect(!NSControl.StateValue.on == .off)
         #expect(!NSControl.StateValue.off == .on)
         #expect(!NSControl.StateValue.mixed == .off)
     }
-    
+
     @Test
-    func stateValue_toggled() async {
+    func stateValue_toggled() {
         #expect(NSControl.StateValue.on.toggled() == .off)
         #expect(NSControl.StateValue.off.toggled() == .on)
         #expect(NSControl.StateValue.mixed.toggled() == .off)
     }
-    
+
     @Test
-    func stateValue_toggle() async {
+    func stateValue_toggle() {
         var stateValue: NSControl.StateValue
-        
+
         stateValue = .on
         stateValue.toggle()
         #expect(stateValue == .off)
-        
+
         stateValue = .off
         stateValue.toggle()
         #expect(stateValue == .on)
-        
+
         stateValue = .mixed
         stateValue.toggle()
         #expect(stateValue == .off)

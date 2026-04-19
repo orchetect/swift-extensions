@@ -1,7 +1,7 @@
 //
 //  XMLTestSuite.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // This is Mac-only because even though XMLNode exists in Foundation, it is only available on macOS
@@ -22,7 +22,7 @@ extension XMLTestSuite {
         let unwrapped = try #require(child)
         return unwrapped
     }
-    
+
     static func testXMLDocument() throws -> XMLDocument {
         try XMLDocument(
             data: testXMLStringData,
@@ -30,7 +30,10 @@ extension XMLTestSuite {
         )
     }
 
-    static var testXMLStringData: Data { testXMLString.toData()! }
+    static var testXMLStringData: Data {
+        testXMLString.toData()!
+    }
+
     static var testXMLString: String {
         """
         <?xml version="1.0" encoding="utf-8"?>

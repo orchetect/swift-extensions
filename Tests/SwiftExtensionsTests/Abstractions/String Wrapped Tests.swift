@@ -1,19 +1,20 @@
 //
 //  String Wrapped Tests.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 import SwiftExtensions
 import Testing
 
-@Suite struct Abstractions_StringWrapped_Tests {
+@Suite
+struct Abstractions_StringWrapped_Tests {
     @Test
-    func wrapped() async {
+    func wrapped() {
         // .wrapped
-        
+
         #expect("string".wrapped(with: "-") == "-string-")
-        
+
         #expect("string".wrapped(with: .parentheses) == "(string)")
         #expect("string".wrapped(with: .brackets) == "[string]")
         #expect("string".wrapped(with: .braces) == "{string}")
@@ -21,9 +22,9 @@ import Testing
         #expect("string".wrapped(with: .singleQuotes) == "'string'")
         #expect("string".wrapped(with: .quotes) == #""string""#)
     }
-    
+
     @Test
-    func categoryMethods() async {
+    func categoryMethods() {
         #expect("string".parenthesized == "(string)")
         #expect("string".singleQuoted == "'string'")
         #expect("string".quoted == #""string""#)

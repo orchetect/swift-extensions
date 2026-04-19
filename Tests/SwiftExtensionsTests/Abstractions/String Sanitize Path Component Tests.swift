@@ -1,19 +1,20 @@
 //
 //  String Sanitize Path Component Tests.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation
 import SwiftExtensions
 import Testing
 
-@Suite struct Abstractions_StringSanitizePathComponent_Tests {
+@Suite
+struct Abstractions_StringSanitizePathComponent_Tests {
     // @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *)
     @Test(arguments: [nil, .hfsPlus, .apfs] as [FileSystemFormat?])
-    func sanitizingFilename(fileSystem: FileSystemFormat?) async {
+    func sanitizingFilename(fileSystem: FileSystemFormat?) {
         let fs: [FileSystemFormat]? = fileSystem != nil ? [fileSystem!] : nil
-        
+
         // path component string
         #expect("".sanitizingPathComponent(for: fs, replacement: "-") == "")
         #expect("Test/File.txt".sanitizingPathComponent(for: fs, replacement: "-") == "Test-File.txt")
@@ -21,23 +22,23 @@ import Testing
         #expect("TestFile\0.txt".sanitizingPathComponent(for: fs, replacement: "-") == "TestFile-.txt")
         #expect("Test/File\0.txt".sanitizingPathComponent(for: fs, replacement: "-") == "Test-File-.txt")
         #expect("Test:File.txt".sanitizingPathComponent(for: fs, replacement: "-") == "Test-File.txt")
-        
+
         // url last path component
         #expect(
             URL(fileURLWithPath: "/Folder")
                 .appendingPathComponent("")
                 .sanitizingLastPathComponent(for: fs, replacement: "-")
                 .path
-            == "/Folder"
+                == "/Folder"
         )
         #expect(
             URL(fileURLWithPath: "/Folder")
                 .appendingPathComponent("Test/File.txt") // URL interprets `/` as a path delimiter
                 .sanitizingLastPathComponent(for: fs, replacement: "-")
                 .path
-            == "/Folder/Test/File.txt"
+                == "/Folder/Test/File.txt"
         )
-        
+
         do {
             let url = URL(fileURLWithPath: "/Folder")
                 .appendingPathComponent("Test//File.txt") // URL interprets `//` as a single path delimiter
@@ -52,7 +53,7 @@ import Testing
                 #expect(sanitizedURL.path == "/Folder/Test/File.txt")
             }
         }
-        
+
         do {
             let url = URL(fileURLWithPath: "/Folder/Test//File.txt") // URL interprets `//` as a single path delimiter
             #expect(url.pathComponents == ["/", "Folder", "Test", "File.txt"])
@@ -66,7 +67,7 @@ import Testing
                 #expect(sanitizedURL.path == "/Folder/Test/File.txt")
             }
         }
-        
+
         // Note: appending a null character to URL will cause a crash
         // #expect(
         //     URL(fileURLWithPath: "/Folder")
@@ -82,13 +83,13 @@ import Testing
         //         .path
         //     == "/Folder/Test-File-.txt"
         // )
-        
+
         #expect(
             URL(fileURLWithPath: "/Folder")
                 .appendingPathComponent("Test:File.txt")
                 .sanitizingLastPathComponent(for: fs, replacement: "-")
                 .path
-            == "/Folder/Test-File.txt"
+                == "/Folder/Test-File.txt"
         )
     }
 }
@@ -96,11 +97,9 @@ import Testing
 extension URL {
     // URL has slightly different sequential path separator behavior depending on platform and
     // version
-    fileprivate static let preservesSequentialSeparators: Bool = {
-        if #available(macOS 26, iOS 26, tvOS 26, watchOS 26, visionOS 26, *) {
-            false
-        } else {
-            true
-        }
-    }()
+    fileprivate static let preservesSequentialSeparators: Bool = if #available(macOS 26, iOS 26, tvOS 26, watchOS 26, visionOS 26, *) {
+        false
+    } else {
+        true
+    }
 }
