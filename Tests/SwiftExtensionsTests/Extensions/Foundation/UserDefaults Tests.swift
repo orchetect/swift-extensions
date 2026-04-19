@@ -20,7 +20,7 @@ extension UserDefaults {
 
 @Suite(.serialized)
 struct Extensions_Foundation_UserDefaults_Tests {
-    let ud = UserDefaults.testSuite
+    var ud: UserDefaults { .testSuite }
 
     init() async throws {
         // since we are accessing actual UserDefaults for these tests,
