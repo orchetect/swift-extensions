@@ -1,7 +1,7 @@
 //
 //  Optional.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - SwiftExtensionsOptionalTyped
@@ -9,7 +9,7 @@
 /// Protocol describing an optional, used to enable extensions on types such as `Type<T>?`.
 public protocol SwiftExtensionsOptionalTyped {
     associatedtype Wrapped
-    
+
     /// Semantic workaround used to enable extensions on types such as `Type<T>?`.
     @inlinable @_disfavoredOverload
     var optional: Wrapped? { get set }
@@ -97,11 +97,11 @@ protocol SwiftExtensionsOptional {
     /// Returns the optional Typed as `Any?`.
     @_disfavoredOverload
     func asAny() -> Any?
-    
+
     /// Returns the wrapped type of an Optional.
     @_disfavoredOverload
     func wrappedType() -> Any.Type
-    
+
     /// Returns `true` if optional is `none` (`nil`).
     @_disfavoredOverload
     var isNone: Bool { get }
@@ -112,12 +112,12 @@ extension Optional: SwiftExtensionsOptional {
     public func asAny() -> Any? {
         self as Any?
     }
-    
+
     @_disfavoredOverload
     public func wrappedType() -> Any.Type {
         Wrapped.self
     }
-    
+
     @inline(__always) @_disfavoredOverload
     public var isNone: Bool {
         self == nil

@@ -7,7 +7,11 @@ let package = Package(
     platforms: [
         // The minimum platform versions here set the baseline requirements for the library, however
         // individual features of the library may be marked as `@available` only on newer versions.
-        .macOS(.v10_15), .iOS(.v13), .tvOS(.v13), .watchOS(.v6), .visionOS(.v1)
+        .macOS(.v10_15),
+        .iOS(.v13),
+        .tvOS(.v13),
+        .watchOS(.v6),
+        .visionOS(.v1)
     ],
     products: [
         .library(
@@ -18,7 +22,7 @@ let package = Package(
     dependencies: [
         // External dependencies
         .package(url: "https://github.com/orchetect/swift-data-parsing", from: "0.1.1"),
-        
+
         // Testing-only dependencies
         .package(url: "https://github.com/apple/swift-numerics", from: "1.1.0"),
         .package(url: "https://github.com/orchetect/swift-testing-extensions", from: "0.3.0")
@@ -34,7 +38,7 @@ let package = Package(
         .testTarget(
             name: "SwiftExtensionsTests",
             dependencies: [
-                "SwiftExtensions", 
+                "SwiftExtensions",
                 .product(name: "Numerics", package: "swift-numerics"),
                 .product(name: "TestingExtensions", package: "swift-testing-extensions")
             ]
@@ -49,6 +53,7 @@ let package = Package(
         func getEnvironmentVar(_ name: String) -> String? {
             ProcessInfo.processInfo.environment[name]
         }
+
     #elseif canImport(CoreFoundation)
         import CoreFoundation
 

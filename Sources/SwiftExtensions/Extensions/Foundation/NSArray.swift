@@ -1,7 +1,7 @@
 //
 //  NSArray.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -55,22 +55,22 @@ extension NSMutableArray {
         }
         set {
             guard (0 ..< count).contains(index) else { return }
-            
+
             // subscript getter and setter must be of the same type
             // (get is `Element?` so the set must also be `Element?`)
-            
+
             // implementation makes it difficult or impossible to
             // allow setting an element to `nil` in a collection that contains Optionals,
             // because it's not easy to tell whether the collection contains Optionals or not,
             // so the best course of action is to not allow setting elements to `nil` at all.
-            
+
             guard let valueToStore = newValue else {
                 assertionFailure(
                     "Do not use [safe:] setter to set nil for elements on collections that contain Optionals. Setting nil has no effect."
                 )
                 return
             }
-            
+
             self[index] = valueToStore
         }
         _modify {
@@ -78,7 +78,7 @@ extension NSMutableArray {
             // NSMutableArray seems to only support get and
             // set by assignment, not inline mutability.
             // however, Swift allows us to compile this code any way.
-            
+
             guard (0 ..< count).contains(index) else {
                 // _modify { } requires yield to be called, so we can't just return.
                 // we have to allow the yield on a dummy variable first
@@ -86,25 +86,25 @@ extension NSMutableArray {
                 yield &dummy
                 return
             }
-            
+
             var valueForMutation: Element? = self[index]
             yield &valueForMutation
-            
+
             // subscript getter and setter must be of the same type
             // (get is `Element?` so the set must also be `Element?`)
-            
+
             // implementation makes it difficult or impossible to
             // allow setting an element to `nil` in a collection that contains Optionals,
             // because it's not easy to tell whether the collection contains Optionals or not,
             // so the best course of action is to not allow setting elements to `nil` at all.
-            
+
             guard let valueToStore = valueForMutation else {
                 assertionFailure(
                     "Do not use [safe:] setter to set nil for elements on collections that contain Optionals. Setting nil has no effect."
                 )
                 return
             }
-            
+
             self[index] = valueToStore
         }
     }

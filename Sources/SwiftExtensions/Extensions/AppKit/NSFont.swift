@@ -1,7 +1,7 @@
 //
 //  NSFont.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) && !targetEnvironment(macCatalyst)

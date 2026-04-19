@@ -1,7 +1,7 @@
 //
 //  DispatchGroup.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Dispatch)
@@ -14,16 +14,16 @@ extension DispatchGroup {
     public final class ThinDispatchGroup: @unchecked Sendable {
         fileprivate let group = DispatchGroup()
         private var leaveCalled = false
-        
+
         fileprivate init() { }
-        
+
         public func leave() {
             guard !leaveCalled else { return }
             leaveCalled = true
             group.leave()
         }
     }
-    
+
     /// Convenience DispatchGroup-wrapping method to run async code synchronously.
     /// You must call `leave()` once within the body of the closure.
     ///
@@ -42,13 +42,13 @@ extension DispatchGroup {
         _ block: (ThinDispatchGroup) -> Void
     ) {
         let g = ThinDispatchGroup()
-        
+
         g.group.enter()
         block(g)
-        
+
         g.group.wait()
     }
-    
+
     /// Convenience DispatchGroup-wrapping method to run code synchronously with the block being
     /// executed on the specified dispatch queue.
     /// You must call `leave()` once within the body of the closure.
@@ -69,14 +69,14 @@ extension DispatchGroup {
         _ block: @Sendable @escaping (ThinDispatchGroup) -> Void
     ) {
         let g = ThinDispatchGroup()
-        
+
         g.group.enter()
         dispatchQueue.async {
             block(g)
         }
         g.group.wait()
     }
-    
+
     /// Convenience DispatchGroup-wrapping method to run async code synchronously with a timeout
     /// period.
     /// You must call `leave()` once within the body of the closure.
@@ -97,15 +97,15 @@ extension DispatchGroup {
         _ block: (ThinDispatchGroup) -> Void
     ) -> DispatchTimeoutResult {
         let time = DispatchTime.now() + timeout
-        
+
         let g = ThinDispatchGroup()
-        
+
         g.group.enter()
         block(g)
-        
+
         return g.group.wait(timeout: time)
     }
-    
+
     /// Convenience DispatchGroup-wrapping method to run async code synchronously with a timeout
     /// period with the block being executed on the specified dispatch queue.
     /// You must call `leave()` once within the body of the closure.
@@ -128,14 +128,14 @@ extension DispatchGroup {
         _ block: @Sendable @escaping (ThinDispatchGroup) -> Void
     ) -> DispatchTimeoutResult {
         let time = DispatchTime.now() + timeout
-        
+
         let g = ThinDispatchGroup()
-        
+
         g.group.enter()
         dispatchQueue.async {
             block(g)
         }
-        
+
         return g.group.wait(timeout: time)
     }
 }
@@ -146,7 +146,7 @@ public enum DispatchSyncTimeoutResult<T> {
     case success(T)
     case timedOut
 }
-    
+
 extension DispatchGroup {
     /// A thin DispatchGroup wrapper capable of returning a value, that only publicly allows
     /// `leave(withValue:)` to be called.
@@ -155,9 +155,9 @@ extension DispatchGroup {
         fileprivate let group = DispatchGroup()
         fileprivate var returnValue: ReturnValue!
         private var leaveCalled = false
-        
+
         fileprivate init() { }
-        
+
         public func leave(withValue: ReturnValue) {
             guard !leaveCalled else { return }
             leaveCalled = true
@@ -165,7 +165,7 @@ extension DispatchGroup {
             group.leave()
         }
     }
-    
+
     /// Convenience DispatchGroup-wrapping method to run async code synchronously and return a
     /// value.
     /// You must call `leave(withValue:)` once within the body of the closure.
@@ -185,14 +185,14 @@ extension DispatchGroup {
         _ block: (ThinReturnValueDispatchGroup<T>) -> Void
     ) -> T {
         let g = ThinReturnValueDispatchGroup<T>()
-        
+
         g.group.enter()
         block(g)
         g.group.wait()
-        
+
         return g.returnValue! // value is guaranteed non-nil
     }
-    
+
     /// Convenience DispatchGroup-wrapping method to run async code synchronously and return a value
     /// with the block being executed on the specified dispatch queue.
     /// You must call `leave(withValue:)` once within the body of the closure.
@@ -213,16 +213,16 @@ extension DispatchGroup {
         _ block: @Sendable @escaping (ThinReturnValueDispatchGroup<T>) -> Void
     ) -> T {
         let g = ThinReturnValueDispatchGroup<T>()
-        
+
         g.group.enter()
         dispatchQueue.async {
             block(g)
         }
         g.group.wait()
-        
+
         return g.returnValue! // value is guaranteed non-nil
     }
-    
+
     /// Convenience DispatchGroup-wrapping method to run async code synchronously and return a value
     /// with a timeout period.
     /// You must call `leave(withValue:)` once within the body of the closure.
@@ -248,12 +248,12 @@ extension DispatchGroup {
         _ block: (ThinReturnValueDispatchGroup<T>) -> Void
     ) -> DispatchSyncTimeoutResult<T> {
         let time = DispatchTime.now() + timeout
-        
+
         let g = ThinReturnValueDispatchGroup<T>()
-        
+
         g.group.enter()
         block(g)
-        
+
         switch g.group.wait(timeout: time) {
         case .success:
             return .success(g.returnValue)
@@ -261,7 +261,7 @@ extension DispatchGroup {
             return .timedOut
         }
     }
-    
+
     /// Convenience DispatchGroup-wrapping method to run async code synchronously and return a value
     /// with a timeout period with the block being executed on the specified dispatch queue.
     /// You must call `leave(withValue:)` once within the body of the closure.
@@ -287,14 +287,14 @@ extension DispatchGroup {
         _ block: @Sendable @escaping (ThinReturnValueDispatchGroup<T>) -> Void
     ) -> DispatchSyncTimeoutResult<T> {
         let time = DispatchTime.now() + timeout
-        
+
         let g = ThinReturnValueDispatchGroup<T>()
-        
+
         g.group.enter()
         dispatchQueue.async {
             block(g)
         }
-        
+
         switch g.group.wait(timeout: time) {
         case .success:
             return .success(g.returnValue)

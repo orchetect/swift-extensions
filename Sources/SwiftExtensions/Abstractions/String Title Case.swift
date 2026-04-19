@@ -1,7 +1,7 @@
 //
 //  String Title Case.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - Title Case
@@ -10,15 +10,21 @@ extension StringProtocol {
     /// Used by ``titleCased``.
     /// Private array of title case particles to leave as lowercase
     private static var titleCasedParticles: [Self] {
+        // swiftformat:options --wrap-collections preserve
+        // swiftformat:options --allow-partial-wrapping true
+        // swiftformat:disable consecutiveSpaces spaceInsideBrackets
         [
-            "a", "an", "the",              // articles
-            "and", "but", "for",           // coordinating conjunctions
-            "at", "by", "of", "in", "on",  // prepositions
+            "a", "an", "the", // articles
+            "and", "but", "for", // coordinating conjunctions
+            "at", "by", "of", "in", "on", // prepositions
             "to", "with",
             "is"
         ]
+        // swiftformat:options --wrap-collections before-first
+        // swiftformat:options --allow-partial-wrapping false
+        // swiftformat:enable consecutiveSpaces spaceInsideBrackets
     }
-    
+
     /// Returns a representation of the string in title case capitalization style.
     ///
     /// Example:
@@ -34,7 +40,7 @@ extension StringProtocol {
     public var titleCased: String {
         titleCased(firstCharacterOfWordsOnly: false, preserveUppercaseWords: true)
     }
-    
+
     /// Returns a representation of the string in title case capitalization style.
     ///
     /// Example:
@@ -86,10 +92,10 @@ extension StringProtocol {
                         .map { .word(String($0)) }
                 }
             }
-        
+
         for index in words.indices {
             guard case let .word(word) = words[index] else { continue }
-            
+
             if preserveUppercaseWords {
                 guard !word.isUppercase(ignoreWhitespace: false, ignoreNonCased: true) else {
                     // leave word as-is
@@ -98,7 +104,7 @@ extension StringProtocol {
             }
             let lowercaseWord = word.localizedLowercase
             let isParticle = String.titleCasedParticles.contains(lowercaseWord)
-            
+
             if isParticle {
                 if index == words.startIndex || index == words.indices.last { // first or last word?
                     if firstCharacterOfWordsOnly {
@@ -117,7 +123,7 @@ extension StringProtocol {
                 }
             }
         }
-        
+
         return words
             .joined(separator: " ")
     }
@@ -126,21 +132,21 @@ extension StringProtocol {
 private enum Word: Equatable {
     case hyphen
     case word(String)
-    
+
     var string: String {
         switch self {
         case .hyphen: "-"
         case let .word(string): string
         }
     }
-    
+
     mutating func replace(with string: String) {
         self = .word(string)
     }
-    
+
     mutating func modify(_ block: (_ string: String) -> String) {
         let newString = block(string)
-        
+
         switch newString {
         case "-": self = .hyphen
         default: self = .word(newString)
@@ -153,7 +159,7 @@ extension Collection<Word> {
         var output: String = ""
         for index in indices {
             switch self[index] {
-            case .hyphen: 
+            case .hyphen:
                 output += "-"
             case let .word(string):
                 if let lastChar = output.last, lastChar != "-" { output += separator }
@@ -175,7 +181,7 @@ extension StringProtocol {
         copy.lowercaseFirstCharacter()
         return copy
     }
-    
+
     /// Returns a copy of the string with the first cased character lowercased.
     @_disfavoredOverload
     public func lowercasingFirstCasedCharacter() -> String {
@@ -184,7 +190,7 @@ extension StringProtocol {
         copy.lowercaseFirstCasedCharacter()
         return copy
     }
-    
+
     /// Returns a copy of the string with the first character uppercased.
     @_disfavoredOverload
     public func uppercasingFirstCharacter() -> String {
@@ -193,7 +199,7 @@ extension StringProtocol {
         copy.uppercaseFirstCharacter()
         return copy
     }
-    
+
     /// Returns a copy of the string with the first cased character uppercased.
     @_disfavoredOverload
     public func uppercasingFirstCasedCharacter() -> String {
@@ -212,10 +218,10 @@ extension String {
               let firstChar = first
         else { return }
         let lowercasedChar = String(firstChar).localizedLowercase
-        
+
         replaceSubrange(startIndex ... startIndex, with: lowercasedChar)
     }
-    
+
     /// Lowercases the first cased character in-place.
     @_disfavoredOverload
     public mutating func lowercaseFirstCasedCharacter() {
@@ -223,10 +229,10 @@ extension String {
               let index = firstIndex(where: { $0.isCased })
         else { return }
         let lowercasedChar = String(self[index]).localizedLowercase
-        
+
         replaceSubrange(index ... index, with: lowercasedChar)
     }
-    
+
     /// Uppercases the first character in-place.
     @_disfavoredOverload
     public mutating func uppercaseFirstCharacter() {
@@ -234,10 +240,10 @@ extension String {
               let firstChar = first
         else { return }
         let uppercasedChar = String(firstChar).localizedUppercase
-        
+
         replaceSubrange(startIndex ... startIndex, with: uppercasedChar)
     }
-    
+
     /// Uppercases the first cased character in-place.
     @_disfavoredOverload
     public mutating func uppercaseFirstCasedCharacter() {
@@ -245,7 +251,7 @@ extension String {
               let index = firstIndex(where: { $0.isCased })
         else { return }
         let uppercasedChar = String(self[index]).localizedUppercase
-        
+
         replaceSubrange(index ... index, with: uppercasedChar)
     }
 }

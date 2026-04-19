@@ -1,7 +1,7 @@
 //
 //  Decimal.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -14,70 +14,90 @@ extension Int {
     /// Same as `Decimal(self)`.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var decimal: Decimal { Decimal(self) }
+    public var decimal: Decimal {
+        Decimal(self)
+    }
 }
 
 extension UInt {
     /// Same as `Decimal(self)`.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var decimal: Decimal { Decimal(self) }
+    public var decimal: Decimal {
+        Decimal(self)
+    }
 }
 
 extension Int8 {
     /// Same as `Decimal(self)`.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var decimal: Decimal { Decimal(self) }
+    public var decimal: Decimal {
+        Decimal(self)
+    }
 }
 
 extension UInt8 {
     /// Same as `Decimal(self)`.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var decimal: Decimal { Decimal(self) }
+    public var decimal: Decimal {
+        Decimal(self)
+    }
 }
 
 extension Int16 {
     /// Same as `Decimal(self)`.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var decimal: Decimal { Decimal(self) }
+    public var decimal: Decimal {
+        Decimal(self)
+    }
 }
 
 extension UInt16 {
     /// Same as `Decimal(self)`.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var decimal: Decimal { Decimal(self) }
+    public var decimal: Decimal {
+        Decimal(self)
+    }
 }
 
 extension Int32 {
     /// Same as `Decimal(self)`.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var decimal: Decimal { Decimal(self) }
+    public var decimal: Decimal {
+        Decimal(self)
+    }
 }
 
 extension UInt32 {
     /// Same as `Decimal(self)`.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var decimal: Decimal { Decimal(self) }
+    public var decimal: Decimal {
+        Decimal(self)
+    }
 }
 
 extension Int64 {
     /// Same as `Decimal(self)`.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var decimal: Decimal { Decimal(self) }
+    public var decimal: Decimal {
+        Decimal(self)
+    }
 }
 
 extension UInt64 {
     /// Same as `Decimal(self)`.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var decimal: Decimal { Decimal(self) }
+    public var decimal: Decimal {
+        Decimal(self)
+    }
 }
 
 // MARK: - boolValue
@@ -85,7 +105,9 @@ extension UInt64 {
 extension Decimal {
     /// Returns `true` if > 0.0.
     @inlinable @_disfavoredOverload
-    public var boolValue: Bool { self > 0.0 }
+    public var boolValue: Bool {
+        self > 0.0
+    }
 }
 
 // MARK: - FloatingPointPowerComputable
@@ -122,7 +144,7 @@ extension String {
     public var decimal: Decimal? {
         Decimal(string: self)
     }
-    
+
     /// Same as `Decimal(string:, locale:)`.
     /// (Functional convenience method)
     @_disfavoredOverload
@@ -139,7 +161,7 @@ extension Substring {
     public var decimal: Decimal? {
         Decimal(string: String(self))
     }
-    
+
     /// Same as `Decimal(string:, locale:)`.
     /// (Functional convenience method)
     @_disfavoredOverload
@@ -160,12 +182,12 @@ extension Decimal {
         var initialDecimal = self
         var roundedDecimal = Decimal()
         let decimalPlaces = decimalPlaces.clamped(to: 0...)
-        
+
         NSDecimalRound(&roundedDecimal, &initialDecimal, decimalPlaces, rule)
-        
+
         return roundedDecimal
     }
-    
+
     /// Replaces this value by rounding it to `decimalPlaces` number of decimal places using
     /// rounding `rule`.
     @_disfavoredOverload
@@ -175,7 +197,7 @@ extension Decimal {
     ) {
         self = rounded(rule, decimalPlaces: decimalPlaces)
     }
-    
+
     /// Alternative method for rounding a number to a fixed number of decimal places
     /// that does not rely on `NSDecimalRound`.
     ///
@@ -205,26 +227,26 @@ extension Decimal {
     //     let significand = Decimal((double * pow(10, Double(decimalPlaces))).rounded(fpRule))
     //     return Decimal(sign: sign, exponent: -decimalPlaces, significand: significand)
     // }
-    
+
     /// Replaces this value by truncating it to `decimalPlaces` number of decimal places.
     @_disfavoredOverload
     public mutating func truncate(decimalPlaces: Int) {
         self = truncated(decimalPlaces: decimalPlaces)
     }
-    
+
     /// Truncates decimal places to `decimalPlaces` number of decimal places.
     @_disfavoredOverload
     public func truncated(decimalPlaces: Int) -> Self {
         var initialDecimal = self
         var roundedDecimal = Decimal()
         let decimalPlaces = decimalPlaces.clamped(to: 0...)
-        
+
         if self > 0 {
             NSDecimalRound(&roundedDecimal, &initialDecimal, decimalPlaces, .down)
         } else {
             NSDecimalRound(&roundedDecimal, &initialDecimal, decimalPlaces, .up)
         }
-        
+
         return roundedDecimal
     }
 }
@@ -238,7 +260,7 @@ extension Decimal {
         let fraction = self - (integral * rhs)
         return fraction
     }
-    
+
     /// Similar to `Int.quotientAndRemainder(dividingBy:)` from the Swift standard library.
     @_disfavoredOverload
     public func quotientAndRemainder(dividingBy rhs: Self) -> (quotient: Self, remainder: Self) {
@@ -247,7 +269,7 @@ extension Decimal {
         let fraction = self - (integral * rhs)
         return (quotient: integral, remainder: fraction)
     }
-    
+
     /// Returns both integral part and fractional part.
     ///
     /// - Note: This method is more computationally efficient than calling both `integral` and
@@ -258,13 +280,13 @@ extension Decimal {
         let fraction = self - integral
         return (integral: integral, fraction: fraction)
     }
-    
+
     /// Returns the integral part (digits before the decimal point).
     @inlinable @_disfavoredOverload
     public var integral: Self {
         integralAndFraction.integral
     }
-    
+
     /// Returns the fractional part (digits after the decimal point).
     ///
     /// Note: this can result in a non-trivial loss of precision for the fractional part.
@@ -284,11 +306,11 @@ extension Decimal {
         // not sure if some locales will localize the number differently than expected.
         // on English systems the `significand` string interpolation produces
         // a string of digits with no thousands separators or other characters.
-        
+
         if abs(self) <= 1 { return 0 }
         return "\(abs(significand))".count + exponent
     }
-    
+
     /// Returns the number of digit places of the ``fraction`` portion (right of the decimal).
     @inlinable @_disfavoredOverload
     public var fractionDigitPlaces: Int {

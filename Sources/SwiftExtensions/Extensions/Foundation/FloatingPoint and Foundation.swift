@@ -1,7 +1,7 @@
 //
 //  FloatingPoint and Foundation.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -10,8 +10,8 @@ import Foundation
 
 // MARK: - FloatingPointHighPrecisionStringConvertible
 
-extension Double:  FloatingPointHighPrecisionStringConvertible { }
-extension Float:   FloatingPointHighPrecisionStringConvertible { }
+extension Double: FloatingPointHighPrecisionStringConvertible { }
+extension Float: FloatingPointHighPrecisionStringConvertible { }
 
 #if !(arch(arm64) || arch(arm) || os(watchOS)) // Float80 is now removed for ARM
 extension Float80: FloatingPointHighPrecisionStringConvertible { }
@@ -31,11 +31,11 @@ Self: FloatingPointHighPrecisionStringConvertible {
     public var stringValueHighPrecision: String {
         var formatted = String(format: "%.100f", self)
             .trimmingCharacters(in: .zero)
-        
+
         if formatted.prefix(1) == "." { formatted = "0\(formatted)" }
-        
+
         formatted.removeSuffix(".")
-        
+
         return formatted
     }
 }
@@ -54,7 +54,8 @@ extension Float80 {
 #endif
 
 extension FloatingPoint where Self: CVarArg,
-                              Self: FloatingPointPowerComputable {
+                              Self: FloatingPointPowerComputable
+{
     /// Returns a string formatted to _n_ decimal places, using the given rounding rule.
     @inlinable @_disfavoredOverload
     public func string(
@@ -62,9 +63,9 @@ extension FloatingPoint where Self: CVarArg,
         decimalPlaces: Int
     ) -> String {
         let roundedValue = rounded(rule, decimalPlaces: decimalPlaces)
-        
+
         // (FYI: String(format:) does not work with Float80)
-        
+
         return String(format: "%.\(decimalPlaces)f", roundedValue)
     }
 }
@@ -78,17 +79,17 @@ extension Float80 {
         decimalPlaces: Int
     ) -> String {
         let roundedValue = rounded(rule, decimalPlaces: decimalPlaces)
-        
+
         // String(format:) does not work with Float80
         // so we need a custom implementation here
-        
+
         let rawString = String(describing: roundedValue)
         let splitComponents = rawString.split(separator: ".")
         if decimalPlaces < 1 || splitComponents.count < 2 {
             return String(splitComponents.first ?? "0")
         }
-        
-        return (splitComponents[0])
+
+        return splitComponents[0]
             + "."
             + splitComponents[1].padding(
                 toLength: decimalPlaces,
@@ -107,7 +108,7 @@ extension Double {
     public var integralDigitPlaces: Int {
         Decimal(self).integralDigitPlaces
     }
-    
+
     /// Returns the number of digit places of the ``fraction`` portion (right of the decimal).
     @inlinable @_disfavoredOverload
     public var fractionDigitPlaces: Int {

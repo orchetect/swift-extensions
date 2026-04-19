@@ -1,7 +1,7 @@
 //
 //  NSAttributedString.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -19,18 +19,18 @@ extension NSAttributedString {
     public func addingAttribute(alignment: NSTextAlignment) -> NSAttributedString {
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = alignment
-        
+
         guard let copy = mutableCopy() as? NSMutableAttributedString
         else {
             print("Could not create mutable NSAttributedString copy.")
             return self
         }
-        
+
         copy.addAttributes(
             [.paragraphStyle: paragraph],
             range: NSRange(location: 0, length: length)
         )
-        
+
         return copy
     }
 }
@@ -41,7 +41,7 @@ extension NSMutableAttributedString {
     public func addAttribute(alignment: NSTextAlignment) {
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = alignment
-        
+
         addAttributes(
             [.paragraphStyle: paragraph],
             range: NSRange(location: 0, length: length)

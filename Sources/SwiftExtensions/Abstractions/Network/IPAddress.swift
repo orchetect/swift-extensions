@@ -1,7 +1,7 @@
 //
 //  IPAddress.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -12,26 +12,28 @@ import Foundation
 public struct IPAddress {
     /// IP Address.
     public var address: String = ""
-	
+
     /// Validated IP address format.
     public var version: Version
-    
+
     /// IP Address Format Validation.
     /// If initialization succeeds, it means the IP address is of a valid format.
     /// The ``format`` property will contain the specific IP address format.
     public init?(_ address: String) {
         self.address = address
-        
+
         guard let validatedFormat = try? Self.validate(address: address) else {
             return nil
         }
-        
+
         version = validatedFormat
     }
 }
 
 extension IPAddress: Identifiable {
-    public var id: String { address }
+    public var id: String {
+        address
+    }
 }
 
 extension IPAddress: Sendable { }
@@ -43,13 +45,14 @@ extension IPAddress {
     /// IPv4 IP Address Validation Pattern.
     private static let ipv4Pattern =
         #"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"#
-    
-    // as suggested from: http://nbviewer.jupyter.org/github/rasbt/python_reference/blob/master/tutorials/useful_regex.ipynb#Checking-for-IP-addresses
+
+    // as suggested from:
+    // http://nbviewer.jupyter.org/github/rasbt/python_reference/blob/master/tutorials/useful_regex.ipynb#Checking-for-IP-addresses
     /// Internal:
     /// IPv6 IP Address Validation Pattern.
     private static let ipv6Pattern =
         #"^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$"#
-    
+
     /// Internal:
     /// Performs validation on the IP address.
     static func validate(address: String) throws(ValidationError) -> Version {
@@ -70,7 +73,7 @@ extension IPAddress {
         {
             return .ipV4
         }
-        
+
         // secondly, test for IPv6
         if let regex = try? NSRegularExpression(pattern: ipv6Pattern, options: []),
            regex.matches(
@@ -101,11 +104,11 @@ extension IPAddress {
     public enum Version: Sendable {
             /// Valid IPv4 address.
         case ipV4
-        
+
             /// Valid IPv6 address.
         case ipV6
     }
-    
+
     /// IP Address validation error.
     public enum ValidationError: Error {
         case invalid
@@ -113,7 +116,9 @@ extension IPAddress {
 }
 
 extension IPAddress.Version: Identifiable {
-    public var id: Self { self }
+    public var id: Self {
+        self
+    }
 }
 
 #endif

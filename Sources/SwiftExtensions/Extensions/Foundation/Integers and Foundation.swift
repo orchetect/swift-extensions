@@ -1,7 +1,7 @@
 //
 //  Integers and Foundation.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -15,14 +15,14 @@ extension BinaryInteger {
     @inlinable @_disfavoredOverload
     public func string(paddedTo: Int) -> String {
         if let cVarArg = self as? CVarArg {
-            return String(format: "%0\(paddedTo)d", cVarArg)
+            String(format: "%0\(paddedTo)d", cVarArg)
         } else {
             // Typically this will never happen,
             // but BinaryInteger does not implicitly conform to CVarArg,
             // and we can't assume all concrete types that conform
             // to BinaryInteger CVarArg now or in the future.
             // Just return a string as-is as a failsafe:
-            return String(describing: self)
+            String(describing: self)
         }
     }
 }
@@ -38,7 +38,7 @@ extension Duration {
     @_disfavoredOverload
     public var timeInterval: TimeInterval {
         let (seconds, attoseconds) = components
-        let interval = Double(seconds) + ((Double(attoseconds) / 1_000_000_000_000_000_000.0))
+        let interval = Double(seconds) + (Double(attoseconds) / 1_000_000_000_000_000_000.0)
         return interval
     }
 }

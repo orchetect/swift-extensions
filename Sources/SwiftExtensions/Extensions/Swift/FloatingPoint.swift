@@ -1,7 +1,7 @@
 //
 //  FloatingPoint.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - Convenience type conversion methods
@@ -10,140 +10,194 @@ extension BinaryFloatingPoint {
     /// Same as `Int()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var int: Int { Int(self) }
-    
+    public var int: Int {
+        Int(self)
+    }
+
     /// Same as `Int(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var intExactly: Int? { Int(exactly: self) }
-    
+    public var intExactly: Int? {
+        Int(exactly: self)
+    }
+
     /// Same as `UInt()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var uInt: UInt { UInt(self) }
-    
+    public var uInt: UInt {
+        UInt(self)
+    }
+
     /// Same as `UInt(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var uIntExactly: UInt? { UInt(exactly: self) }
-    
+    public var uIntExactly: UInt? {
+        UInt(exactly: self)
+    }
+
     /// Same as `Int8()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var int8: Int8 { Int8(self) }
-    
+    public var int8: Int8 {
+        Int8(self)
+    }
+
     /// Same as `Int8(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var int8Exactly: Int8? { Int8(exactly: self) }
-    
+    public var int8Exactly: Int8? {
+        Int8(exactly: self)
+    }
+
     /// Same as `UInt8()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var uInt8: UInt8 { UInt8(self) }
-    
+    public var uInt8: UInt8 {
+        UInt8(self)
+    }
+
     /// Same as `UInt8(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var uInt8Exactly: UInt8? { UInt8(exactly: self) }
-    
+    public var uInt8Exactly: UInt8? {
+        UInt8(exactly: self)
+    }
+
     /// Same as `Int16()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var int16: Int16 { Int16(self) }
-    
+    public var int16: Int16 {
+        Int16(self)
+    }
+
     /// Same as `Int16(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var int16Exactly: Int16? { Int16(exactly: self) }
-    
+    public var int16Exactly: Int16? {
+        Int16(exactly: self)
+    }
+
     /// Same as `UInt16()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var uInt16: UInt16 { UInt16(self) }
-    
+    public var uInt16: UInt16 {
+        UInt16(self)
+    }
+
     /// Same as `UInt16(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var uInt16Exactly: UInt16? { UInt16(exactly: self) }
-    
+    public var uInt16Exactly: UInt16? {
+        UInt16(exactly: self)
+    }
+
     /// Same as `Int32()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var int32: Int32 { Int32(self) }
-    
+    public var int32: Int32 {
+        Int32(self)
+    }
+
     /// Same as `Int32(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var int32Exactly: Int32? { Int32(exactly: self) }
-    
+    public var int32Exactly: Int32? {
+        Int32(exactly: self)
+    }
+
     /// Same as `UInt32()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var uInt32: UInt32 { UInt32(self) }
-    
+    public var uInt32: UInt32 {
+        UInt32(self)
+    }
+
     /// Same as `UInt32(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var uInt32Exactly: UInt32? { UInt32(exactly: self) }
-    
+    public var uInt32Exactly: UInt32? {
+        UInt32(exactly: self)
+    }
+
     /// Same as `Int64()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var int64: Int64 { Int64(self) }
-    
+    public var int64: Int64 {
+        Int64(self)
+    }
+
     /// Same as `Int64(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var int64Exactly: Int64? { Int64(exactly: self) }
-    
+    public var int64Exactly: Int64? {
+        Int64(exactly: self)
+    }
+
     /// Same as `UInt64()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var uInt64: UInt64 { UInt64(self) }
-    
+    public var uInt64: UInt64 {
+        UInt64(self)
+    }
+
     /// Same as `UInt64(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var uInt64Exactly: UInt64? { UInt64(exactly: self) }
+    public var uInt64Exactly: UInt64? {
+        UInt64(exactly: self)
+    }
 }
 
 extension BinaryFloatingPoint {
     /// Same as `Double()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var double: Double { Double(self) }
-    
+    public var double: Double {
+        Double(self)
+    }
+
     /// Same as `Double(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var doubleExactly: Double? { Double(exactly: self) }
-    
+    public var doubleExactly: Double? {
+        Double(exactly: self)
+    }
+
     /// Same as `Float()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var float: Float { Float(self) }
-    
+    public var float: Float {
+        Float(self)
+    }
+
     /// Same as `Float(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var floatExactly: Float? { Float(exactly: self) }
-    
+    public var floatExactly: Float? {
+        Float(exactly: self)
+    }
+
     /// Same as `Float32()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var float32: Float32 { Float32(self) }
-    
+    public var float32: Float32 {
+        Float32(self)
+    }
+
     /// Same as `Float32(exactly:)`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var float32Exactly: Float32? { Float32(exactly: self) }
-    
+    public var float32Exactly: Float32? {
+        Float32(exactly: self)
+    }
+
     #if !(arch(arm64) || arch(arm) || os(watchOS)) // Float80 is now removed for ARM
     /// Same as `Float80()`
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var float80: Float80 { Float80(self) }
+    public var float80: Float80 {
+        Float80(self)
+    }
     #endif
 }
 
@@ -152,7 +206,9 @@ extension BinaryFloatingPoint {
 extension BinaryFloatingPoint {
     /// Returns `true` if > 0.0
     @inline(__always) @_disfavoredOverload
-    public var boolValue: Bool { self > 0.0 }
+    public var boolValue: Bool {
+        self > 0.0
+    }
 }
 
 // MARK: - Rounded
@@ -169,12 +225,12 @@ extension FloatingPoint where Self: FloatingPointPowerComputable {
         if decimalPlaces < 1 {
             return rounded(rule)
         }
-        
+
         let offset = Self(10).power(Self(decimalPlaces))
-        
+
         return (self * offset).rounded(rule) / offset
     }
-    
+
     /// Replaces this value by rounding it to `decimalPlaces` number of decimal places using
     /// rounding `rule`.
     ///
@@ -198,7 +254,7 @@ extension FloatingPoint where Self: FloatingPointPowerComputable {
     public mutating func truncate(decimalPlaces: Int) {
         self = truncated(decimalPlaces: decimalPlaces)
     }
-    
+
     /// Truncates decimal places to `decimalPlaces` number of decimal places.
     ///
     /// If `decimalPlaces <= 0`, then `self.rounded(.towardZero)` is returned.
@@ -207,7 +263,7 @@ extension FloatingPoint where Self: FloatingPointPowerComputable {
         if decimalPlaces < 1 {
             return rounded(.towardZero)
         }
-        
+
         let offset = Self(10).power(Self(decimalPlaces))
         return (self * offset).rounded(.towardZero) / offset
     }
@@ -224,7 +280,7 @@ extension FloatingPoint {
         let fraction = self - (integral * rhs)
         return (quotient: integral, remainder: fraction)
     }
-    
+
     /// Returns both integral part and fractional part.
     ///
     /// - Note: This method is more computationally efficient than calling both `integral` and
@@ -237,13 +293,13 @@ extension FloatingPoint {
         let fraction = self - integral
         return (integral: integral, fraction: fraction)
     }
-    
+
     /// Returns the integral part (digits before the decimal point).
     @inlinable @_disfavoredOverload
     public var integral: Self {
         integralAndFraction.integral
     }
-    
+
     /// Returns the fractional part (digits after the decimal point).
     ///
     /// - Note: this method can result in a non-trivial loss of precision for the fractional part.
@@ -282,10 +338,10 @@ extension FloatingPoint {
     @inlinable @_disfavoredOverload
     public func wrapped(around range: ClosedRange<Self>) -> Self {
         guard !isNaN, !isInfinite else { return self }
-        
+
         let min = range.lowerBound
         let max = range.upperBound + 1
-        
+
         if self >= min {
             let calculation = (self - min) % (max - min)
             return min + calculation
@@ -294,7 +350,7 @@ extension FloatingPoint {
             return calculation != max ? calculation : min
         }
     }
-    
+
     /// Returns a number that has been wrapped around a range.
     /// If the number already falls within the range, the number is returned as-is.
     /// If the number underflows or overflows the range, it is wrapped around the range's bounds
@@ -302,12 +358,12 @@ extension FloatingPoint {
     @inlinable @_disfavoredOverload
     public func wrapped(around range: Range<Self>) -> Self {
         guard !isNaN, !isInfinite else { return self }
-        
+
         let min = range.lowerBound
         var max = range.upperBound - 1
-        
+
         if max < min { max = min }
-        
+
         return wrapped(around: min ... max)
     }
 }
@@ -320,7 +376,7 @@ extension BinaryFloatingPoint {
     public var degreesToRadians: Self {
         self * .pi / 180
     }
-    
+
     /// Returns radians converted to degrees.
     @inlinable @_disfavoredOverload
     public var radiansToDegrees: Self {
@@ -332,7 +388,7 @@ extension BinaryFloatingPoint {
 
 extension FloatingPoint {
     // String(describing:) is not inlinable when passed float types that do not conform to CustomStringConvertible
-    
+
     /// Returns a string representation of a floating-point number.
     /// (Functional convenience method)
     @_disfavoredOverload
@@ -343,7 +399,7 @@ extension FloatingPoint {
 
 extension FloatingPoint where Self: CustomStringConvertible {
     // String(describing:) are inlinable when passed float types that conform to CustomStringConvertible
-    
+
     /// Returns a string representation of a floating-point number.
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
@@ -356,43 +412,55 @@ extension FloatingPoint where Self: CustomStringConvertible {
 
 extension String {
     // float types init(_ text:) are inlinable when passed a StringProtocol type (including String)
-    
+
     /// Returns a `Double`, or `nil` if unsuccessful.
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var double: Double? { Double(self) }
-    
+    public var double: Double? {
+        Double(self)
+    }
+
     /// Returns a `Float`, or `nil` if unsuccessful.
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var float: Float? { Float(self) }
-    
+    public var float: Float? {
+        Float(self)
+    }
+
     #if !(arch(arm64) || arch(arm) || os(watchOS)) // Float80 is now removed for ARM
     /// Returns a `Float80`, or `nil` if unsuccessful.
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
-    public var float80: Float80? { Float80(self) }
+    public var float80: Float80? {
+        Float80(self)
+    }
     #endif
 }
 
 extension Substring {
     // float types init(_ text:) are not inlinable when passed a Substring, even though when passed
     // a StringProtocol type the init is inlinable
-    
+
     /// Returns a `Double`, or `nil` if unsuccessful.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var double: Double? { Double(self) }
-    
+    public var double: Double? {
+        Double(self)
+    }
+
     /// Returns a `Float`, or `nil` if unsuccessful.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var float: Float? { Float(self) }
-    
+    public var float: Float? {
+        Float(self)
+    }
+
     #if !(arch(arm64) || arch(arm) || os(watchOS)) // Float80 is now removed for ARM
     /// Returns a `Float80`, or `nil` if unsuccessful.
     /// (Functional convenience method)
     @_disfavoredOverload
-    public var float80: Float80? { Float80(self) }
+    public var float80: Float80? {
+        Float80(self)
+    }
     #endif
 }

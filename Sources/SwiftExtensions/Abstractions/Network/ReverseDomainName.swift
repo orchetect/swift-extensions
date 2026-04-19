@@ -1,7 +1,7 @@
 //
 //  ReverseDomainName.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 /// A type representing a domain name in reverse-notation (ie: `com.apple`, `com.apple.www`,
@@ -9,27 +9,27 @@
 public struct ReverseDomainName {
     /// Individual domain name components (domain name split by period (`.`) characters).
     public let components: [String]
-    
+
     /// The number of domain extension components included in the domain extension.
     ///
     /// For example:
     /// - `"com.apple.www"` would have `1` component (`"com"`).
     /// - `"uk.co.apple.www"` would have `2` components (`"uk"` and `"co"`).
     public let extensionComponentCount: Int
-    
+
     /// Initialize a new instance from a reverse-notation domain name string.
     public init(_ verbatim: String) {
         components = verbatim.split(separator: ".").map(String.init)
-        
+
         extensionComponentCount = DomainName
             .extensionComponentCount(inDomainComponents: components.reversed())
     }
-    
+
     /// Initialize a new instance from reverse-notation domain name components (domain name split by
     /// period (`.`) characters).
     public init(components: [String]) {
         self.components = components
-        
+
         extensionComponentCount = DomainName
             .extensionComponentCount(inDomainComponents: components.reversed())
     }
@@ -40,7 +40,9 @@ extension ReverseDomainName: Equatable { }
 extension ReverseDomainName: Hashable { }
 
 extension ReverseDomainName: Identifiable {
-    public var id: String { string }
+    public var id: String {
+        string
+    }
 }
 
 extension ReverseDomainName: CustomStringConvertible {
@@ -56,7 +58,7 @@ extension ReverseDomainName {
     public var string: String {
         components.joined(separator: ".")
     }
-    
+
     /// Returns the prefix components of the reverse-notation domain name, if any are present.
     ///
     /// For example:
@@ -66,7 +68,7 @@ extension ReverseDomainName {
     public var prefix: String {
         prefixComponents.joined(separator: ".")
     }
-    
+
     /// Returns the prefix components of the domain name, if any are present.
     ///
     /// For example:
@@ -77,7 +79,7 @@ extension ReverseDomainName {
         let prefixCount = max(0, components.count - (extensionComponentCount + 1))
         return Array(components.suffix(prefixCount))
     }
-    
+
     /// Returns the domain component of the domain name.
     ///
     /// For example:
@@ -86,7 +88,7 @@ extension ReverseDomainName {
     public var domainComponent: String {
         components.dropFirst(extensionComponentCount).first ?? ""
     }
-    
+
     /// Returns the domain and extension of the domain name.
     ///
     /// For example:
@@ -95,7 +97,7 @@ extension ReverseDomainName {
     public var domainAndExtension: String {
         domainAndExtensionComponents.joined(separator: ".")
     }
-    
+
     /// Returns the domain and extension of the domain name.
     ///
     /// For example:
@@ -104,7 +106,7 @@ extension ReverseDomainName {
     public var domainAndExtensionComponents: [String] {
         Array(components.prefix(extensionComponentCount + 1))
     }
-    
+
     /// Returns the extension for the domain name.
     ///
     /// For example:
@@ -113,7 +115,7 @@ extension ReverseDomainName {
     public var domainExtension: String {
         domainExtensionComponents.joined(separator: ".")
     }
-    
+
     /// Returns the extension for the domain name.
     ///
     /// For example:

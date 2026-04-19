@@ -1,7 +1,7 @@
 //
 //  String.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - String Convenience Constants
@@ -9,23 +9,33 @@
 extension String {
     /// Convenience constant.
     @inlinable @_disfavoredOverload
-    public static var quote: Self { "\"" }
-    
+    public static var quote: Self {
+        "\""
+    }
+
     /// Convenience constant.
     @inlinable @_disfavoredOverload
-    public static var tab: Self { "\t" }
-    
+    public static var tab: Self {
+        "\t"
+    }
+
     /// Convenience constant.
     @inlinable @_disfavoredOverload
-    public static var space: Self { " " }
-    
+    public static var space: Self {
+        " "
+    }
+
     /// Convenience constant.
     @inlinable @_disfavoredOverload
-    public static var newLine: Self { "\n" }
-    
+    public static var newLine: Self {
+        "\n"
+    }
+
     /// Convenience constant.
     @inlinable @_disfavoredOverload
-    public static var null: Self { "\0" } // { Self(UnicodeScalar(0)) }
+    public static var null: Self {
+        "\0"
+    } // { Self(UnicodeScalar(0)) }
 }
 
 // MARK: - Character Convenience Constants
@@ -33,23 +43,34 @@ extension String {
 extension Character {
     /// Convenience constant.
     @inlinable @_disfavoredOverload
-    public static var quote: Self { "\"" }
-    
+    public static var quote: Self {
+        "\""
+    }
+
     /// Convenience constant.
     @inlinable @_disfavoredOverload
-    public static var tab: Self { "\t" }
-    
+    public static var tab: Self {
+        "\t"
+    }
+
     /// Convenience constant.
     @inlinable @_disfavoredOverload
-    public static var space: Self { " " }
-    
+    public static var space: Self {
+        " "
+    }
+
     /// Convenience constant.
     @inlinable @_disfavoredOverload
-    public static var newLine: Self { "\n" }
-    
+    public static var newLine: Self {
+        "\n"
+    }
+
     /// Convenience constant.
     @inlinable @_disfavoredOverload
-    public static var null: Self { "\0" } // { Self(UnicodeScalar(0)) }
+    public static var null: Self {
+        // Self(UnicodeScalar(0))
+        "\0"
+    }
 }
 
 // MARK: - String functional append constants
@@ -60,19 +81,19 @@ extension String {
     public var newLined: Self {
         self + Self.newLine
     }
-    
+
     /// Returns a new String appending a tab character to the end.
     @inlinable @_disfavoredOverload
     public var tabbed: Self {
         self + Self.tab
     }
-    
+
     /// Appends a newline character to the end of the string.
     @inlinable @_disfavoredOverload
     public mutating func newLine() {
         self += Self.newLine
     }
-    
+
     /// Appends a tab character to the end of the string.
     @inlinable @_disfavoredOverload
     public mutating func tab() {
@@ -86,7 +107,7 @@ extension Substring {
     public var newLined: String {
         String(self) + String.newLine
     }
-    
+
     /// Returns a new String appending a tab character to the end.
     @inlinable @_disfavoredOverload
     public var tabbed: String {
@@ -136,15 +157,15 @@ extension String {
 extension StringProtocol {
     /// Returns a new `SubSequence` removing the prefix if it matches.
     @inlinable @_disfavoredOverload
-    public func removingPrefix<T: StringProtocol>(_ prefix: T) -> SubSequence {
+    public func removingPrefix(_ prefix: some StringProtocol) -> SubSequence {
         hasPrefix(prefix)
             ? dropFirst(prefix.count)
             : self[startIndex ..< endIndex]
     }
-    
+
     /// Returns a new `SubSequence` removing the suffix if it matches.
     @inlinable @_disfavoredOverload
-    public func removingSuffix<T: StringProtocol>(_ suffix: T) -> SubSequence {
+    public func removingSuffix(_ suffix: some StringProtocol) -> SubSequence {
         hasSuffix(suffix)
             ? dropLast(suffix.count)
             : self[startIndex ..< endIndex]
@@ -154,15 +175,15 @@ extension StringProtocol {
 extension String {
     /// Removes the prefix of a String if it exists.
     @inlinable @_disfavoredOverload
-    public mutating func removePrefix<T: StringProtocol>(_ prefix: T) {
+    public mutating func removePrefix(_ prefix: some StringProtocol) {
         if hasPrefix(prefix) {
             removeFirst(prefix.count)
         }
     }
-    
+
     /// Removes the suffix of a String if it exists.
     @inlinable @_disfavoredOverload
-    public mutating func removeSuffix<T: StringProtocol>(_ suffix: T) {
+    public mutating func removeSuffix(_ suffix: some StringProtocol) {
         if hasSuffix(suffix) {
             removeLast(suffix.count)
         }
@@ -177,7 +198,7 @@ extension StringProtocol {
     public var isASCII: Bool {
         allSatisfy(\.isASCII)
     }
-    
+
     /// Returns `true` if all characters within the string are lowercase characters.
     /// By default, non-cased characters are ignored.
     ///
@@ -196,7 +217,7 @@ extension StringProtocol {
             return $0.isLowercase
         }
     }
-    
+
     /// Returns `true` if all characters within the string are uppercase characters.
     /// By default, non-cased characters are ignored.
     ///

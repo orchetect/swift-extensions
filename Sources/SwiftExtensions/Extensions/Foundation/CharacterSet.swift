@@ -1,7 +1,7 @@
 //
 //  CharacterSet.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -14,7 +14,7 @@ extension CharacterSet {
     public init(_ characters: Character...) {
         self.init(characters)
     }
-    
+
     /// Initialize a `CharacterSet` from one or more `Character`.
     @_disfavoredOverload
     public init(_ characters: [Character]) {
@@ -43,19 +43,19 @@ extension CharacterSet {
     public static func + (lhs: Self, rhs: Self) -> Self {
         lhs.union(rhs)
     }
-    
+
     /// Same as `lhs.formUnion(rhs)`.
     @_disfavoredOverload
     public static func += (lhs: inout Self, rhs: Self) {
         lhs.formUnion(rhs)
     }
-    
+
     /// Same as `lhs.subtracting(rhs)`.
     @_disfavoredOverload
     public static func - (lhs: Self, rhs: Self) -> Self {
         lhs.subtracting(rhs)
     }
-    
+
     /// Same as `lhs.subtract(rhs)`.
     @_disfavoredOverload
     public static func -= (lhs: inout Self, rhs: Self) {
@@ -67,11 +67,11 @@ extension CharacterSet {
     /// English consonant letters, omitting vowels.
     @_disfavoredOverload
     public static let consonants = CharacterSet.letters.subtracting(Self.vowels)
-    
+
     /// English vowel letters (a, e, i, o, u) including all cases and diacritic variants.
     @_disfavoredOverload
     public static let vowels = lowercaseVowels.union(uppercaseVowels)
-    
+
     /// English lowercase vowel letters (a, e, i, o, u) including diacritic variants.
     @_disfavoredOverload
     public static let lowercaseVowels = CharacterSet(charactersIn:
@@ -81,7 +81,7 @@ extension CharacterSet {
             + "oôöòóœøōõ" + "ŏőơǒǫǭȍȏȫȭȯȱᵒṍṏṑṓọỏốồổỗộ"
             + "uûüùúū" + "ũŭůűųưǔǖǘǚǜȕȗᵘᵤṳṵṷṹṻụủứừửữự"
     )
-    
+
     /// English uppercase vowel letters (a, e, i, o, u) including diacritic variants.
     @_disfavoredOverload
     public static let uppercaseVowels = CharacterSet(charactersIn:

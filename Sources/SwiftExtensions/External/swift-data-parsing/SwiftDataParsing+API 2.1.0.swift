@@ -1,7 +1,7 @@
 //
-//  SwiftDataParsing.swift
+//  SwiftDataParsing+API 2.1.0.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 import SwiftDataParsing
@@ -38,7 +38,7 @@ extension CopyingDataParser {
     @_documentation(visibility: internal)
     @available(*, deprecated, renamed: "DataType")
     public typealias D = DataType
-    
+
     @_documentation(visibility: internal)
     @available(*, deprecated, message: "Data parsers are no longer instanced directly. Instead, call `data.withDataReader { parser in }`.")
     @_disfavoredOverload
@@ -47,7 +47,7 @@ extension CopyingDataParser {
         closure { block in data = block }
         self = data.withCopyingDataParser { $0 }
     }
-    
+
     @_documentation(visibility: internal)
     @available(*, deprecated, renamed: "DataParserError")
     public typealias ReadError = DataParserError
@@ -61,25 +61,25 @@ extension DataParserProtocol {
     public mutating func advanceBy(_ count: Int) {
         try? seek(by: count)
     }
-    
+
     @_documentation(visibility: internal)
     @available(*, deprecated, renamed: "readByte(advance:)")
     public mutating func nonAdvancingReadByte() throws(DataParserError) -> DataElement {
         try readByte(advance: false)
     }
-    
+
     @_documentation(visibility: internal)
     @available(*, deprecated, renamed: "read(advance:)")
     public mutating func nonAdvancingRead() throws(DataParserError) -> DataRange {
         try read(advance: false)
     }
-    
+
     @_documentation(visibility: internal)
     @available(*, deprecated, renamed: "read(bytes:advance:)")
     public mutating func nonAdvancingRead(bytes count: Int) throws(DataParserError) -> DataRange {
         try read(bytes: count, advance: false)
     }
-    
+
     @_documentation(visibility: internal)
     @available(*, deprecated, renamed: "seekToStart()")
     public mutating func reset() {
@@ -100,7 +100,9 @@ extension ByteOrder {
     @_documentation(visibility: internal)
     @available(*, deprecated, renamed: "platformDefault")
     @inline(__always)
-    public static var system: NumberEndianness { platformDefault }
+    public static var system: NumberEndianness {
+        platformDefault
+    }
 }
 
 #endif

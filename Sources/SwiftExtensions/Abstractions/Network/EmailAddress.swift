@@ -1,7 +1,7 @@
 //
 //  EmailAddress.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -12,21 +12,21 @@ import Foundation
 public struct EmailAddress {
     /// Email address.
     public let email: String
-    
+
     /// Email Address Format Validation.
     public init(_ email: String) {
         self.email = email
     }
-    
+
     /// Internal:
     /// Email Address RegEx Validation Pattern.
     static let emailRegEx =
         #"^([a-zA-Z0-9!#$%&'*+-/=?^_.{}|~]{1,64})@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,63})$"#
-    
+
     /// Returns `true` if the string is a valid email address.
     public var isValid: Bool {
         // prefix@domain.TLD
-        
+
         // Prefix (a.k.a. username / local-part)
         // -------------------------------------
         // An email prefix can only be up to 64 characters long. The characters can be a combination
@@ -37,7 +37,7 @@ public struct EmailAddress {
         // a circumflex or caret (^), an underscore (_), a period (.), brackets ({ or }), a vertical
         // bar (|), or a tilde mark (~). Note, however, that a period can only be used once in an
         // email prefix. It can’t appear as the first or last character as well.
-        
+
         // Hostname (domain.TLD)
         // ---------------------
         // The hostname is subject to stricter guidelines. It can’t be more than 255 characters in
@@ -48,44 +48,46 @@ public struct EmailAddress {
         //   0 through 9, and hyphens.
         // - The first and last character cannot be hyphens.
         // - Top-level domains (TLD) cannot be all numeric.
-        
+
         let groups = email.regexMatches(captureGroupsFromPattern: Self.emailRegEx)
-        
+
         // first array element is the entire match, then capture groups follow
         guard groups.count == 2 + 1 else { return false }
-        
+
         guard let prefix = groups[1],
               let hostname = groups[2] else { return false }
-        
+
         guard hostname.count <= 255 else { return false }
-        
+
         let hostnameComponents = hostname.split(separator: ".")
         let domainComponents = hostnameComponents.prefix(upTo: hostnameComponents.endIndex)
         guard let tld = hostnameComponents.last else { return false }
-        
+
         // prefix validation
         guard prefix.first != ".",
               prefix.last != ".",
               !prefix.contains("..") else { return false }
-        
+
         // domain validation
         guard domainComponents.count >= 2,
               domainComponents.allSatisfy({ (1 ... 63).contains($0.count) }),
               domainComponents.allSatisfy({ $0.first != "-" }),
               domainComponents.allSatisfy({ $0.last != "-" })
         else { return false }
-        
+
         // TLD validation
         guard (2 ... 63).contains(tld.count),
               !tld.isOnly(.decimalDigits)
         else { return false }
-        
+
         return true
     }
 }
 
 extension EmailAddress: Identifiable {
-    public var id: String { email }
+    public var id: String {
+        email
+    }
 }
 
 extension EmailAddress: Sendable { }

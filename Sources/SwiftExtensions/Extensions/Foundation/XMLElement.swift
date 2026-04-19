@@ -1,7 +1,7 @@
 //
 //  XMLElement.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // This is Mac-only because even though XMLNode exists in Foundation, it is only available on macOS
@@ -29,13 +29,13 @@ extension XMLElement {
             return state.0
         }
     }
-    
+
     /// Returns the first immediate child whose element name matches the given string.
     @_disfavoredOverload
     public func firstChildElement(named name: String) -> XMLElement? {
         childElements.first(where: { $0.name == name })
     }
-    
+
     /// Returns the first immediate child containing an attribute with the given name.
     @_disfavoredOverload
     public func firstChildElement(
@@ -55,14 +55,14 @@ extension XMLElement {
     public func stringValue(forAttributeNamed attributeName: String) -> String? {
         attribute(forName: attributeName)?.stringValue
     }
-    
+
     /// Gets an attribute value.
     /// If attribute name does not exist or does not have a value, `nil` will be returned.
     @_disfavoredOverload
     public func objectValue(forAttributeNamed attributeName: String) -> Any? {
         attribute(forName: attributeName)?.objectValue
     }
-    
+
     /// Adds an attribute.
     /// Replaces existing value if attribute name already exists.
     /// Removes attribute if `value` is `nil`.
@@ -77,7 +77,7 @@ extension XMLElement {
             removeAttribute(forName: attributeName)
         }
     }
-    
+
     /// Convenience to populate with attributes.
     /// Attributes are accepted as an array of tuples instead of a dictionary in order to maintain
     /// order.
@@ -97,14 +97,14 @@ extension XMLElement {
     public func getBool(forAttribute attributeName: String) -> Bool? {
         guard let value = stringValue(forAttributeNamed: attributeName)
         else { return nil }
-        
+
         switch value {
         case "0", "false", "FALSE": return false
         case "1", "true", "TRUE": return true
         default: return nil
         }
     }
-    
+
     /// Set a `Bool` attribute value.
     /// Adds or removes the attribute based on default behavior.
     ///
@@ -130,15 +130,15 @@ extension XMLElement {
             addAttribute(withName: attributeName, value: nil)
             return
         }
-        
+
         if removeIfDefault, newValue == defaultValue {
             addAttribute(withName: attributeName, value: nil)
             return
         }
-        
+
         set(bool: newValue, forAttribute: attributeName, useInt: useInt)
     }
-    
+
     /// Set a `Bool` attribute value.
     /// Explicitly adds the attribute if the value is non-nil.
     ///
@@ -159,14 +159,13 @@ extension XMLElement {
             addAttribute(withName: attributeName, value: nil)
             return
         }
-        
-        let newValueString: String
-        if useInt {
-            newValueString = newValue ? "1" : "0"
+
+        let newValueString: String = if useInt {
+            newValue ? "1" : "0"
         } else {
-            newValueString = newValue ? "true" : "false"
+            newValue ? "true" : "false"
         }
-        
+
         addAttribute(withName: attributeName, value: newValueString)
     }
 }
@@ -177,7 +176,7 @@ extension XMLElement {
     public func getInt(forAttribute attributeName: String) -> Int? {
         stringValue(forAttributeNamed: attributeName)?.int
     }
-    
+
     /// Set an `Int` attribute value.
     @_disfavoredOverload
     public func set(int newValue: Int?, forAttribute attributeName: String) {
@@ -193,13 +192,13 @@ extension XMLElement {
         else { return nil }
         return URL(string: value)
     }
-    
+
     /// Set a `URL` attribute value.
     @_disfavoredOverload
     public func set(url newValue: URL?, forAttribute attributeName: String) {
         addAttribute(withName: attributeName, value: newValue?.absoluteString)
     }
-    
+
     // TODO: differentiate absolute URL from relative URL?
 }
 
@@ -213,7 +212,7 @@ extension XMLElement {
             addChild(child)
         }
     }
-    
+
     /// Removes the child nodes of the receiver that satisfy the given predicate.
     ///
     /// - Complexity: O(*n*), where *n* is the length of the collection.
@@ -222,7 +221,7 @@ extension XMLElement {
         where shouldBeRemoved: (_ child: XMLElement) throws(E) -> Bool
     ) throws(E) {
         guard childCount > 0 else { return }
-        
+
         var filtered: [XMLNode] = []
         for child in childElements {
             let isForRemoval = try shouldBeRemoved(child)
@@ -230,17 +229,17 @@ extension XMLElement {
                 filtered.append(child)
             }
         }
-        
+
         let indicesToRemove = filtered
             .map(\.index)
             .sorted() // may be unnecessary
             .reversed() // remove in order from last to first
-        
+
         for index in indicesToRemove {
             removeChild(at: index)
         }
     }
-    
+
     /// Removes all child nodes of the receiver.
     ///
     /// - Complexity: O(*n*), where *n* is the length of the collection.
@@ -264,7 +263,7 @@ extension XMLElement {
         attributes: [(name: String, value: String)]
     ) {
         self.init(name: name)
-        
+
         addAttributes(attributes)
     }
 }
@@ -280,7 +279,7 @@ extension Sequence where Element: XMLElement {
     ) -> LazyFilterSequence<LazySequence<Self>.Elements> {
         lazy.filter(whereElementNamed: nodeName)
     }
-    
+
     /// Filters by any of the given XML element names.
     /// Filter is performed lazily.
     @inlinable @_disfavoredOverload
@@ -289,7 +288,7 @@ extension Sequence where Element: XMLElement {
     ) -> LazyFilterSequence<LazySequence<Self>.Elements> {
         lazy.filter(whereElementNamed: nodeNames)
     }
-    
+
     /// Filters elements that have an attribute matching the given `attribute` name and `value`.
     /// Filter is performed lazily.
     @inlinable @_disfavoredOverload
@@ -299,7 +298,7 @@ extension Sequence where Element: XMLElement {
     ) -> LazyFilterSequence<LazySequence<Self>.Elements> {
         lazy.filter(whereAttribute: attributeName, hasValue: attributeValue)
     }
-    
+
     /// Filters elements that have an attribute matching the given `attribute` name and satisfies
     /// the given predicate.
     /// Filter is performed lazily.
@@ -310,7 +309,7 @@ extension Sequence where Element: XMLElement {
     ) -> LazyFilterSequence<LazySequence<Self>.Elements> {
         lazy.filter(whereAttribute: attributeName, isIncluded)
     }
-    
+
     /// Filters elements that have an attribute matching the given `attribute` name.
     /// Filter is performed lazily.
     @inlinable @_disfavoredOverload
@@ -332,7 +331,7 @@ extension LazySequence where Element: XMLElement {
     ) -> LazyFilterSequence<LazySequence<Base>.Elements> {
         filter { $0.name == nodeName }
     }
-    
+
     /// Filters by any of the given XML element names.
     /// Filter is performed lazily.
     @inlinable @_disfavoredOverload
@@ -344,7 +343,7 @@ extension LazySequence where Element: XMLElement {
             return nodeNames.contains(name)
         }
     }
-    
+
     /// Filters nodes that have an attribute matching the given `attribute` name and `value`.
     /// Filter is performed lazily.
     @inlinable @_disfavoredOverload
@@ -356,7 +355,7 @@ extension LazySequence where Element: XMLElement {
             $0.stringValue(forAttributeNamed: attributeName) == attributeValue
         }
     }
-    
+
     /// Filters nodes that have an attribute matching the given `attribute` name and satisfies the
     /// given predicate.
     /// Filter is performed lazily.
@@ -368,7 +367,7 @@ extension LazySequence where Element: XMLElement {
         filter {
             guard let value = $0.stringValue(forAttributeNamed: attributeName)
             else { return false }
-            
+
             return isIncluded(value)
         }
     }
@@ -384,7 +383,7 @@ extension Sequence where Element: XMLElement {
     ) -> Element? {
         first { $0.name == nodeName }
     }
-    
+
     /// Returns the first element with any of the given XML node names.
     @inlinable @_disfavoredOverload
     public func first(
@@ -395,7 +394,7 @@ extension Sequence where Element: XMLElement {
             return nodeNames.contains(name)
         }
     }
-    
+
     /// Returns the first element that has an attribute matching the given `attribute` name and
     /// `value`.
     /// Filter is performed lazily.
@@ -408,7 +407,7 @@ extension Sequence where Element: XMLElement {
             $0.stringValue(forAttributeNamed: attributeName) == attributeValue
         }
     }
-    
+
     /// Finds the first element in the collection that has an attribute matching the given
     /// attribute name, and returns the element as well as the attribute's value.
     @inlinable @_disfavoredOverload
@@ -422,7 +421,7 @@ extension Sequence where Element: XMLElement {
         }
         return nil
     }
-    
+
     /// Finds the first element in the collection that has an attribute matching any of the given
     /// attribute names, and returns the element.
     @inlinable @_disfavoredOverload

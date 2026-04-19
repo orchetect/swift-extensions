@@ -1,7 +1,7 @@
 //
 //  Timespec.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Darwin)
@@ -43,11 +43,11 @@ import Darwin
 @inlinable @_disfavoredOverload
 public func clock_gettime_monotonic_raw() -> timespec {
     var uptime = timespec()
-    
+
     if clock_gettime(CLOCK_MONOTONIC_RAW, &uptime) != 0 {
         assertionFailure("clock_gettime failed")
     }
-    
+
     return uptime
 }
 
@@ -56,9 +56,9 @@ public func clock_gettime_monotonic_raw() -> timespec {
 extension timespec {
     /// Convenience constructor from floating point seconds value.
     @inlinable @_disfavoredOverload
-    public init<T: BinaryFloatingPoint>(seconds floatingPoint: T) {
+    public init(seconds floatingPoint: some BinaryFloatingPoint) {
         self.init()
-        
+
         let intVal = Int(floatingPoint * 1_000_000_000)
         tv_nsec = intVal % 1_000_000_000
         tv_sec = intVal / 1_000_000_000
@@ -76,12 +76,12 @@ extension timespec {
         let s = lhs.tv_sec + rhs.tv_sec + (nsRaw / 1_000_000_000)
         return timespec(tv_sec: s, tv_nsec: ns)
     }
-    
+
     /// Subtract two instances of `timespec`.
     @inlinable @_disfavoredOverload
     public static func - (lhs: timespec, rhs: timespec) -> timespec {
         let nsRaw = lhs.tv_nsec - rhs.tv_nsec
-        
+
         if nsRaw >= 0 {
             let ns = nsRaw % 1_000_000_000
             let s = lhs.tv_sec - rhs.tv_sec + (nsRaw / 1_000_000_000)
@@ -112,10 +112,10 @@ extension timespec: @retroactive Comparable {
     public static func < (lhs: timespec, rhs: timespec) -> Bool {
         if lhs.tv_sec < rhs.tv_sec { return true }
         if lhs.tv_sec > rhs.tv_sec { return false }
-        
+
         // seconds equate; now test nanoseconds
         if lhs.tv_nsec < rhs.tv_nsec { return true }
-        
+
         return false
     }
 }

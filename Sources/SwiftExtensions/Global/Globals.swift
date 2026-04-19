@@ -1,7 +1,7 @@
 //
 //  Globals.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -22,13 +22,13 @@ public enum Globals {
         public static let name: String = Bundle.main
             .infoDictionaryString(key: kCFBundleNameKey)
             ?? ""
-        
+
             /// Returns the current executable's bundle ID.
         /// Returns an empty string in case of failure.
         public static let bundleID: String = Bundle.main
             .bundleIdentifier
             ?? ""
-        
+
             /// Returns the value of the current executable's Info.plist `CFBundleShortVersionString`
         /// key.
         /// Returns an empty string in case of failure or if the key does not exist in the bundle's
@@ -36,7 +36,7 @@ public enum Globals {
         public static let versionShort: String = Bundle.main
             .infoDictionaryString(key: "CFBundleShortVersionString")
             ?? ""
-        
+
             /// Returns the major version number from the value of the current executable's Info.plist
         /// `CFBundleShortVersionString` key.
         /// Returns 0 in case of failure or if the key does not exist in the bundle's Info.plist.
@@ -45,7 +45,7 @@ public enum Globals {
                 .components(separatedBy: ".")
                 .first ?? "0"
         ) ?? 0
-        
+
             /// Returns the value from the app bundle's `kCFBundleVersionKey` key.
         /// Returns an empty string in case of failure or if the key does not exist in the bundle's
         /// Info.plist.
@@ -74,7 +74,7 @@ extension Globals {
             fatalError("Not implemented on this platform yet.")
             #endif
         }
-        
+
             /// Returns the full username of the current system account.
         @available(macOS 10.12, *)
         @available(macCatalyst, unavailable)
@@ -89,12 +89,12 @@ extension Globals {
             fatalError("Not implemented on this platform yet.")
             #endif
         }
-        
+
             /// Returns the operating system version on the system.
         public static var osVersion: String {
             ProcessInfo.processInfo.operatingSystemVersionString
         }
-        
+
             /// On macOS, returns Mac computer name. On iOS/tvOS, returns device name.
         @available(macOS 10.6, macCatalyst 13, iOS 2, tvOS 9, watchOS 1, visionOS 1, *)
         public static var name: String {
@@ -113,35 +113,35 @@ extension Globals {
                 #endif
             }
         }
-        
+
         #if os(macOS)
-        
+
             /// Returns local Mac's mainboard serial number.
         /// (Computes lazily, once upon first access and retains value persistently until app
         /// quits.)
         public static let serialNumber: String? = Self
             .getSysInfoString(key: kIOPlatformSerialNumberKey)
-        
+
             /// Returns local Mac's hardware UUID string.
         /// (Computes lazily, once upon first access and retains value persistently until app
         /// quits.)
         public static let hardwareUUID: String? = Self.getSysInfoString(key: kIOPlatformUUIDKey)
-        
+
         /// Internal use.
         static func getSysInfoString(key: String) -> String? {
             let platformExpert = IOServiceGetMatchingService(
                 kIOMasterPortDefault,
                 IOServiceMatching("IOPlatformExpertDevice")
             )
-            
+
             defer {
                 IOObjectRelease(platformExpert)
             }
-            
+
             guard platformExpert > 0 else {
                 return nil
             }
-            
+
             guard let serialNumber =
                 IORegistryEntryCreateCFProperty(
                     platformExpert,
@@ -153,10 +153,10 @@ extension Globals {
             else {
                 return nil
             }
-            
+
             return serialNumber.trimmingCharacters(in: .whitespacesAndNewlines)
         }
-        
+
         #endif
     }
 }
@@ -166,7 +166,7 @@ extension Bundle {
     public func infoDictionaryString(key: String) -> String? {
         infoDictionary?[key] as? String
     }
-    
+
     /// Convenience function to return an Info.plist key value as a String.
     public func infoDictionaryString(key: CFString) -> String? {
         infoDictionary?[key as String] as? String

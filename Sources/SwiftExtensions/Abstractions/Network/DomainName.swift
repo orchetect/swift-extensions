@@ -1,27 +1,27 @@
 //
 //  DomainName.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 /// A type representing a domain name (ie: `apple.com`, `www.apple.com`, `sub.domain.www.zzz`).
 public struct DomainName {
     /// Individual domain name components (domain name split by period (`.`) characters).
     public let components: [String]
-    
+
     /// The number of domain extension components included in the domain extension.
     ///
     /// For example:
     /// - `"www.apple.com"` would have `1` component (`"com"`).
     /// - `"www.apple.co.uk"` would have `2` components (`"co"` and `"uk"`).
     public let extensionComponentCount: Int
-    
+
     /// Initialize a new instance from a domain name string.
     public init(_ verbatim: String) {
         components = verbatim.split(separator: ".").map(String.init)
         extensionComponentCount = Self.extensionComponentCount(inDomainComponents: components)
     }
-    
+
     /// Initialize a new instance from domain name components (domain name split by period (`.`)
     /// characters).
     public init(components: [String]) {
@@ -35,7 +35,9 @@ extension DomainName: Equatable { }
 extension DomainName: Hashable { }
 
 extension DomainName: Identifiable {
-    public var id: String { string }
+    public var id: String {
+        string
+    }
 }
 
 extension DomainName: CustomStringConvertible {
@@ -51,7 +53,7 @@ extension DomainName {
     public var string: String {
         components.joined(separator: ".")
     }
-    
+
     /// Returns the prefix components of the domain name, if any are present.
     ///
     /// For example:
@@ -61,7 +63,7 @@ extension DomainName {
     public var prefix: String {
         prefixComponents.joined(separator: ".")
     }
-    
+
     /// Returns the prefix components of the domain name, if any are present.
     ///
     /// For example:
@@ -72,7 +74,7 @@ extension DomainName {
         let prefixCount = max(0, components.count - (extensionComponentCount + 1))
         return Array(components.prefix(prefixCount))
     }
-    
+
     /// Returns the domain component of the domain name.
     ///
     /// For example:
@@ -81,7 +83,7 @@ extension DomainName {
     public var domainComponent: String {
         components.dropLast(extensionComponentCount).last ?? ""
     }
-    
+
     /// Returns the domain and extension of the domain name.
     ///
     /// For example:
@@ -90,7 +92,7 @@ extension DomainName {
     public var domainAndExtension: String {
         domainAndExtensionComponents.joined(separator: ".")
     }
-    
+
     /// Returns the domain and extension of the domain name.
     ///
     /// For example:
@@ -99,7 +101,7 @@ extension DomainName {
     public var domainAndExtensionComponents: [String] {
         components.suffix(extensionComponentCount + 1)
     }
-    
+
     /// Returns the extension for the domain name.
     ///
     /// For example:
@@ -108,7 +110,7 @@ extension DomainName {
     public var domainExtension: String {
         domainExtensionComponents.joined(separator: ".")
     }
-    
+
     /// Returns the extension for the domain name.
     ///
     /// For example:
@@ -154,7 +156,7 @@ extension DomainName {
             "otc",
             "telememo"
         ],
-        
+
         // Australia
         "au": [
             "com",
@@ -166,7 +168,7 @@ extension DomainName {
             "id",
             "csiro"
         ],
-        
+
         // Austria
         "at": [
             "ac",
@@ -175,7 +177,7 @@ extension DomainName {
             "or",
             "priv"
         ],
-        
+
         // Bangladesh
         "bd": [
             "com",
@@ -189,7 +191,7 @@ extension DomainName {
             "mil",
             "tv"
         ],
-        
+
         // Brazil
         "br": [
             // Generic
@@ -346,7 +348,7 @@ extension DomainName {
             "ong",
             "org"
         ],
-        
+
         // Canada
         "ca": [
             "ab",
@@ -364,7 +366,7 @@ extension DomainName {
             "sk",
             "yk"
         ],
-        
+
         // France
         "fr": [
             "acovat",
@@ -374,7 +376,7 @@ extension DomainName {
             "com",
             "asso"
         ],
-        
+
         // Hungary
         "hu": [
             "2000",
@@ -413,12 +415,12 @@ extension DomainName {
             "sex",
             "szex"
         ],
-        
+
         // Netherlands
         "nl": [
             "co"
         ],
-        
+
         // New Zealand
         "nz": [
             // Unmoderated
@@ -439,7 +441,7 @@ extension DomainName {
             "mil",
             "parliament"
         ],
-        
+
         // Nigeria
         "ng": [
             "com",
@@ -453,7 +455,7 @@ extension DomainName {
             "mil",
             "i"
         ],
-        
+
         // Pakistan
         "pk": [
             "com",
@@ -475,7 +477,7 @@ extension DomainName {
             "fam",
             "biz"
         ],
-        
+
         // India
         "in": [
             // General
@@ -525,7 +527,7 @@ extension DomainName {
             "up",
             "us"
         ],
-        
+
         // Israel
         "il": [
             "ac",
@@ -537,7 +539,7 @@ extension DomainName {
             "muni",
             "idf"
         ],
-        
+
         // Japan
         "jp": [
             "ac",
@@ -550,7 +552,7 @@ extension DomainName {
             "ne",
             "or"
         ],
-        
+
         // Russia
         "ru": [
             // Generic
@@ -690,7 +692,7 @@ extension DomainName {
             // Test domain
             "test"
         ],
-        
+
         // South Africa
         "za": [
             // Approved
@@ -714,7 +716,7 @@ extension DomainName {
             "grondar",
             "nis"
         ],
-        
+
         // South Korea
         "kr": [
             // General
@@ -763,7 +765,7 @@ extension DomainName {
             "cheju",
             "nm"
         ],
-        
+
         // Spain
         "es": [
             "com",
@@ -772,7 +774,7 @@ extension DomainName {
             "gob",
             "edu"
         ],
-        
+
         // Sri Lanka
         "lk": [
             // Restricted
@@ -793,7 +795,7 @@ extension DomainName {
             "grp",
             "hotel"
         ],
-        
+
         // Thailand
         "th": [
             "ac",
@@ -804,7 +806,7 @@ extension DomainName {
             "net",
             "in"
         ],
-        
+
         // Trinidad and Tobago
         "tt": [
             "co",
@@ -821,7 +823,7 @@ extension DomainName {
             "edu",
             "gov"
         ],
-        
+
         // Türkiye
         "tr": [
             "gov",
@@ -847,7 +849,7 @@ extension DomainName {
             "web",
             "name"
         ],
-        
+
         // Ukraine
         "ua": [
             // Generic
@@ -955,7 +957,7 @@ extension DomainName {
             "epp1",
             "epp2"
         ],
-        
+
         // United Kingdom
         "uk": [
             // Active
@@ -984,7 +986,7 @@ extension DomainName {
             "lea",
             "mil"
         ],
-        
+
         // United States
         "us": [
             "fed",
@@ -1051,7 +1053,7 @@ extension DomainName {
             "pr",
             "vi"
         ],
-        
+
         // Yugoslavia
         "yu": [
             "ac",
@@ -1059,7 +1061,7 @@ extension DomainName {
             "org",
             "cg"
         ],
-        
+
         // Zambia:
         "zm": [
             "ac",
@@ -1075,7 +1077,7 @@ extension DomainName {
             "sch"
         ]
     ]
-    
+
     /// Returns the number of trailing components that make up the domain extension.
     ///
     /// Note that it is rare to have more than two components be considered part of the domain
@@ -1083,10 +1085,10 @@ extension DomainName {
     static func extensionComponentCount(inDomainComponents components: [String]) -> Int {
         guard components.count > 1 else { return 0 }
         guard components.count > 2 else { return 1 }
-        
+
         let tld = components[components.endIndex(offsetBy: -1)] // top-level
         let sld = components[components.endIndex(offsetBy: -2)] // second-level
-        
+
         if let slds = twoLevelDomainExtensions[tld],
            slds.contains(sld)
         {

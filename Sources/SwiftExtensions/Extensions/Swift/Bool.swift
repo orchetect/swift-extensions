@@ -1,7 +1,7 @@
 //
 //  Bool.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - Bool
@@ -9,43 +9,63 @@
 extension Bool {
     /// Returns 1 (`true`) or 0 (`false`).
     @inlinable @_disfavoredOverload
-    public var intValue: Int { self ? 1 : 0 }
-    
+    public var intValue: Int {
+        self ? 1 : 0
+    }
+
     /// Returns 1 (`true`) or 0 (`false`).
     @inlinable @_disfavoredOverload
-    public var int8Value: Int8 { self ? 1 : 0 }
-    
+    public var int8Value: Int8 {
+        self ? 1 : 0
+    }
+
     /// Returns 1 (`true`) or 0 (`false`).
     @inlinable @_disfavoredOverload
-    public var int16Value: Int16 { self ? 1 : 0 }
-    
+    public var int16Value: Int16 {
+        self ? 1 : 0
+    }
+
     /// Returns 1 (`true`) or 0 (`false`).
     @inlinable @_disfavoredOverload
-    public var int32Value: Int32 { self ? 1 : 0 }
-    
+    public var int32Value: Int32 {
+        self ? 1 : 0
+    }
+
     /// Returns 1 (`true`) or 0 (`false`).
     @inlinable @_disfavoredOverload
-    public var int64Value: Int64 { self ? 1 : 0 }
-    
+    public var int64Value: Int64 {
+        self ? 1 : 0
+    }
+
     /// Returns 1 (`true`) or 0 (`false`).
     @inlinable @_disfavoredOverload
-    public var uIntValue: UInt { self ? 1 : 0 }
-    
+    public var uIntValue: UInt {
+        self ? 1 : 0
+    }
+
     /// Returns 1 (`true`) or 0 (`false`).
     @inlinable @_disfavoredOverload
-    public var uInt8Value: UInt8 { self ? 1 : 0 }
-    
+    public var uInt8Value: UInt8 {
+        self ? 1 : 0
+    }
+
     /// Returns 1 (`true`) or 0 (`false`).
     @inlinable @_disfavoredOverload
-    public var uInt16Value: UInt16 { self ? 1 : 0 }
-    
+    public var uInt16Value: UInt16 {
+        self ? 1 : 0
+    }
+
     /// Returns 1 (`true`) or 0 (`false`).
     @inlinable @_disfavoredOverload
-    public var uInt32Value: UInt32 { self ? 1 : 0 }
-    
+    public var uInt32Value: UInt32 {
+        self ? 1 : 0
+    }
+
     /// Returns 1 (`true`) or 0 (`false`).
     @inlinable @_disfavoredOverload
-    public var uInt64Value: UInt64 { self ? 1 : 0 }
+    public var uInt64Value: UInt64 {
+        self ? 1 : 0
+    }
 }
 
 // MARK: - Functional boolean logic methods
@@ -68,10 +88,10 @@ extension Bool: @retroactive ExpressibleByIntegerLiteral {
     public init(integerLiteral value: IntegerLiteralType) {
         self = value > 0
     }
-    
+
     /// Value > 0 produces `true`.
     @inline(__always) @_disfavoredOverload
-    public init<T: BinaryInteger>(_ value: T) {
+    public init(_ value: some BinaryInteger) {
         self = value > 0
     }
 }

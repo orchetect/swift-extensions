@@ -1,7 +1,7 @@
 //
 //  URL and AppKit.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) && !targetEnvironment(macCatalyst)
@@ -17,7 +17,7 @@ extension URL {
     @_disfavoredOverload
     public var fileIcon: NSImage? {
         guard isFileURL, fileExists else { return nil }
-        
+
         return NSWorkspace.shared.icon(forFile: path)
     }
 }

@@ -1,7 +1,7 @@
 //
 //  Collection Set-Like Methods.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - Set-like functionality for Non-Set Collections
@@ -10,10 +10,10 @@
 public enum CollectionPosition {
     /// Default behavior (as described in the calling function).
     case `default`
-    
+
     /// Start of the collection.
     case start
-    
+
     /// End of the collection.
     case end
 }
@@ -25,7 +25,9 @@ extension CollectionPosition: Hashable { }
 extension CollectionPosition: Sendable { }
 
 extension CollectionPosition: Identifiable {
-    public var id: Self { self }
+    public var id: Self {
+        self
+    }
 }
 
 // RangeReplaceableCollection:
@@ -45,7 +47,7 @@ extension Collection where Self: RangeReplaceableCollection,
     ) {
         insert(element, position: .default)
     }
-    
+
     /// Similar behavior to a `Set`, inserts the given element in the collection if it is not
     /// already present. The element will either be appended to the end of the collection or
     /// inserted at the start depending on the `position` parameter.
@@ -63,7 +65,7 @@ extension Collection where Self: RangeReplaceableCollection,
             }
         }
     }
-    
+
     /// Similar behavior to a `Set`, inserts the given element into the collection unconditionally.
     ///
     /// If the element exists in the collection this will replace it at its current index with the
@@ -74,7 +76,7 @@ extension Collection where Self: RangeReplaceableCollection,
     ) {
         update(with: newMember, position: .default)
     }
-    
+
     /// Similar behavior to a `Set`, inserts the given element into the set unconditionally.
     ///
     /// If the element exists in the collection this will replace it and optionally reposition it
@@ -107,18 +109,19 @@ extension Collection where Self: RangeReplaceableCollection,
             }
         }
     }
-    
+
     /// Similar behavior to a `Set`, but removes all instances of the element.
     @inlinable @_disfavoredOverload
     public mutating func removeAll(_ member: Element) {
         removeAll(where: { $0 == member })
     }
-    
+
     /// Similar behavior to a `Set`, join two collections together and where elements are equal,
     /// retain the existing element.
     @inlinable @_disfavoredOverload
-    public func union<S>(_ other: S) -> Self
-    where Element == S.Element, S: Sequence {
+    public func union<S: Sequence>(_ other: S) -> Self
+        where Element == S.Element
+    {
         var newCollection = self
         for item in other {
             if !newCollection.contains(item) {
@@ -127,36 +130,39 @@ extension Collection where Self: RangeReplaceableCollection,
         }
         return newCollection
     }
-    
+
     /// Similar behavior to a `Set`, join two collections together and where elements are equal,
     /// retain the existing element.
     @inlinable @_disfavoredOverload
-    public mutating func formUnion<S>(_ other: S)
-    where Element == S.Element, S: Sequence {
+    public mutating func formUnion<S: Sequence>(_ other: S)
+        where Element == S.Element
+    {
         for item in other {
             if !contains(item) {
                 append(item)
             }
         }
     }
-    
+
     /// Similar behavior to a `Set`, join two collections together and where elements are equal,
     /// replace the existing element with the new element preserving the original index.
     @inlinable @_disfavoredOverload
-    public func union<S>(updating other: S) -> Self
-    where Element == S.Element, S: Sequence {
+    public func union<S: Sequence>(updating other: S) -> Self
+        where Element == S.Element
+    {
         var newCollection = self
         for item in other {
             newCollection.update(with: item, position: .default)
         }
         return newCollection
     }
-    
+
     /// Similar behavior to a `Set`, join two collections together and where elements are equal,
     /// replace the existing element with the new element preserving the original index.
     @inlinable @_disfavoredOverload
-    public mutating func formUnion<S>(updating other: S)
-    where Element == S.Element, S: Sequence {
+    public mutating func formUnion<S: Sequence>(updating other: S)
+        where Element == S.Element
+    {
         for item in other {
             update(with: item, position: .default)
         }

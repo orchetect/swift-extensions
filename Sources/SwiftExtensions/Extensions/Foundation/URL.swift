@@ -1,7 +1,7 @@
 //
 //  URL.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -28,7 +28,7 @@ extension URL {
     public func hasPrefix(url base: URL) -> Bool {
         absoluteString.starts(with: base.absoluteString)
     }
-    
+
     /// Returns `true` if the URL path components begin with the specified components.
     ///
     /// ie:
@@ -46,7 +46,7 @@ extension URL {
     public func hasPathComponents(prefix base: [String]) -> Bool {
         pathComponents.starts(with: base)
     }
-    
+
     /// If the URL has the given base URL exactly, the path components will be returned removing the
     /// base URL's path components.
     ///
@@ -65,10 +65,10 @@ extension URL {
     public func pathComponents(removingBase base: URL) -> [String]? {
         guard !base.pathComponents.isEmpty else { return [] }
         guard hasPrefix(url: base) else { return nil }
-        
+
         return pathComponents.dropFirst(base.pathComponents.count).array
     }
-    
+
     /// If the URL path components begin with those of the given base URL, the path components will
     /// be returned removing the base URL's path components.
     ///
@@ -87,10 +87,10 @@ extension URL {
     public func pathComponents(removingPrefix base: [String]) -> [String]? {
         guard !base.isEmpty else { return [] }
         guard hasPathComponents(prefix: base) else { return nil }
-        
+
         return pathComponents.dropFirst(base.count).array
     }
-    
+
     /// Returns the URL with a relative base URL applied.
     /// If the URL is not prefixed by the passed `base` URL, the URL is simply returned unchanged.
     ///
@@ -113,7 +113,7 @@ extension URL {
         let encodedRelPath = URL(fileURLWithPath: relPath).relativeString
         return URL(string: encodedRelPath, relativeTo: base) ?? self
     }
-    
+
     /// Return a new URL by mutating the file name (last path component) including extension.
     @_disfavoredOverload
     public func mutatingLastPathComponent(
@@ -125,7 +125,7 @@ extension URL {
             .appendingPathComponent(newFileName)
         return newURL
     }
-    
+
     /// Return a new URL by mutating the file name (last path component) excluding extension.
     @_disfavoredOverload
     public func mutatingLastPathComponentExcludingExtension(
@@ -138,7 +138,7 @@ extension URL {
             .appendingPathExtension(pathExtension)
         return newURL
     }
-    
+
     /// Return a new URL by appending a string to the file name (last path component) before the
     /// extension.
     ///
@@ -174,7 +174,7 @@ extension URL {
     public var fileExists: Bool {
         FileManager.default.fileExists(atPath: path)
     }
-    
+
     /// Returns whether the file URL path is a directory by querying the local file system.
     ///
     /// - Returns: `true` if the path exists and is a folder.
@@ -184,10 +184,10 @@ extension URL {
         guard let bool = try? resourceValues(forKeys: [URLResourceKey.isDirectoryKey])
             .isDirectory
         else { return false }
-        
+
         return bool
     }
-    
+
     /// Updates the URL with its canonical file system path on disk.
     ///
     /// > Note:
@@ -210,7 +210,7 @@ extension URL {
     public mutating func canonicalizeFileURL(partial: Bool = false) throws {
         self = try canonicalizingFileURL(partial: partial)
     }
-    
+
     /// Returns the URL by returning its canonical file system path on disk.
     ///
     /// > Note:
@@ -232,9 +232,9 @@ extension URL {
     @_disfavoredOverload
     public func canonicalizingFileURL(partial: Bool = false) throws -> URL {
         // see https://stackoverflow.com/a/66968423/2805570 for in-depth explainer
-        
+
         guard isFileURL else { throw CocoaError(.fileNoSuchFile) }
-        
+
         if partial {
             // iterate through each path component, canonicalizing each time
             var newURL = URL(fileURLWithPath: "/").deletingLastPathComponent()
@@ -251,7 +251,7 @@ extension URL {
             return newURL
         }
     }
-    
+
     /// Updates the URL with its canonical file system path on disk.
     ///
     /// If the path does not exist, the path will remain unmodified.
@@ -276,7 +276,7 @@ extension URL {
     public mutating func canonicalizeFileURLIfPossible(partial: Bool = false) {
         self = canonicalizingFileURLIfPossible(partial: partial)
     }
-    
+
     /// Returns the URL by returning its canonical file system path on disk.
     ///
     /// If the path does not exist, the path will be returned unmodified.
@@ -301,7 +301,7 @@ extension URL {
     public func canonicalizingFileURLIfPossible(partial: Bool = false) -> URL {
         (try? canonicalizingFileURL(partial: partial)) ?? self
     }
-    
+
     /// Returns `true` if the URL points to the same file system node as another URL.
     /// This is more reliable than comparing simple equality of two `URL` instances, as this method
     /// will account for mismatched case and will resolve the URLs as needed in order to perform
@@ -320,15 +320,15 @@ extension URL {
     @_disfavoredOverload
     public func isEqualFileNode(as otherFileURL: URL) throws -> Bool {
         // see https://stackoverflow.com/a/66968423/2805570 for in-depth explainer
-        
+
         guard isFileURL, otherFileURL.isFileURL else { throw CocoaError(.fileNoSuchFile) }
-        
+
         guard let lhs = try resourceValues(forKeys: [.fileResourceIdentifierKey])
             .fileResourceIdentifier,
             let rhs = try otherFileURL.resourceValues(forKeys: [.fileResourceIdentifierKey])
                 .fileResourceIdentifier
         else { throw CocoaError(.fileReadUnknown) }
-        
+
         return lhs.isEqual(rhs)
     }
 }
@@ -347,20 +347,20 @@ extension URL {
     @discardableResult @_disfavoredOverload
     public func trashOrDelete() throws -> URL? {
         // funcs
-        
+
         func __delFile(url: URL) throws {
             try FileManager.default.removeItem(at: url)
         }
-        
+
         // platform-specific logic
-        
+
         #if os(macOS) || targetEnvironment(macCatalyst) || os(iOS)
-        
+
         if #available(macOS 10.8, iOS 11.0, *) {
             // move file to trash
-            
+
             var resultingURL: NSURL?
-            
+
             do {
                 try FileManager.default.trashItem(at: self, resultingItemURL: &resultingURL)
             } catch {
@@ -371,40 +371,40 @@ extension URL {
                 return nil
                 #endif
             }
-            
+
             return resultingURL?.absoluteURL
-            
+
         } else {
             // OS version requirements not met - delete file as a fallback
-            
+
             try __delFile(url: self)
             return nil
         }
-        
+
         #elseif os(tvOS)
-        
+
         // tvOS has no Trash - just delete the file
-        
+
         try __delFile(url: self)
         return nil
-        
+
         #elseif os(watchOS)
-            
+
         // watchOS has no Trash - just delete the file
-        
+
         try __delFile(url: self)
         return nil
-        
+
         #elseif os(visionOS)
-        
+
         // visionOS has no Trash - just delete the file
-        
+
         try __delFile(url: self)
         return nil
-        
+
         #endif
     }
-    
+
     /// If the file URL is a file or folder that exists on disk, the file name (last path component
     /// prior to extension) is uniqued by appending the first number in `2...` that results in a file
     /// name that does not exist on disk.
@@ -425,7 +425,7 @@ extension URL {
     ) {
         self = uniquedFileURL(suffix: suffix)
     }
-    
+
     /// If the file URL is a file or folder that exists on disk, the file name (last path component
     /// prior to extension) is uniqued by appending the first number in `2...` that results in a file
     /// name that does not exist on disk.
@@ -448,23 +448,23 @@ extension URL {
             assertionFailure("URL is not a file URL and cannot be uniqued. Returning URL unmodified.")
             return self
         }
-        
+
         var suffix = suffix
-        
+
         // sanity check - ensure the closure produces unique values to prevent an infinite loop
         if suffix(2) == suffix(3) {
             assertionFailure("Suffix closure does not produce unique return values. Reverting to default suffix format.")
             suffix = { " \($0)" }
         }
-                
+
         let ext = pathExtension
         let baseName = deletingPathExtension().lastPathComponent
         let basePath = deletingLastPathComponent()
-        
+
         var proposedURL = self
         var counter: Int = 2
         let maxCount = 1000
-        
+
         func generateURL(addingSuffix: String) -> URL {
             var newURL = basePath
                 .appendingPathComponent(baseName + addingSuffix)
@@ -473,7 +473,7 @@ extension URL {
             }
             return newURL
         }
-        
+
         while proposedURL.fileExists,
               counter < maxCount // prevent infinite loop
         {
@@ -482,12 +482,12 @@ extension URL {
             proposedURL = newURL
             counter += 1
         }
-        
+
         // failsafe - if we exhaust the counter, use a UUID suffix instead to guarantee a unique file
         if counter >= maxCount {
             proposedURL = generateURL(addingSuffix: "-\(UUID().uuidString)")
         }
-        
+
         return proposedURL
     }
 }
@@ -499,11 +499,11 @@ extension URL {
     @_disfavoredOverload
     public var isFinderAlias: Bool {
         guard isFileURL else { return false }
-        
+
         let values = try? resourceValues(forKeys: [.isAliasFileKey])
         return values?.isAliasFile == true
     }
-    
+
     /// Creates an alias of the base URL file or folder `at` the supplied target location. Will
     /// overwrite existing target path if it exists.
     @_disfavoredOverload
@@ -514,10 +514,10 @@ extension URL {
                 includingResourceValuesForKeys: nil,
                 relativeTo: nil
             )
-        
+
         try URL.writeBookmarkData(data, to: url)
     }
-    
+
     /// If the file URL is a Finder alias, its resolved URL is returned regardless whether it exists or not.
     ///
     /// `nil` will be returned if any of the following is true for `self`:
@@ -527,18 +527,18 @@ extension URL {
     @_disfavoredOverload
     public var resolvedFinderAlias: URL? {
         guard isFinderAlias else { return nil }
-        
+
         guard let data = try? URL.bookmarkData(withContentsOf: self)
         else { return nil }
-        
+
         let rv = URL.resourceValues(
             forKeys: [.pathKey],
             fromBookmarkData: data
         )
-        
+
         guard let pathString = rv?.path
         else { return nil }
-        
+
         return URL(fileURLWithPath: pathString)
     }
 }
@@ -556,18 +556,18 @@ extension URL {
         get throws {
             guard isFileURL
             else { throw CocoaError(.fileNoSuchFile) }
-            
+
             let getAttr = try FileManager.default
                 .attributesOfItem(atPath: path)
-            
+
             guard let rawFileType = getAttr[.type] as? String
             else { throw CocoaError(.fileReadUnknown) }
-            
+
             let fileType = FileAttributeType(rawValue: rawFileType)
             return fileType == .typeSymbolicLink // "NSFileTypeSymbolicLink"
         }
     }
-    
+
     /// Convenience method to test if a file URL is a symbolic link pointing to `file`.
     ///
     /// - Returns: `true` even if original file does not exist. This is possible because a symbolic link
@@ -578,7 +578,7 @@ extension URL {
     public func isSymLink(of file: URL) throws -> Bool {
         try isSymLink(of: file.path)
     }
-    
+
     /// Convenience method to test if a file URL is a symbolic link pointing to `file`.
     ///
     /// - Returns: `true` even if original file does not exist. This is possible because a symbolic link
@@ -589,12 +589,12 @@ extension URL {
     public func isSymLink(of file: String) throws -> Bool {
         guard isFileURL
         else { throw CocoaError(.fileNoSuchFile) }
-        
+
         do {
             // returns path of original file, even if original file no longer exists
             let dest = try FileManager.default
                 .destinationOfSymbolicLink(atPath: path)
-            
+
             return file == dest
         } catch let error as CocoaError {
             switch error.code {
@@ -609,7 +609,7 @@ extension URL {
             throw error
         }
     }
-    
+
     /// Creates a symbolic link (symlink) of the base URL file or folder `at` the supplied target
     /// location.
     ///
@@ -626,29 +626,29 @@ extension URL {
 
 extension FileManager {
     #if os(macOS)
-    
+
     /// Backwards compatible method for retrieving the current user's home directory, using the most
     /// recent API where possible.
     @_disfavoredOverload
     public var homeDirectoryForCurrentUserCompat: URL {
         if #available(OSX 10.12, *) {
             // only available on macOS
-            return homeDirectoryForCurrentUser
+            homeDirectoryForCurrentUser
         } else {
             // available on all Apple platforms
-            return URL(fileURLWithPath: NSHomeDirectory(), isDirectory: true)
+            URL(fileURLWithPath: NSHomeDirectory(), isDirectory: true)
         }
     }
-    
+
     #endif
-    
+
     /// Backwards compatible method for retrieving a temporary folder from the system.
     @_disfavoredOverload
     public var temporaryDirectoryCompat: URL {
         if #available(OSX 10.12, iOS 10.0, tvOS 10.0, watchOS 3.0, *) {
-            return temporaryDirectory
+            temporaryDirectory
         } else {
-            return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+            URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
         }
     }
 }

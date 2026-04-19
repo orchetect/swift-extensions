@@ -1,7 +1,7 @@
 //
 //  UserDefaults.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -10,7 +10,7 @@ import Foundation
 
 extension UserDefaults {
     // custom optional methods for core data types that don't intrinsically support optionals yet
-    
+
     /// Convenience method to wrap the built-in `integer(forKey:)` method in an optional returning
     /// `nil` if the key doesn't exist.
     @_disfavoredOverload
@@ -18,7 +18,7 @@ extension UserDefaults {
         guard object(forKey: key) != nil else { return nil }
         return integer(forKey: key)
     }
-    
+
     /// Convenience method to wrap the built-in `double(forKey:)` method in an optional returning
     /// `nil` if the key doesn't exist.
     @_disfavoredOverload
@@ -26,7 +26,7 @@ extension UserDefaults {
         guard object(forKey: key) != nil else { return nil }
         return double(forKey: key)
     }
-    
+
     /// Convenience method to wrap the built-in `float(forKey:)` method in an optional returning
     /// `nil` if the key doesn't exist.
     @_disfavoredOverload
@@ -34,7 +34,7 @@ extension UserDefaults {
         guard object(forKey: key) != nil else { return nil }
         return float(forKey: key)
     }
-    
+
     /// Convenience method to wrap the built-in `bool(forKey:)` method in an optional returning
     /// `nil` if the key doesn't exist.
     @_disfavoredOverload
@@ -42,7 +42,7 @@ extension UserDefaults {
         guard object(forKey: key) != nil else { return nil }
         return bool(forKey: key)
     }
-    
+
     /// Returns `true` if the key exists.
     ///
     /// This method is only useful when you don't care about extracting a value from the key and
@@ -124,18 +124,18 @@ extension UserDefaults {
 /// var pref = 1 // will be clamped to 5
 /// ```
 @propertyWrapper
-public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable where StorageValue: UserDefaultsStorable {
+public struct UserDefaultsStorage<Value, StorageValue: UserDefaultsStorable>: @unchecked Sendable {
     private let key: String
     private let defaultValue: () -> Value
     public let storage: UserDefaults
-    
+
     private let getTransformation: (_ storedValue: StorageValue) -> Value?
     private let setTransformation: (_ newValue: Value) -> StorageValue?
-    
+
     private let computedOnly: Bool
     private let getTransformationComputedOnly: (_ storedValue: StorageValue?) -> Value
     private let setTransformationComputedOnly: (_ newValue: Value) -> StorageValue
-    
+
     // note: "defaultValue as! Value" is guaranteed to work because it's only used
     // where the value is known to be of type Value.
     // it's an unfortunate workaround that defaultValue is Any but it allows us to
@@ -143,13 +143,12 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
     // instead of having to split it up into multiple different structs.
     public var wrappedValue: Value {
         get {
-            var value: StorageValue?
-            if !computedOnly, Value.self is URL.Type || Value.self is URL?.Type,
+            let value: StorageValue? = if !computedOnly, Value.self is URL.Type || Value.self is URL?.Type,
                let strValue = storage.string(forKey: key)
             {
-                value = URL(string: strValue) as? StorageValue
+                URL(string: strValue) as? StorageValue
             } else {
-                value = storage.value(forKey: key) as? StorageValue
+                storage.value(forKey: key) as? StorageValue
             }
             if computedOnly {
                 return getTransformationComputedOnly(value)
@@ -162,7 +161,7 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
         }
         set {
             var processedValue: StorageValue?
-            
+
             if let asOptional = newValue as? SwiftExtensionsOptional {
                 if asOptional.isNone {
                     // we have to treat newValue == nil as a special case
@@ -184,7 +183,7 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
                         ?? setTransformation(defaultValue())
                 }
             }
-            
+
             if let processedValue = processedValue as? URL {
                 storage.setValue(processedValue.absoluteString, forKey: key)
             } else {
@@ -192,9 +191,9 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
             }
         }
     }
-    
+
     // MARK: Init - Same Type
-    
+
     public init(
         wrappedValue defaultValue: Value,
         key: String,
@@ -203,19 +202,19 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
         self.defaultValue = { defaultValue }
         self.key = key
         self.storage = storage
-        
+
         // not used
         getTransformation = { $0 }
         setTransformation = { $0 }
         computedOnly = false
         getTransformationComputedOnly = { _ in defaultValue }
         setTransformationComputedOnly = { $0 }
-        
+
         // update stored value
         let readValue = wrappedValue
         wrappedValue = readValue
     }
-    
+
     public init<R: RangeExpression>(
         wrappedValue defaultValue: Value,
         key: String,
@@ -224,9 +223,9 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
     ) where Value == StorageValue, Value: Strideable, R.Bound == Value {
         self.key = key
         self.storage = storage
-        
+
         let rangeBounds = range.getAbsoluteBounds()
-        
+
         let closure: (Value) -> Value = {
             Clamped<Value>.clamping(
                 $0,
@@ -234,23 +233,23 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
                 max: rangeBounds.max
             )
         }
-        
+
         getTransformation = closure
         setTransformation = closure
-        
+
         // clamp initial value
         self.defaultValue = { closure(defaultValue) }
-        
+
         // not used
         computedOnly = false
         getTransformationComputedOnly = { _ in defaultValue }
         setTransformationComputedOnly = { $0 }
-        
+
         // update stored value
         let readValue = wrappedValue
         wrappedValue = readValue
     }
-    
+
     public init(
         wrappedValue defaultValue: Value,
         key: String,
@@ -259,24 +258,24 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
     ) where Value == StorageValue {
         self.key = key
         self.storage = storage
-        
+
         // not used
         getTransformation = closure
         setTransformation = closure
         computedOnly = false
         getTransformationComputedOnly = { _ in defaultValue }
         setTransformationComputedOnly = { $0 }
-        
+
         // validate initial value
         self.defaultValue = { closure(defaultValue) }
-        
+
         // update stored value
         let readValue = wrappedValue
         wrappedValue = readValue
     }
-    
+
     // MARK: Init - Same Type Codable
-    
+
     /// Store and retrieve any object conforming to `Codable` by using JSON serialization and
     /// storing as `String` in UserDefaults.
     @_disfavoredOverload
@@ -288,7 +287,7 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
         self.defaultValue = { defaultValue }
         self.key = key
         self.storage = storage
-        
+
         getTransformation = { storedValue in
             let decoder = JSONDecoder()
             guard let data = storedValue.data(using: .utf8),
@@ -303,15 +302,15 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
             else { return nil }
             return string
         }
-        
+
         // not used
         computedOnly = false
         getTransformationComputedOnly = { _ in defaultValue }
         setTransformationComputedOnly = { _ in "" }
     }
-    
+
     // MARK: - Different Types
-    
+
     /// Uses get and set transform closures to allow a value to have a different underlying storage
     /// type.
     public init(
@@ -326,17 +325,17 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
         self.getTransformation = getTransformation
         self.setTransformation = setTransformation
         self.defaultValue = { defaultValue }
-        
+
         // not used
         computedOnly = false
         getTransformationComputedOnly = { _ in defaultValue }
         setTransformationComputedOnly = { setTransformation($0)! }
-        
+
         // update stored value
         let readValue = wrappedValue
         wrappedValue = readValue
     }
-    
+
     /// Uses get and set transform closures to allow a value to have a different underlying storage
     /// type.
     public init(
@@ -346,12 +345,12 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
         storage: UserDefaults = .standard
     ) {
         computedOnly = true
-        
+
         self.key = key
         self.storage = storage
         getTransformationComputedOnly = getTransformation
         setTransformationComputedOnly = setTransformation
-        
+
         // not used
         self.getTransformation = { _ in nil }
         self.setTransformation = { _ in nil }
@@ -362,7 +361,7 @@ public struct UserDefaultsStorage<Value, StorageValue>: @unchecked Sendable wher
 
 extension UserDefaultsStorage where Value: ExpressibleByNilLiteral {
     // MARK: Init - Same Type
-    
+
     public init(
         key: String,
         storage: UserDefaults = .standard
@@ -373,7 +372,7 @@ extension UserDefaultsStorage where Value: ExpressibleByNilLiteral {
             storage: storage
         )
     }
-    
+
     public init(
         key: String,
         validation closure: @escaping (_ value: Value) -> Value,
@@ -386,9 +385,9 @@ extension UserDefaultsStorage where Value: ExpressibleByNilLiteral {
             storage: storage
         )
     }
-    
+
     // MARK: Init - Same Type Codable
-    
+
     /// Store and retrieve any object conforming to `Codable` by using JSON serialization and
     /// storing as `String` in UserDefaults.
     @_disfavoredOverload
@@ -402,9 +401,9 @@ extension UserDefaultsStorage where Value: ExpressibleByNilLiteral {
             storage: storage
         )
     }
-    
+
     // MARK: - Different Types
-    
+
     /// Uses get and set transform closures to allow a value to have a different underlying storage
     /// type.
     public init(

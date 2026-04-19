@@ -1,7 +1,7 @@
 //
 //  SemanticVersion.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -23,7 +23,7 @@ public struct SemanticVersion {
             if major < 0 { major = oldValue }
         }
     }
-	
+
     /// Minor version component. Must be `0` or greater. (ie: `1.x.4`)
     ///
     /// > Important:
@@ -36,7 +36,7 @@ public struct SemanticVersion {
             if minor < 0 { minor = oldValue }
         }
     }
-	
+
     /// Patch version component. Must be `0` or greater. (ie: `1.2.x`)
     ///
     /// > Important:
@@ -49,7 +49,7 @@ public struct SemanticVersion {
             if patch < 0 { patch = oldValue }
         }
     }
-    
+
     /// Pre-release information. (Optional)
     ///
     /// > Important:
@@ -70,7 +70,7 @@ public struct SemanticVersion {
             }
         }
     }
-    
+
     /// Build metadata. (Optional)
     ///
     /// > Important:
@@ -97,25 +97,25 @@ extension SemanticVersion: RawRepresentable {
     /// Parses a semantic version string, strictly adhering to SemVer specification.
     public init?(rawValue: String) {
         let rawString = rawValue.hasPrefix(caseInsensitive: "v") ? rawValue.dropFirst().string : rawValue
-        
+
         let pattern = #"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"#
         let groups = rawString.regexMatches(captureGroupsFromPattern: pattern)
-        
+
         guard groups.count >= 4,
               let maj = groups[1]?.int,
               let min = groups[2]?.int,
               let pat = groups[3]?.int
         else { return nil }
-        
+
         major = maj
         minor = min
         patch = pat
         preRelease = groups[safe: 4]??.string
         build = groups[safe: 5]??.string
-        
+
         guard major >= 0, minor >= 0, patch >= 0 else { return nil }
     }
-    
+
     /// Returns the full version string.
     public var rawValue: String {
         let pre = preRelease == nil ? "" : "-" + preRelease!
@@ -131,18 +131,18 @@ extension SemanticVersion: Comparable {
         if lhs.major != rhs.major { return lhs.major < rhs.major }
         if lhs.minor != rhs.minor { return lhs.minor < rhs.minor }
         if lhs.patch != rhs.patch { return lhs.patch < rhs.patch }
-        
+
         guard lhs.preRelease != rhs.preRelease else { return false }
-        
+
         // One or both pre-release strings will be non-nil at this point.
-        
+
         guard let lhsPreRelease = lhs.preRelease, let rhsPreRelease = rhs.preRelease else {
             // Only one pre-release string is non-nil. In that case, the non-pre-release takes precedence.
             return lhs.preRelease != nil
         }
-        
+
         // Both pre-release strings are non-nil now, and we have determined they are not equal.
-        
+
         // Pre-release strings must be compared by comparing each dot separated identifier from left
         // to right until a difference is found as follows:
         //     1. Identifiers consisting of only digits are compared numerically.
@@ -150,44 +150,44 @@ extension SemanticVersion: Comparable {
         //     3. Numeric identifiers always have lower precedence than non-numeric identifiers.
         //     4. A larger set of pre-release fields has a higher precedence than a smaller set, if all
         //        of the preceding identifiers are equal.
-        
+
         let lhsIdentifiers = lhsPreRelease.split(separator: ".", omittingEmptySubsequences: false)
         let rhsIdentifiers = rhsPreRelease.split(separator: ".", omittingEmptySubsequences: false)
-        
+
         var index = 0
-        
+
         while lhsIdentifiers.indices.contains(index), rhsIdentifiers.indices.contains(index) {
             defer { index += 1 }
             let lhsID = lhsIdentifiers[index]
             let rhsID = rhsIdentifiers[index]
-            
+
             if lhsID != rhsID {
                 // first try numerical comparison if they are both integers
                 if let lhsInt = Int(lhsID), let rhsInt = Int(rhsID) {
                     return lhsInt < rhsInt
                 }
                 // then try ASCII character ordering
-                
+
                 let lhsChars = lhsID.compactMap(\.asciiValue)
                 assert(lhsChars.count == lhsID.count)
-                
+
                 let rhsChars = rhsID.compactMap(\.asciiValue)
                 assert(rhsChars.count == rhsID.count)
-                
+
                 return lhsChars.lexicographicallyPrecedes(rhsChars)
             }
         }
-        
+
         // at this point, one of the IDs may exist at the current index and the other does not.
         // (Technically it shouldn't be possible that both indexes don't exist, because that implies both
         // pre-release strings are equal, which we already checked for.)
         if lhsIdentifiers.indices.contains(index) { return false }
         if rhsIdentifiers.indices.contains(index) { return true }
-        
+
         // We should never reach this point, because it implies that both pre-release strings are equal
         // (which we already checked for).
         return false
-        
+
         // Note: SemVer spec specifies omitting build metadata from version precedence comparisons
     }
 }
@@ -213,7 +213,7 @@ extension SemanticVersion {
     public init?(_ strict: String) {
         self.init(rawValue: strict)
     }
-    
+
     /// Parses a semantic version string, using relaxed rules where `major` or `major.minor` version
     /// strings are accepted and any omitted trailing version components are assumed to be zero (`0`).
     public init?(nonStrict rawValue: String) {
@@ -221,23 +221,23 @@ extension SemanticVersion {
             self = strict
             return
         }
-        
+
         let rawString = rawValue.hasPrefix(caseInsensitive: "v") ? rawValue.dropFirst().string : rawValue
-        
+
         let pattern = #"^(0|[1-9]\d*)(\.(0|[1-9]\d*)){0,1}$"#
         let groups = rawString.regexMatches(captureGroupsFromPattern: pattern)
-        
+
         guard let majorVer = groups[safe: 1]??.int else { return nil }
-        
+
         major = majorVer
         minor = groups[safe: 3]??.int ?? 0
         patch = 0
         preRelease = nil
         build = nil
-        
+
         guard major >= 0, minor >= 0, patch >= 0 else { return nil }
     }
-    
+
     /// Initialize from individual version components.
     ///
     /// See [SemVer 2.0 Spec](https://semver.org/spec/v2.0.0.html).
@@ -255,7 +255,7 @@ extension SemanticVersion {
         self.minor = Int(minor)
         self.patch = Int(patch)
     }
-    
+
     /// Initialize from individual version components.
     ///
     /// - Parameters:
@@ -278,16 +278,16 @@ extension SemanticVersion {
         build: String? = nil
     ) {
         guard major >= 0, minor >= 0, patch >= 0 else { return nil }
-        
+
         self.init(UInt(major), UInt(minor), UInt(patch))
-        
+
         if let preRelease, !preRelease.isEmpty {
             guard Self.isPreReleaseValid(preRelease) else { return nil }
             self.preRelease = preRelease
         } else {
             self.preRelease = nil
         }
-        
+
         if let build, !build.isEmpty {
             guard Self.isBuildValid(build) else { return nil }
             self.build = build
@@ -301,34 +301,48 @@ extension SemanticVersion {
 
 extension SemanticVersion {
     /// Semantic version zero (`0.0.0`).
-    public static let zero: SemanticVersion = SemanticVersion(0, 0, 0)
+    public static let zero: SemanticVersion = .init(0, 0, 0)
 }
 
 // MARK: - Computed Metadata Properties
 
 extension SemanticVersion {
     /// Returns `true` if the version is considered a stable release.
-    public var isStable: Bool { preRelease == nil }
-    
+    public var isStable: Bool {
+        preRelease == nil
+    }
+
     /// Returns `true` if the version is considered a major release (ie: `2.0.0`).
-    public var isMajorRelease: Bool { major > 0 && minor == 0 && patch == 0 }
-    
+    public var isMajorRelease: Bool {
+        major > 0 && minor == 0 && patch == 0
+    }
+
     /// Returns `true` if the version is considered a minor release (ie: `2.1.0`).
-    public var isMinorRelease: Bool { minor > 0 && patch == 0 }
-    
+    public var isMinorRelease: Bool {
+        minor > 0 && patch == 0
+    }
+
     /// Returns `true` if the version is considered a patch release (ie: `2.1.3`).
-    public var isPatchRelease: Bool { patch > 0 }
-    
+    public var isPatchRelease: Bool {
+        patch > 0
+    }
+
     /// Returns `true` if the version is considered a pre-release.
-    public var isPreRelease: Bool { preRelease != nil }
-    
+    public var isPreRelease: Bool {
+        preRelease != nil
+    }
+
     /// Returns `true` if the version is considered the initial release.
     /// The only version that matches this criteria is `0.0.0`.
-    public var isInitialRelease: Bool { isZero }
-    
+    public var isInitialRelease: Bool {
+        isZero
+    }
+
     /// Returns `true` if the version is zero without any pre-release or build metadata.
     /// The only version that matches this criteria is `0.0.0`.
-    public var isZero: Bool { self == .zero }
+    public var isZero: Bool {
+        self == .zero
+    }
 }
 
 // MARK: - Helpers {
@@ -341,7 +355,7 @@ extension SemanticVersion {
         let matches = string.regexMatches(pattern: pattern)
         return matches.count == 1
     }
-    
+
     /// Internal:
     /// Validates a build component string.
     static func isBuildValid(_ string: String) -> Bool {

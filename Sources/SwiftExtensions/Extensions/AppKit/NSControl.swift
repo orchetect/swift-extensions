@@ -1,7 +1,7 @@
 //
 //  NSControl.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) && !targetEnvironment(macCatalyst)
@@ -24,7 +24,7 @@ extension NSControl.StateValue {
     public static prefix func ! (stateValue: Self) -> Self {
         stateValue.toggled()
     }
-    
+
     /// Returns the inverted (toggled) state.
     /// If `off`, will return `on`.
     /// If `on` or `mixed`, will return `off`.
@@ -32,7 +32,7 @@ extension NSControl.StateValue {
     public func toggled() -> Self {
         self == .off ? .on : .off
     }
-    
+
     /// Inverts (toggles) the state.
     /// If `off`, will return `on`.
     /// If `on` or `mixed`, will return `off`.

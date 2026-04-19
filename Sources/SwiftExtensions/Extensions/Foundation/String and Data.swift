@@ -1,7 +1,7 @@
 //
 //  String and Data.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -23,7 +23,7 @@ extension String {
     @inlinable @_disfavoredOverload
     public var base64DecodedString: String? {
         guard let data = Data(base64Encoded: self) else { return nil }
-        
+
         return String(data: data, encoding: .utf8)
     }
 }
@@ -33,7 +33,7 @@ extension Substring {
     @inlinable @_disfavoredOverload
     public var base64DecodedString: String? {
         guard let data = Data(base64Encoded: String(self)) else { return nil }
-        
+
         return String(data: data, encoding: .utf8)
     }
 }

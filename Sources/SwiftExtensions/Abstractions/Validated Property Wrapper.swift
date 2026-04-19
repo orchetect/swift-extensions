@@ -1,7 +1,7 @@
 //
 //  Validated Property Wrapper.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation
@@ -12,7 +12,7 @@ import Foundation
 public struct Validated<Value> {
     private var value: Value
     private var validationClosure: (Value) -> Value
-    
+
     public var wrappedValue: Value {
         get {
             value
@@ -21,7 +21,7 @@ public struct Validated<Value> {
             value = validationClosure(newValue)
         }
     }
-    
+
     public init(
         wrappedValue defaultValue: Value,
         _ validationClosure: @escaping (Value) -> Value

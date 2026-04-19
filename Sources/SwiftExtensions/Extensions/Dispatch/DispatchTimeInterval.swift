@@ -1,7 +1,7 @@
 //
 //  DispatchTimeInterval.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Dispatch)
@@ -15,20 +15,20 @@ extension DispatchTimeInterval {
         switch self {
         case let .seconds(val):
             return val * 1_000_000
-            
+
         case let .milliseconds(val): // ms
             return val * 1000
-            
+
         case let .microseconds(val): // µs
             return val
-            
+
         case let .nanoseconds(val): // ns
             return val / 1000
-            
+
         case .never:
             assertionFailure("Cannot convert 'never' to microseconds.")
             return 0
-            
+
         @unknown default:
             assertionFailure(
                 "Unhandled DispatchTimeInterval case when attempting to convert to microseconds."

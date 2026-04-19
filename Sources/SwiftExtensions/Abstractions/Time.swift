@@ -1,7 +1,7 @@
 //
 //  Time.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation
@@ -11,30 +11,30 @@ import Foundation
 public struct Time {
     /// Hours component.
     public var hours = 0
-    
+
     /// Minutes component.
     public var minutes = 0
-    
+
     /// Seconds component.
     public var seconds = 0
-    
+
     /// Milliseconds component.
     public var milliseconds = 0
-    
+
     /// Sign (indicating positive or negative time duration).
     public var sign: FloatingPointSign = .plus
-    
+
     /// Initialize with current system time.
     public init() {
         let date = Date()
         let calendar = Calendar.current
-        
+
         hours = calendar.component(.hour, from: date)
         minutes = calendar.component(.minute, from: date)
         seconds = calendar.component(.second, from: date)
         milliseconds = calendar.component(.nanosecond, from: date) / 1_000_000
     }
-    
+
     /// Initialize with discrete time component values.
     /// Note: negative values may cause undefined behavior.
     public init(
@@ -50,13 +50,13 @@ public struct Time {
         self.milliseconds = milliseconds
         self.sign = sign
     }
-    
+
     /// Initialize from a time interval in seconds.
     public init(seconds: Int, milliseconds: Int = 0) {
         sign = seconds < 0 ? .minus : .plus
-        
+
         let seconds = abs(seconds)
-        
+
         if seconds < 60 { // early return for added performance
             self.seconds = seconds
         } else {
@@ -64,27 +64,27 @@ public struct Time {
             minutes = (seconds / 60) % 60
             self.seconds = seconds % 60
         }
-        
+
         self.milliseconds = milliseconds
     }
-    
+
     /// Initialize from a time interval in seconds.
     @_disfavoredOverload
     public init(seconds: TimeInterval) {
         let absSeconds = abs(seconds)
         let truncSeconds = Int(seconds)
         let absTruncSeconds = abs(truncSeconds)
-        
+
         self.init(seconds: truncSeconds)
         milliseconds = Int((absSeconds - Double(absTruncSeconds)) * 1000)
     }
-    
+
     /// Initialize from a time interval in milliseconds.
     public init(milliseconds: Int) {
         sign = milliseconds < 0 ? .minus : .plus
-        
+
         let milliseconds = abs(milliseconds)
-        
+
         if milliseconds < 1000 { // early return for added performance
             self.milliseconds = milliseconds
         } else {
@@ -94,13 +94,13 @@ public struct Time {
             self.milliseconds = milliseconds % 1000
         }
     }
-	
+
     /// Initialize from a time interval in milliseconds.
     @_disfavoredOverload
     public init(milliseconds: Double) {
         self.init(milliseconds: Int(milliseconds))
     }
-    
+
     #if !(arch(arm) || arch(arm64_32) || arch(i386))
     /// Initialize from a time interval using [`Duration`](https://developer.apple.com/documentation/swift/duration).
     /// Note that this conversion reduces precision to 1 millisecond when stored in a `Time` instance.
@@ -128,7 +128,9 @@ extension Time: Comparable {
 extension Time: Hashable { }
 
 extension Time: Identifiable {
-    public var id: Self { self }
+    public var id: Self {
+        self
+    }
 }
 
 extension Time: Sendable { }
@@ -138,17 +140,17 @@ extension Time {
     public init?(string: String) {
         // "00:00:00.000" is 12 characters
         guard string.count <= 20 else { return nil }
-        
+
         var string = string
-        
+
         if string.first == "-" {
             string = String(string.dropFirst())
             sign = .minus
         }
-        
+
         var mainComponents: [String] = [""]
         var ms: String?
-        
+
         for char in string {
             if CharacterSet.decimalDigits.contains(char) {
                 if ms != nil {
@@ -167,12 +169,12 @@ extension Time {
                 return nil
             }
         }
-        
+
         // process main components
-        
+
         guard mainComponents.allSatisfy({ !$0.isEmpty }) else { return nil }
         guard (1 ... 3).contains(mainComponents.count) else { return nil }
-        
+
         switch mainComponents.count {
         case 1: // S
             seconds = Int(mainComponents[0]) ?? 0
@@ -187,71 +189,71 @@ extension Time {
             // should never happen
             return nil
         }
-        
+
         // process milliseconds
-        
+
         if let ms {
             guard !ms.isEmpty else { return nil }
             milliseconds = Int(ms) ?? 0
         }
     }
-    
+
     /// Returns the time formatted as an ISO 8601 extended string with the given format specifiers.
     public func stringValue(format: Format = .shortest) -> String {
         let absStr = absStringValue(format: format)
-        
+
         switch sign {
         case .plus: return absStr
         case .minus: return "-" + absStr
         }
     }
-    
+
     /// Returns the absolute time (without sign) formatted as an ISO 8601 extended string with the given format specifiers.
     private func absStringValue(format: Format = .shortest) -> String {
         switch format {
         case .shortest:
-            return hours != 0
+            hours != 0
                 ? absStringValue(format: .h_mm_ss)
                 : absStringValue(format: .m_ss)
-            
+
         case .hh_mm_ss:
-            return "\(hPadded):\(mPadded):\(sPadded)"
-            
+            "\(hPadded):\(mPadded):\(sPadded)"
+
         case .h_mm_ss:
-            return "\(hours):\(mPadded):\(sPadded)"
-            
+            "\(hours):\(mPadded):\(sPadded)"
+
         case .mm_ss:
-            return "\(totalMinutesPadded):\(sPadded)"
-            
+            "\(totalMinutesPadded):\(sPadded)"
+
         case .m_ss:
-            return "\(totalMinutes):\(sPadded)"
-            
+            "\(totalMinutes):\(sPadded)"
+
         case .ss:
-            return totalSecondsPadded
-            
+            totalSecondsPadded
+
         case .s:
-            return "\(totalSeconds)"
-            
+            "\(totalSeconds)"
+
         case .hh_mm_ss_sss:
-            return "\(hPadded):\(mPadded):\(sPadded).\(msPadded)"
-            
+            "\(hPadded):\(mPadded):\(sPadded).\(msPadded)"
+
         case .h_mm_ss_sss:
-            return "\(hours):\(mPadded):\(sPadded).\(msPadded)"
-            
+            "\(hours):\(mPadded):\(sPadded).\(msPadded)"
+
         case .mm_ss_sss:
-            return "\(totalMinutesPadded):\(sPadded).\(msPadded)"
-            
+            "\(totalMinutesPadded):\(sPadded).\(msPadded)"
+
         case .m_ss_sss:
-            return "\(totalMinutes):\(sPadded).\(msPadded)"
-            
+            "\(totalMinutes):\(sPadded).\(msPadded)"
+
         case .ss_sss:
-            return "\(totalSecondsPadded).\(msPadded)"
-            
+            "\(totalSecondsPadded).\(msPadded)"
+
         case .s_sss:
-            return "\(totalSeconds).\(msPadded)"
+            "\(totalSeconds).\(msPadded)"
         }
     }
-    
+
     #if !(arch(arm) || arch(arm64_32) || arch(i386))
     /// Returns the time as a localized formatted string.
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
@@ -260,7 +262,7 @@ extension Time {
             let style = if let locale { style.locale(locale) } else { style }
             return durationInterval.formatted(style)
         }
-        func timeInterval<R1, R2>(integer: R1, fraction: R2) -> String where R1: RangeExpression<Int>, R2: RangeExpression<Int> {
+        func timeInterval(integer: some RangeExpression<Int>, fraction: some RangeExpression<Int>) -> String {
             var style: FloatingPointFormatStyle<Double> = .number
                 .precision(.integerAndFractionLength(integerLimits: integer, fractionLimits: fraction))
                 .grouping(.never)
@@ -269,12 +271,20 @@ extension Time {
             if let locale { style = style.locale(locale) }
             return interval.formatted(style)
         }
-        
+
         return switch format {
         case .shortest:
             hours != 0
-                ? duration(.time(pattern: .hourMinuteSecond(padHourToLength: 1, fractionalSecondsLength: 0, roundFractionalSeconds: .towardZero)))
-                : duration(.time(pattern: .minuteSecond(padMinuteToLength: 1, fractionalSecondsLength: 0, roundFractionalSeconds: .towardZero)))
+                ? duration(.time(pattern: .hourMinuteSecond(
+                    padHourToLength: 1,
+                    fractionalSecondsLength: 0,
+                    roundFractionalSeconds: .towardZero
+                )))
+                : duration(.time(pattern: .minuteSecond(
+                    padMinuteToLength: 1,
+                    fractionalSecondsLength: 0,
+                    roundFractionalSeconds: .towardZero
+                )))
         case .hh_mm_ss:
             duration(.time(pattern: .hourMinuteSecond(padHourToLength: 2, fractionalSecondsLength: 0, roundFractionalSeconds: .towardZero)))
         case .h_mm_ss:
@@ -303,15 +313,38 @@ extension Time {
         }
     }
     #endif
-    
-    private var totalSeconds: Int { (totalMinutes * 60) + seconds }
-    private var totalSecondsPadded: String { totalSeconds.string(paddedTo: 2) }
-    private var totalMinutes: Int { (hours * 60) + minutes }
-    private var totalMinutesPadded: String { totalMinutes.string(paddedTo: 2) }
-    private var hPadded: String { hours.string(paddedTo: 2) }
-    private var mPadded: String { minutes.string(paddedTo: 2) }
-    private var sPadded: String { seconds.string(paddedTo: 2) }
-    private var msPadded: String { milliseconds.string(paddedTo: 3) }
+
+    private var totalSeconds: Int {
+        (totalMinutes * 60) + seconds
+    }
+
+    private var totalSecondsPadded: String {
+        totalSeconds.string(paddedTo: 2)
+    }
+
+    private var totalMinutes: Int {
+        (hours * 60) + minutes
+    }
+
+    private var totalMinutesPadded: String {
+        totalMinutes.string(paddedTo: 2)
+    }
+
+    private var hPadded: String {
+        hours.string(paddedTo: 2)
+    }
+
+    private var mPadded: String {
+        minutes.string(paddedTo: 2)
+    }
+
+    private var sPadded: String {
+        seconds.string(paddedTo: 2)
+    }
+
+    private var msPadded: String {
+        milliseconds.string(paddedTo: 3)
+    }
 }
 
 extension Time {
@@ -327,7 +360,7 @@ extension Time {
             self = Time(seconds: newValue)
         }
     }
-    
+
     /// Get or set the time interval in milliseconds.
     public var millisecondsInterval: Int {
         get {
@@ -340,7 +373,7 @@ extension Time {
             self = Time(milliseconds: newValue)
         }
     }
-    
+
     #if !(arch(arm) || arch(arm64_32) || arch(i386))
     /// Get or set the time interval using [`Duration`](https://developer.apple.com/documentation/swift/duration).
     /// Note that setting this property reduces precision to 1 millisecond when stored in a `Time` instance.
@@ -371,7 +404,7 @@ extension Time {
         case .milliseconds: milliseconds
         }
     }
-    
+
     /// Sets the value of the given time component.
     public mutating func setValue(of component: Component, to newValue: Int) {
         switch component {
@@ -381,7 +414,7 @@ extension Time {
         case .milliseconds: milliseconds = newValue
         }
     }
-    
+
     /// Returns the string value of the given time component, optionally applying standard padding.
     public func stringValue(of component: Component, padded: Bool = false) -> String {
         switch component {
@@ -391,7 +424,7 @@ extension Time {
         case .milliseconds: padded ? msPadded : "\(milliseconds)"
         }
     }
-    
+
     /// Returns the string value of the given time component, formatted for the given time string
     /// ``Format``.
     public func stringValue(of component: Component, format: Format) -> String {
@@ -412,8 +445,10 @@ extension Time: CustomStringConvertible {
 
 extension Time {
     /// Current system time.
-    public static var now: Time { Time() }
-    
+    public static var now: Time {
+        Time()
+    }
+
     /// Zero time (`0:00`).
     public static let zero = Time(hours: 0, minutes: 0, seconds: 0, milliseconds: 0, sign: .plus)
 }
@@ -445,47 +480,49 @@ extension Time {
     public enum Format: CaseIterable {
         /// Uses the shortest format that will fit the time, omitting hours if `hours == 0`.
         case shortest
-        
+
         /// HH:MM:SS
         case hh_mm_ss
-        
+
         /// H:MM:SS
         case h_mm_ss
-        
+
         /// MM:SS
         case mm_ss
-        
+
         /// M:SS
         case m_ss
-        
+
         /// SS
         case ss
-        
+
         /// S
         case s
-        
+
         /// HH:MM:SS.sss
         case hh_mm_ss_sss
-        
+
         /// H:MM:SS.sss
         case h_mm_ss_sss
-        
+
         /// MM:SS.sss
         case mm_ss_sss
-        
+
         /// M:SS.sss
         case m_ss_sss
-        
+
         /// SS.sss
         case ss_sss
-        
+
         /// S.sss
         case s_sss
     }
 }
 
 extension Time.Format: Identifiable {
-    public var id: Self { self }
+    public var id: Self {
+        self
+    }
 }
 
 extension Time.Format: Sendable { }
@@ -592,64 +629,64 @@ extension Time.Format {
 
 extension Time {
     // MARK: - Add
-    
+
     public static func + (lhs: Self, rhs: Time) -> Time {
         let ms = lhs.millisecondsInterval + rhs.millisecondsInterval
         return Time(milliseconds: ms)
     }
-    
+
     public static func += (lhs: inout Self, rhs: Time) {
         lhs = lhs + rhs
     }
-    
+
     // MARK: - Subtract
-    
+
     public static func - (lhs: Self, rhs: Time) -> Time {
         let ms = lhs.millisecondsInterval - rhs.millisecondsInterval
         return Time(milliseconds: ms)
     }
-    
+
     public static func -= (lhs: inout Self, rhs: Time) {
         lhs = lhs - rhs
     }
-    
+
     // MARK: - Multiply
-    
-    public static func * <T: FixedWidthInteger>(lhs: Self, rhs: T) -> Time {
+
+    public static func * (lhs: Self, rhs: some FixedWidthInteger) -> Time {
         let ms = lhs.millisecondsInterval * Int(rhs)
         return Time(milliseconds: ms)
     }
-    
+
     public static func *= (lhs: inout Self, rhs: some FixedWidthInteger) {
         lhs = lhs * rhs
     }
-    
+
     public static func * <T: BinaryFloatingPoint>(lhs: Self, rhs: T) -> Time {
         let ms = T(lhs.millisecondsInterval) * rhs
         return Time(milliseconds: Int(ms))
     }
-    
-    public static func *= <T: BinaryFloatingPoint>(lhs: inout Self, rhs: T) {
+
+    public static func *= (lhs: inout Self, rhs: some BinaryFloatingPoint) {
         lhs = lhs * rhs
     }
-    
+
     // MARK: - Divide
-    
-    public static func / <T: FixedWidthInteger>(lhs: Self, rhs: T) -> Time {
+
+    public static func / (lhs: Self, rhs: some FixedWidthInteger) -> Time {
         let ms = lhs.millisecondsInterval / Int(rhs)
         return Time(milliseconds: ms)
     }
-    
+
     public static func /= (lhs: inout Self, rhs: some FixedWidthInteger) {
         lhs = lhs / rhs
     }
-    
+
     public static func / <F: BinaryFloatingPoint>(lhs: Self, rhs: F) -> Time {
         let ms = F(lhs.millisecondsInterval) / rhs
         return Time(milliseconds: Int(ms))
     }
-    
-    public static func /= <T: BinaryFloatingPoint>(lhs: inout Self, rhs: T) {
+
+    public static func /= (lhs: inout Self, rhs: some BinaryFloatingPoint) {
         lhs = lhs / rhs
     }
 }

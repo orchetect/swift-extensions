@@ -1,7 +1,7 @@
 //
 //  NSImage.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) && !targetEnvironment(macCatalyst)
@@ -26,14 +26,14 @@ extension NSImage {
     ) throws {
         var properties: [NSBitmapImageRep.PropertyKey: Any] = [:]
         properties[.compressionFactor] = compressionFactor?.clamped(to: 0.0 ... 1.0) as NSNumber?
-        
+
         guard let imageData = tiffRepresentation,
               let imageRep = NSBitmapImageRep(data: imageData),
               let fileData = imageRep.representation(using: type, properties: properties)
         else {
             throw CocoaError(.fileWriteUnknown)
         }
-        
+
         try fileData.write(to: url, options: options)
     }
 }

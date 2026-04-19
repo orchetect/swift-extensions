@@ -1,7 +1,7 @@
 //
 //  Collections.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - Typealiases & Protocols
@@ -22,8 +22,7 @@ public typealias LazyFilteredCompactMapSequence<Base: Sequence, Element> = LazyF
 
 // MARK: - Operators
 
-extension Collection where Self: RangeReplaceableCollection,
-Self: MutableCollection {
+extension Collection where Self: RangeReplaceableCollection, Self: MutableCollection {
     /// Syntactic sugar: Append an element to an array.
     @inlinable @_disfavoredOverload
     public static func += (lhs: inout Self, rhs: Element) {
@@ -37,22 +36,18 @@ extension Set {
     public static func += (lhs: inout Self, rhs: Element) {
         lhs.insert(rhs)
     }
-    
+
     /// Syntactic sugar: Return a new set by inserting the contents of another set into the set.
     @inlinable @_disfavoredOverload
-    public static func + <S>(lhs: Self, rhs: S) -> Self
-        where S: Sequence, S.Element == Element
-    {
+    public static func + (lhs: Self, rhs: some Sequence<Element>) -> Self {
         var copy = lhs
         copy.formUnion(rhs)
         return copy
     }
-    
+
     /// Syntactic sugar: Insert the contents of another set into the set.
     @inlinable @_disfavoredOverload
-    public static func += <S>(lhs: inout Self, rhs: S)
-        where S: Sequence, S.Element == Element
-    {
+    public static func += (lhs: inout Self, rhs: some Sequence<Element>) {
         lhs.formUnion(rhs)
     }
 }
@@ -92,22 +87,22 @@ extension MutableCollection {
         }
         set {
             guard indices.contains(index) else { return }
-            
+
             // subscript getter and setter must be of the same type
             // (get is `Element?` so the set must also be `Element?`)
-            
+
             // implementation makes it difficult or impossible to
             // allow setting an element to `nil` in a collection that contains Optionals,
             // because it's not easy to tell whether the collection contains Optionals or not,
             // so the best course of action is to not allow setting elements to `nil` at all.
-            
+
             guard let newValueUnwrapped = newValue else {
                 assertionFailure(
                     "Do not use [safe:] setter to set nil for elements on collections that contain Optionals. Setting nil has no effect."
                 )
                 return
             }
-            
+
             self[index] = newValueUnwrapped
         }
         _modify {
@@ -118,25 +113,25 @@ extension MutableCollection {
                 yield &dummy
                 return
             }
-            
+
             var valueForMutation: Element? = self[index]
             yield &valueForMutation
-            
+
             // subscript getter and setter must be of the same type
             // (get is `Element?` so the set must also be `Element?`)
-            
+
             // implementation makes it difficult or impossible to
             // allow setting an element to `nil` in a collection that contains Optionals,
             // because it's not easy to tell whether the collection contains Optionals or not,
             // so the best course of action is to not allow setting elements to `nil` at all.
-            
+
             guard let valueToStore = valueForMutation else {
                 assertionFailure(
                     "Do not use [safe:] setter to set nil for elements on collections that contain Optionals. Setting nil has no effect."
                 )
                 return
             }
-            
+
             self[index] = valueToStore
         }
     }
@@ -170,7 +165,7 @@ extension MutableCollection where Element: SwiftExtensionsOptionalTyped {
         }
         set {
             guard indices.contains(index) else { return }
-            
+
             switch newValue {
             case .none:
                 self[index] = Element.noneValue as! Element
@@ -186,10 +181,10 @@ extension MutableCollection where Element: SwiftExtensionsOptionalTyped {
                 yield &dummy
                 return
             }
-            
+
             var valueForMutation: Element? = self[index]
             yield &valueForMutation
-            
+
             switch valueForMutation {
             case .none:
                 self[index] = Element.noneValue as! Element
@@ -230,7 +225,7 @@ extension Collection {
     public subscript(safe index: Index) -> Element? {
         indices.contains(index) ? self[index] : nil
     }
-    
+
     /// Access collection indexes safely.
     /// If index does not exist (out-of-bounds), `defaultValue` is returned.
     @inlinable @_disfavoredOverload
@@ -278,47 +273,47 @@ extension Collection {
     public subscript(safe range: ClosedRange<Index>) -> SubSequence? {
         guard range.lowerBound >= startIndex,
               range.upperBound < endIndex else { return nil }
-        
+
         return self[range.lowerBound ... range.upperBound]
     }
-    
+
     /// Access collection indexes safely.
     /// If index range is not fully contained within the collection's indices, `nil` is returned.
     @inlinable @_disfavoredOverload
     public subscript(safe range: Range<Index>) -> SubSequence? {
         guard range.lowerBound >= startIndex,
               range.upperBound <= endIndex else { return nil }
-        
+
         return self[range.lowerBound ..< range.upperBound]
     }
-    
+
     /// Access collection indexes safely.
     /// If index range is not fully contained within the collection's indices, `nil` is returned.
     @inlinable @_disfavoredOverload
     public subscript(safe range: PartialRangeFrom<Index>) -> SubSequence? {
         guard range.lowerBound >= startIndex,
               range.lowerBound <= endIndex else { return nil }
-        
+
         return self[range.lowerBound...]
     }
-    
+
     /// Access collection indexes safely.
     /// If index range is not fully contained within the collection's indices, `nil` is returned.
     @inlinable @_disfavoredOverload
     public subscript(safe range: PartialRangeThrough<Index>) -> SubSequence? {
         guard range.upperBound >= startIndex,
               range.upperBound < endIndex else { return nil }
-        
+
         return self[...range.upperBound]
     }
-    
+
     /// Access collection indexes safely.
     /// If index range is not fully contained within the collection's indices, `nil` is returned.
     @inlinable @_disfavoredOverload
     public subscript(safe range: PartialRangeUpTo<Index>) -> SubSequence? {
         guard range.upperBound >= startIndex,
               range.upperBound <= endIndex else { return nil }
-        
+
         return self[..<range.upperBound]
     }
 }
@@ -355,22 +350,22 @@ extension MutableCollection {
         set {
             guard indexOffset >= 0, indexOffset < count else { return }
             let idx = index(startIndex, offsetBy: indexOffset)
-            
+
             // subscript getter and setter must be of the same type
             // (get is `Element?` so the set must also be `Element?`)
-            
+
             // implementation makes it difficult or impossible to
             // allow setting an element to `nil` in a collection that contains Optionals,
             // because it's not easy to tell whether the collection contains Optionals or not,
             // so the best course of action is to not allow setting elements to `nil` at all.
-            
+
             guard let newValueUnwrapped = newValue else {
                 assertionFailure(
                     "Do not use [safe:] setter to set nil for elements on collections that contain Optionals. Setting nil has no effect."
                 )
                 return
             }
-            
+
             self[idx] = newValueUnwrapped
         }
         _modify {
@@ -381,27 +376,27 @@ extension MutableCollection {
                 yield &dummy
                 return
             }
-            
+
             let idx = index(startIndex, offsetBy: indexOffset)
-            
+
             var valueForMutation: Element? = self[idx]
             yield &valueForMutation
-            
+
             // subscript getter and setter must be of the same type
             // (get is `Element?` so the set must also be `Element?`)
-            
+
             // implementation makes it difficult or impossible to
             // allow setting an element to `nil` in a collection that contains Optionals,
             // because it's not easy to tell whether the collection contains Optionals or not,
             // so the best course of action is to not allow setting elements to `nil` at all.
-            
+
             guard let valueToStore = valueForMutation else {
                 assertionFailure(
                     "Do not use [safe:] setter to set nil for elements on collections that contain Optionals. Setting nil has no effect."
                 )
                 return
             }
-            
+
             self[idx] = valueToStore
         }
     }
@@ -436,7 +431,7 @@ extension MutableCollection where Element: SwiftExtensionsOptionalTyped {
         set {
             guard indexOffset >= 0, indexOffset < count else { return }
             let idx = index(startIndex, offsetBy: indexOffset)
-            
+
             switch newValue {
             case .none:
                 self[idx] = Element.noneValue as! Element
@@ -452,12 +447,12 @@ extension MutableCollection where Element: SwiftExtensionsOptionalTyped {
                 yield &dummy
                 return
             }
-            
+
             let idx = index(startIndex, offsetBy: indexOffset)
-            
+
             var valueForMutation: Element? = self[idx]
             yield &valueForMutation
-            
+
             switch valueForMutation {
             case .none:
                 self[idx] = Element.noneValue as! Element
@@ -491,12 +486,12 @@ extension Collection where Index == Int {
     public subscript(safePosition index: Int) -> Element? {
         guard count > 0,
               (0 ..< count).contains(index) else { return nil }
-        
+
         let idx = indices.index(startIndex, offsetBy: index)
-        
+
         return self[idx]
     }
-    
+
     /// Access collection indexes safely.
     /// If index does not exist (out-of-bounds), `defaultValue` is returned.
     ///
@@ -518,7 +513,7 @@ extension Collection where Index == Int {
     ) -> Element {
         indices.contains(index) ? self[index] : defaultValue()
     }
-    
+
     /// Access collection indexes safely.
     /// If index does not exist (out-of-bounds), `defaultValue` is returned.
     ///
@@ -541,9 +536,9 @@ extension Collection where Index == Int {
     ) -> Element {
         guard count > 0,
               (0 ..< count).contains(index) else { return defaultValue() }
-        
+
         let idx = indices.index(startIndex, offsetBy: index)
-        
+
         return self[idx]
     }
 }
@@ -558,13 +553,13 @@ extension Collection where Index == Int {
     public subscript(safePosition range: ClosedRange<Int>) -> SubSequence? {
         guard range.lowerBound >= 0,
               range.upperBound < count else { return nil }
-        
+
         let fromIndex = index(startIndex, offsetBy: range.lowerBound)
         let toIndex = index(startIndex, offsetBy: range.upperBound)
-        
+
         return self[fromIndex ... toIndex]
     }
-    
+
     /// Access collection indexes safely, referenced by position offset `0 ..< count`.
     /// (Same as `[Int]` but if position range is not fully contained within the collection's
     /// element position offsets, `nil` is returned.)
@@ -572,49 +567,49 @@ extension Collection where Index == Int {
     public subscript(safePosition range: Range<Int>) -> SubSequence? {
         guard range.lowerBound >= 0,
               range.upperBound <= count else { return nil }
-        
+
         let fromIndex = index(startIndex, offsetBy: range.lowerBound)
         let toIndex = index(startIndex, offsetBy: range.upperBound)
-        
+
         return self[fromIndex ..< toIndex]
     }
-    
+
     /// Access collection indexes safely, referenced by position offset `0 ..< count`.
     /// (Same as `[Int]` but if position range is not fully contained within the collection's
     /// element position offsets, `nil` is returned.)
     @inlinable @_disfavoredOverload
     public subscript(safePosition range: PartialRangeFrom<Int>) -> SubSequence? {
         let fromIndex = index(startIndex, offsetBy: range.lowerBound)
-        
+
         guard fromIndex >= startIndex,
               fromIndex <= endIndex else { return nil }
-        
+
         return self[fromIndex...]
     }
-    
+
     /// Access collection indexes safely, referenced by position offset `0 ..< count`.
     /// (Same as `[Int]` but if position range is not fully contained within the collection's
     /// element position offsets, `nil` is returned.)
     @inlinable @_disfavoredOverload
     public subscript(safePosition range: PartialRangeThrough<Int>) -> SubSequence? {
         let toIndex = index(startIndex, offsetBy: range.upperBound)
-        
+
         guard toIndex >= startIndex,
               toIndex < endIndex else { return nil }
-        
+
         return self[...toIndex]
     }
-    
+
     /// Access collection indexes safely, referenced by position offset `0 ..< count`.
     /// (Same as `[Int]` but if position range is not fully contained within the collection's
     /// element position offsets, `nil` is returned.)
     @inlinable @_disfavoredOverload
     public subscript(safePosition range: PartialRangeUpTo<Int>) -> SubSequence? {
         let toIndex = index(startIndex, offsetBy: range.upperBound)
-        
+
         guard toIndex >= startIndex,
               toIndex <= endIndex else { return nil }
-        
+
         return self[..<toIndex]
     }
 }
@@ -629,7 +624,7 @@ extension RangeReplaceableCollection {
         if indices.contains(index) {
             return remove(at: index)
         }
-        
+
         return nil
     }
 }
@@ -654,7 +649,7 @@ extension Collection {
     public func startIndex(offsetBy distance: Int) -> Index {
         index(startIndex, offsetBy: distance)
     }
-    
+
     /// Returns an index that is the specified distance from the end index.
     @_disfavoredOverload
     public func endIndex(offsetBy distance: Int) -> Index {
@@ -669,7 +664,7 @@ extension Collection {
         let fromIndex = index(startIndex, offsetBy: offsetIndex)
         return self[fromIndex]
     }
-    
+
     /// Returns the substring in the given range of character positions (offsets from the start
     /// index).
     @_disfavoredOverload
@@ -678,7 +673,7 @@ extension Collection {
         let toIndex = index(startIndex, offsetBy: offsetRange.upperBound)
         return self[fromIndex ... toIndex]
     }
-    
+
     /// Returns the substring in the given range of character positions (offsets from the start
     /// index).
     @_disfavoredOverload
@@ -687,7 +682,7 @@ extension Collection {
         let toIndex = index(startIndex, offsetBy: offsetRange.upperBound)
         return self[fromIndex ..< toIndex]
     }
-    
+
     /// Returns the substring in the given range of character positions (offsets from the start
     /// index).
     @_disfavoredOverload
@@ -695,7 +690,7 @@ extension Collection {
         let fromIndex = index(startIndex, offsetBy: offsetRange.lowerBound)
         return self[fromIndex...]
     }
-    
+
     /// Returns the substring in the given range of character positions (offsets from the start
     /// index).
     @_disfavoredOverload
@@ -703,7 +698,7 @@ extension Collection {
         let toIndex = index(startIndex, offsetBy: offsetRange.upperBound)
         return self[...toIndex]
     }
-    
+
     /// Returns the substring in the given range of character positions (offsets from the start
     /// index).
     @_disfavoredOverload
@@ -736,14 +731,14 @@ extension Array {
     public subscript(wrapping index: Index) -> Iterator.Element {
         let max = count
         var newIndex: Int
-        
+
         if index >= 0 {
             newIndex = index % max
         } else {
-            let calculation = max - (-index) % (-max)
+            let calculation = max - -index % -max
             newIndex = calculation != max ? calculation : 0
         }
-        
+
         return self[newIndex]
     }
 }
@@ -755,7 +750,7 @@ extension Collection where Element: Hashable {
     /// - complexity: O(*n*)
     @inlinable @_disfavoredOverload
     public func count(of element: Element) -> Int {
-        filter { $0 == element }.count
+        count(where: { $0 == element })
     }
 }
 
@@ -771,7 +766,7 @@ extension Collection where Element: StringProtocol {
         guard let idx = shortestIndex() else { return nil }
         return self[idx]
     }
-    
+
     /// Returns the index of the shortest string in the collection.
     /// If more than one element are the same length as the shortest element, the first will be
     /// returned.
@@ -779,24 +774,24 @@ extension Collection where Element: StringProtocol {
     @inlinable @_disfavoredOverload
     public func shortestIndex() -> Index? {
         guard !isEmpty else { return nil }
-        
+
         var shortestIndex: Index = startIndex
         var shortestLength: Int = self[startIndex].count
-        
+
         for index in indices {
             let elementLength = self[index].count
             if elementLength < shortestLength {
                 shortestIndex = index
                 shortestLength = elementLength
             }
-            
+
             // return early if empty string is encountered since
             // there is no shorter string possible
             if elementLength == 0 {
                 return shortestIndex
             }
         }
-        
+
         return shortestIndex
     }
 }
@@ -813,7 +808,7 @@ extension Collection where Element: StringProtocol {
         guard let idx = longestIndex() else { return nil }
         return self[idx]
     }
-    
+
     /// Returns the index of the longest string in the collection.
     /// If more than one element are the same length as the longest element, the first will be
     /// returned.
@@ -821,10 +816,10 @@ extension Collection where Element: StringProtocol {
     @inlinable @_disfavoredOverload
     public func longestIndex() -> Index? {
         guard !isEmpty else { return nil }
-        
+
         var longestIndex: Index = startIndex
         var longestLength: Int = self[startIndex].count
-        
+
         for index in indices {
             let elementLength = self[index].count
             if elementLength > longestLength {
@@ -832,7 +827,7 @@ extension Collection where Element: StringProtocol {
                 longestLength = elementLength
             }
         }
-        
+
         return longestIndex
     }
 }
@@ -885,10 +880,10 @@ extension Collection where Element: Strideable,
     @inlinable @_disfavoredOverload
     public func firstGapValue(after: Element? = nil) -> Element? {
         guard count > 0 else { return nil }
-        
+
         for idx in startIndex ..< endIndex {
             if idx >= endIndex.advanced(by: -1) { continue }
-            
+
             if self[idx.advanced(by: 1)] > (self[idx].advanced(by: 1)) {
                 // found a gap
                 let gapValue = self[idx].advanced(by: 1)
@@ -896,7 +891,7 @@ extension Collection where Element: Strideable,
                 if gapValue > after! { return gapValue }
             }
         }
-        
+
         return nil
     }
 }
@@ -907,25 +902,25 @@ extension Set {
     /// Same as `union()` but replaces existing values with new values instead of `union()`'s
     /// behavior of retaining existing equivalent values.
     @inlinable @_disfavoredOverload
-    public func union<S>(updating other: S) -> Set<Set<Element>.Element>
-        where Element == S.Element,
-        S: Sequence
+    public func union<S: Sequence>(updating other: S) -> Set<Set<Element>.Element>
+        where Element == S.Element
+
     {
         var newSet = self
-        
+
         for item in other {
             newSet.update(with: item)
         }
-        
+
         return newSet
     }
-    
+
     /// Same as `formUnion()` but replaces existing values with new values instead of
     /// `formUnion()`'s behavior of retaining existing equivalent values.
     @inlinable @_disfavoredOverload
-    public mutating func formUnion<S>(updating other: S)
-        where Element == S.Element,
-        S: Sequence
+    public mutating func formUnion<S: Sequence>(updating other: S)
+        where Element == S.Element
+
     {
         self = union(updating: other)
     }
@@ -969,9 +964,9 @@ extension Collection {
         guard every != 0 else {
             return [self[startIndex...]]
         }
-        
+
         var result: [SubSequence] = []
-        
+
         for i in stride(from: 0, to: count, by: every) {
             switch backwards {
             case true:
@@ -982,9 +977,9 @@ extension Collection {
                     limitedBy: startIndex
                 )
                     ?? startIndex
-                
+
                 result.insert(self[offsetStartIndex ..< offsetEndIndex], at: 0)
-                
+
             case false:
                 let offsetStartIndex = index(startIndex, offsetBy: i)
                 let offsetEndIndex = index(
@@ -993,11 +988,11 @@ extension Collection {
                     limitedBy: endIndex
                 )
                     ?? endIndex
-                
+
                 result.append(self[offsetStartIndex ..< offsetEndIndex])
             }
         }
-        
+
         return result
     }
 }
@@ -1008,7 +1003,7 @@ extension Collection where Index == Int {
     public func indices(splitEvery: Int) -> [ClosedRange<Index>] {
         // this should work but doesn't
         // return indices.split(every: splitEvery)
-        
+
         // so we need a workaround. this is really stupid but it works.
         // there is some compiler issue that reports type(of: indices) as `Range<Index>`
         // but only works if you cast it as... itself (Range<Index>, effectively Range<Int>)
@@ -1023,10 +1018,10 @@ extension Collection where Index == Int {
 public enum DuplicateElementFilter {
     /// First occurrence of duplicate elements.
     case firstOccurrences
-    
+
     /// Only subsequence occurrences of duplicates, omitting the first instance.
     case afterFirstOccurrences
-    
+
     /// All occurrences of duplicates, including the first instance.
     case allOccurrences
 }
@@ -1046,7 +1041,7 @@ extension Collection
         _ removing: DuplicateElementFilter = .afterFirstOccurrences
     ) -> [Element] {
         let dupeIndices = duplicateElementIndices(removing, sorted: false)
-        
+
         return indices.lazy.filter { !dupeIndices.contains($0) }.map { self[$0] }
     }
 }
@@ -1066,7 +1061,7 @@ extension RangeReplaceableCollection
         _ removing: DuplicateElementFilter = .afterFirstOccurrences
     ) {
         let dupeIndices = duplicateElementIndices(removing, sorted: true)
-        
+
         for dupeIndex in dupeIndices.reversed() {
             remove(at: dupeIndex)
         }
@@ -1102,7 +1097,7 @@ extension Collection
         let dupeIndices = duplicateElementIndices(dupeFilter, sorted: true)
         return dupeIndices.map { self[$0] }
     }
-    
+
     /// Returns indices of duplicate elements.
     /// Returned indices are not sorted by default and may be out of order.
     /// To sort the results, pass `true` to the `sort` parameter.
@@ -1120,7 +1115,7 @@ extension Collection
             let advancedIndex = self.index(idx, offsetBy: 1)
             guard advancedIndex != endIndex else { return }
             let scanIndices = advancedIndex ..< endIndex
-            
+
             switch dupeFilter {
             case .firstOccurrences:
                 if let _ = scanIndices.first(where: { self[$0] == self[idx] }),
@@ -1128,12 +1123,12 @@ extension Collection
                 {
                     result.append(idx)
                 }
-                
+
             case .afterFirstOccurrences:
                 if let newDupeIndex = scanIndices.first(where: { self[$0] == self[idx] }) {
                     result.append(newDupeIndex)
                 }
-                
+
             case .allOccurrences:
                 if let newDupeIndex = scanIndices.first(where: { self[$0] == self[idx] }) {
                     if !result.contains(where: { self[$0] == self[idx] }) {
@@ -1166,7 +1161,7 @@ extension Collection where Element: StringProtocol {
             }
         }
     }
-    
+
     /// Returns the collection with duplicates removed using localized string comparison.
     /// Only the first occurrence of elements with duplicates will remain and subsequent instances
     /// are removed.
@@ -1180,7 +1175,7 @@ extension Collection where Element: StringProtocol {
             }
         }
     }
-    
+
     /// Returns the collection with duplicates removed using localized case-insensitive string
     /// comparison.
     /// Only the first occurrence of elements with duplicates will remain and subsequent instances
@@ -1195,7 +1190,7 @@ extension Collection where Element: StringProtocol {
             }
         }
     }
-    
+
     /// Returns the collection with duplicates removed using localized standard string comparison.
     /// Only the first occurrence of elements with duplicates will remain and subsequent instances
     /// are removed.
@@ -1221,7 +1216,7 @@ extension Collection where Element: Equatable {
         let firstValue = first
         return dropFirst().allSatisfy { $0 == firstValue }
     }
-    
+
     /// Returns `true` if all elements are equal regardless of order.
     @_disfavoredOverload
     public func elementsEqual<C: Collection>(
@@ -1231,18 +1226,18 @@ extension Collection where Element: Equatable {
     {
         guard count == other.count else { return false }
         guard count > 0 else { return true }
-        
+
         var rhsIndices = Set(other.indices)
-        
+
         for lhsIndex in indices {
             guard let rhsIndex = rhsIndices.first(where: { self[lhsIndex] == other[$0] })
             else { return false }
             rhsIndices.remove(rhsIndex)
         }
-        
+
         // double-check
         guard rhsIndices.isEmpty else { return false }
-        
+
         return true
     }
 }
@@ -1258,7 +1253,7 @@ extension Sequence where Element: Comparable {
             collection.contains(element)
         }
     }
-    
+
     /// Returns a Boolean value indicating whether the sequence contains any of the elements within
     /// the specified collection.
     @inlinable @_disfavoredOverload
@@ -1281,7 +1276,7 @@ extension Sequence where Element: Comparable {
             collection.contains(element)
         }
     }
-    
+
     /// Returns the number of elements that match any of the elements within the specified collection.
     @inlinable @_disfavoredOverload
     public func count(ofElementsIn collections: some Sequence<some Sequence<Element>>) -> Int {
@@ -1295,20 +1290,19 @@ extension Sequence where Element: Comparable {
 
 // MARK: - Replace
 
-extension RangeReplaceableCollection
-where Element: Equatable {
+extension RangeReplaceableCollection where Element: Equatable {
     /// Replaces all occurrences of each element of a target collection with another element.
     /// - complexity: O(_number of sources_ * _number of instances_)
     @inlinable @_disfavoredOverload
-    public mutating func replace<C>(
-        elementsIn sources: C,
+    public mutating func replace(
+        elementsIn sources: some Collection<Element>,
         with newElement: Element
-    ) where C: Collection, C.Element == Element {
+    ) {
         for source in sources {
             // failsafe - don't replace if source and replacement are identical.
             // this avoids a potential infinite loop.
             guard !sources.contains(newElement) else { continue }
-            
+
             // TODO: could be more efficient
             while let sourceIndex = firstIndex(of: source) {
                 // self[sourceIndex] = newElement // TODO: doesn't work; subscript is get-only
@@ -1316,33 +1310,31 @@ where Element: Equatable {
             }
         }
     }
-    
+
     /// Returns a new collection in which all occurrences of each element of a target collection are
     /// replaced by another element.
     /// - complexity: O(_number of sources_ * _number of instances_)
     @inlinable @_disfavoredOverload
-    public func replacing<C>(
-        elementsIn sources: C,
+    public func replacing(
+        elementsIn sources: some Collection<Element>,
         with newElement: Element
-    ) -> Self where C: Collection, C.Element == Element {
+    ) -> Self {
         var mutable = self
         mutable.replace(elementsIn: sources, with: newElement)
         return mutable
     }
-    
+
     /// Replaces all occurrences of each element of a target collection with another collection.
     /// - complexity: O(_number of sources_ * _number of instances_)
     @inlinable @_disfavoredOverload
-    public mutating func replace<Sources, NewElements>(
-        elementsIn sources: Sources,
-        with newElements: NewElements
-    ) where Sources: Collection, Sources.Element == Element,
-            NewElements: Collection, NewElements.Element == Element
-    {
+    public mutating func replace(
+        elementsIn sources: some Collection<Element>,
+        with newElements: some Collection<Element>
+    ) {
         // early return - don't replace if source and replacement is identical.
         // this also avoids a potential infinite loop.
         guard !sources.elementsEqual(newElements) else { return }
-        
+
         for source in sources {
             // TODO: could be more efficient
             while let sourceIndex = firstIndex(of: source) {
@@ -1350,17 +1342,15 @@ where Element: Equatable {
             }
         }
     }
-    
+
     /// Returns a new collection in which all occurrences of each element of a target collection are
     /// replaced by another collection.
     /// - complexity: O(_number of sources_ * _number of instances_)
     @inlinable @_disfavoredOverload
-    public func replacing<Sources, NewElements>(
-        elementsIn sources: Sources,
-        with newElements: NewElements
-    ) -> Self where Sources: Collection, Sources.Element == Element,
-                    NewElements: Collection, NewElements.Element == Element
-    {
+    public func replacing(
+        elementsIn sources: some Collection<Element>,
+        with newElements: some Collection<Element>
+    ) -> Self {
         var mutable = self
         mutable.replace(elementsIn: sources, with: newElements)
         return mutable
@@ -1372,7 +1362,7 @@ where Element: Equatable {
 extension Dictionary {
     // Swift Standard Library provides `mapValues`,
     // so `mapKeys` and `mapDictionary` methods are useful accompaniments
-    
+
     /// Returns a new dictionary containing the values of this dictionary with the keys transformed
     /// by the given closure.
     @inlinable @_disfavoredOverload
@@ -1386,7 +1376,7 @@ extension Dictionary {
         }
         return dict
     }
-    
+
     /// Returns a new dictionary by transforming keys and values using a closure.
     /// Analogous to Swift's standard `map` method.
     @inlinable @_disfavoredOverload
@@ -1400,7 +1390,7 @@ extension Dictionary {
         }
         return dict
     }
-    
+
     /// Returns a new dictionary by transforming keys and values using a closure.
     /// Analogous to Swift's standard `compactMap` method.
     @inlinable @_disfavoredOverload
@@ -1431,7 +1421,7 @@ extension Sequence {
         }
         return dict
     }
-    
+
     /// Returns a new dictionary by mapping elements to key/value pairs.
     /// Analogous to Swift's standard `compactMap` method.
     @inlinable @_disfavoredOverload

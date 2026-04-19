@@ -1,7 +1,7 @@
 //
 //  Clipboard.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS)
@@ -18,20 +18,20 @@ import UIKit
 @discardableResult @_disfavoredOverload
 public func setClipboard(toString: String) -> Bool {
     #if os(macOS)
-    
+
     let p = NSPasteboard.general
     p.declareTypes([.string], owner: nil)
     return p.setString(toString, forType: .string)
-    
+
     #elseif os(iOS)
-    
+
     UIPasteboard.general.string = toString
     return true
-    
+
     #else
-    
+
     fatalError("Not implemented on this platform yet.")
-    
+
     #endif
 }
 

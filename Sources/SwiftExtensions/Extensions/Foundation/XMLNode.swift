@@ -1,7 +1,7 @@
 //
 //  XMLNode.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // This is Mac-only because even though XMLNode exists in Foundation, it is only available on macOS
@@ -17,13 +17,13 @@ extension XMLNode {
     public var asElement: XMLElement? {
         self as? XMLElement
     }
-    
+
     /// Returns `parent` typed as `XMLElement`.
     @inlinable @_disfavoredOverload
     public var parentElement: XMLElement? {
         parent as? XMLElement
     }
-    
+
     /// Returns `children` typed as `XMLElement`s.
     @inlinable @_disfavoredOverload
     public var childElements: LazyCompactMapSequence<[XMLNode], XMLElement> {

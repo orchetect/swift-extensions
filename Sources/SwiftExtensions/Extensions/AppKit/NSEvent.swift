@@ -1,7 +1,7 @@
 //
 //  NSEvent.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if os(macOS) && !targetEnvironment(macCatalyst)
@@ -17,7 +17,7 @@ extension NSEvent {
         // "With NSMouseMoved and possibly other events, the event can have a nil window (that is,
         // the window property contains nil). In this case, locationInWindow returns the event
         // location in screen coordinates."
-        
+
         view.convert(locationInWindow, from: nil)
     }
 }

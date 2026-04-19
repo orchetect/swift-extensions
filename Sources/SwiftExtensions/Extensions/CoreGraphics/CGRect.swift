@@ -1,7 +1,7 @@
 //
 //  CGRect.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(CoreGraphics)
@@ -17,7 +17,7 @@ extension CGRect {
             y: origin.y + (height / 2)
         )
     }
-    
+
     /// Returns a new rect by increasing its four edges outward by the given distance.
     @_disfavoredOverload
     public func grow(by distance: CGFloat) -> Self {
@@ -28,7 +28,7 @@ extension CGRect {
             height: height + (distance * 2)
         )
     }
-    
+
     /// Returns a new rect by reducing its four edges inward by the given distance.
     @_disfavoredOverload
     public func shrink(by distance: CGFloat) -> Self {
@@ -39,7 +39,7 @@ extension CGRect {
             height: height - (distance * 2)
         )
     }
-    
+
     /// Returns a new rect by scaling its four edges by the given scale factor.
     @_disfavoredOverload
     public func scale(factor: CGFloat) -> Self {

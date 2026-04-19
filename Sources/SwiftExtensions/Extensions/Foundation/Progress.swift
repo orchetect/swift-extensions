@@ -1,7 +1,7 @@
 //
 //  Progress.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -19,7 +19,7 @@ extension Progress {
             return typedParent
         }
     }
-    
+
     /// Returns all child `Progress` instances that are attached.
     @_disfavoredOverload
     public var children: Set<Progress> {

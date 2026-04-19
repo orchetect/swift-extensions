@@ -1,7 +1,7 @@
 //
 //  String and CharacterSet.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -27,61 +27,61 @@ extension StringProtocol {
         omitNonmatching: Bool = true
     ) -> [Self.SubSequence] {
         var result: [Self.SubSequence] = []
-        
+
         // iterate over characters
-        
+
         var currentGroupingStartIndex: Self.Index? = indices.first
         var lastCharSetIndex: Int?
-        
+
         for idx in indices {
             // helper
-            
+
             func closeGrouping(closingIdx: Self.Index) {
                 if let startIdx = currentGroupingStartIndex {
                     // if grouping didn't match char sets, only add grouping if omitNonmatching ==
                     // true
                     if lastCharSetIndex == nil, omitNonmatching { return }
-                    
+
                     result.append(self[startIdx ... closingIdx])
                 }
             }
-            
+
             // find index of first char set that contains the char
-            
+
             guard let scalar = Unicode.Scalar(String(self[idx]))
             else { return [] }
-            
+
             let firstMatchingCharSetIndex = characterSets.firstIndex(where: { $0.contains(scalar) })
-            
+
             if lastCharSetIndex != firstMatchingCharSetIndex,
                idx != indices.first
             {
                 // grouping separator here
-                
+
                 // close off previous grouping and append to result array
-                
+
                 closeGrouping(closingIdx: index(before: idx))
-                
+
                 // start new grouping
-                
+
                 currentGroupingStartIndex = idx
             }
-            
+
             // close off if we've reached the end of the string
-            
+
             if idx == indices.last {
                 if idx == indices.first {
                     lastCharSetIndex = firstMatchingCharSetIndex
                 }
-                
+
                 closeGrouping(closingIdx: idx)
             }
-            
+
             // update last found index
-            
+
             lastCharSetIndex = firstMatchingCharSetIndex
         }
-        
+
         return result
     }
 }
@@ -105,26 +105,26 @@ extension StringProtocol {
         let mergedCharacterSet = characterSets.isEmpty
             ? characterSet
             : characterSets.reduce(into: characterSet, +=)
-        
+
         return unicodeScalars
             .filter { mergedCharacterSet.contains($0) }
             .map { "\($0)" }
             .joined()
     }
-    
+
     /// Returns a string preserving only characters from the passed string and removing all other
     /// characters.
     @_disfavoredOverload
     public func only(charactersIn string: String) -> String {
         only(CharacterSet(charactersIn: string))
     }
-    
+
     /// Returns a string containing only alphanumeric characters and removing all other characters.
     @_disfavoredOverload
     public var onlyAlphanumerics: String {
         only(.alphanumerics)
     }
-    
+
     /// Returns a string removing all characters from the passed `CharacterSet`s.
     ///
     /// Example:
@@ -141,11 +141,11 @@ extension StringProtocol {
         let mergedCharacterSet = characterSets.isEmpty
             ? characterSet
             : characterSets.reduce(into: characterSet, +=)
-        
+
         return components(separatedBy: mergedCharacterSet)
             .joined()
     }
-    
+
     /// Returns a string removing all characters from the passed string.
     @_disfavoredOverload
     public func removing(characters: String) -> String {
@@ -166,17 +166,17 @@ extension StringProtocol {
         let mergedCharacterSet = characterSets.isEmpty
             ? characterSet
             : characterSets.reduce(into: characterSet, +=)
-        
+
         return allSatisfy(mergedCharacterSet.contains(_:))
     }
-    
+
     /// Returns `true` if all characters in the string are contained in the character set.
     @_disfavoredOverload
     public func isOnly(charactersIn string: String) -> Bool {
         let characterSet = CharacterSet(charactersIn: string)
         return allSatisfy(characterSet.contains(_:))
     }
-    
+
     /// Returns `true` if any character in the string are contained in the character set.
     @_disfavoredOverload
     public func contains(
@@ -186,23 +186,23 @@ extension StringProtocol {
         let mergedCharacterSet = characterSets.isEmpty
             ? characterSet
             : characterSets.reduce(into: characterSet, +=)
-        
+
         for char in self {
             if mergedCharacterSet.contains(char) { return true }
         }
-        
+
         return false
     }
-    
+
     /// Returns `true` if any character in the string are contained in the character set.
     @_disfavoredOverload
     public func contains(anyCharactersIn characters: String) -> Bool {
         let characterSet = CharacterSet(charactersIn: characters)
-        
+
         for char in self {
             if characterSet.contains(char) { return true }
         }
-        
+
         return false
     }
 }

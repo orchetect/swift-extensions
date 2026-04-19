@@ -1,7 +1,7 @@
 //
 //  Collection BinarySearch.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - Search algorithms
@@ -35,23 +35,23 @@ extension ArraySlice where Element: Comparable {
         guard !isEmpty else { return nil }
         guard let first, searchElement >= first else { return nil }
         guard let last, searchElement <= last else { return nil }
-        
+
         var searchRange = startIndex ... endIndex - 1
-        
+
         while searchRange.count > 2 {
             let midIndex = searchRange.lowerBound + (searchRange.count / 2)
-            
+
             let midElement = self[midIndex]
-            
+
             if midElement == searchElement { return midIndex ... midIndex }
-            
+
             if midElement < searchElement {
                 searchRange = midIndex ... searchRange.upperBound
             } else {
                 searchRange = searchRange.lowerBound ... midIndex
             }
         }
-        
+
         if let foundIndex = self[searchRange].firstIndex(where: { $0 == searchElement }) {
             return foundIndex ... foundIndex
         } else {

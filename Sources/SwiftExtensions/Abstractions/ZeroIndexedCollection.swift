@@ -1,7 +1,7 @@
 //
 //  ZeroIndexedCollection.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - ZeroIndexedCollection
@@ -12,7 +12,7 @@
 /// For example: a collection with indices `2, 4, 5` could be accessed using indices `0, 1, 2`.
 public struct ZeroIndexedCollection<Base: Collection> {
     private let base: Slice<Base>
-    
+
     public init(_ base: Base) {
         self.base = Slice(base: base, bounds: base.startIndex ..< base.endIndex)
     }
@@ -20,13 +20,19 @@ public struct ZeroIndexedCollection<Base: Collection> {
 
 extension ZeroIndexedCollection: Collection {
     public typealias Element = Base.Element
-    
-    public var startIndex: Int { 0 }
-    
-    public var endIndex: Int { base.count }
-    
-    public func index(after i: Int) -> Int { i + 1 }
-    
+
+    public var startIndex: Int {
+        0
+    }
+
+    public var endIndex: Int {
+        base.count
+    }
+
+    public func index(after i: Int) -> Int {
+        i + 1
+    }
+
     public subscript(_ indexOffset: Int) -> Base.Element {
         base[base._index(forOffset: indexOffset)]
     }
@@ -53,7 +59,7 @@ extension Collection {
 /// For example: a collection with indices `2, 4, 5` could be accessed using indices `0, 1, 2`.
 public struct ZeroIndexedMutableCollection<Base: MutableCollection> {
     private var base: Slice<Base>
-    
+
     public init(_ base: Base) {
         self.base = Slice(base: base, bounds: base.startIndex ..< base.endIndex)
     }
@@ -61,13 +67,19 @@ public struct ZeroIndexedMutableCollection<Base: MutableCollection> {
 
 extension ZeroIndexedMutableCollection: MutableCollection {
     public typealias Element = Base.Element
-    
-    public var startIndex: Int { 0 }
-    
-    public var endIndex: Int { base.count }
-    
-    public func index(after i: Int) -> Int { i + 1 }
-    
+
+    public var startIndex: Int {
+        0
+    }
+
+    public var endIndex: Int {
+        base.count
+    }
+
+    public func index(after i: Int) -> Int {
+        i + 1
+    }
+
     public subscript(_ indexOffset: Int) -> Base.Element {
         get {
             base[base._index(forOffset: indexOffset)]
@@ -104,7 +116,7 @@ extension MutableCollection {
 /// For example: a collection with indices `2, 4, 5` could be accessed using indices `0, 1, 2`.
 public struct ZeroIndexedRangeReplaceableCollection<Base: RangeReplaceableCollection> {
     private var base: Slice<Base>
-    
+
     public init(_ base: Base) {
         self.base = Slice(base: base, bounds: base.startIndex ..< base.endIndex)
     }
@@ -112,28 +124,34 @@ public struct ZeroIndexedRangeReplaceableCollection<Base: RangeReplaceableCollec
 
 extension ZeroIndexedRangeReplaceableCollection: Collection {
     public typealias Element = Base.Element
-    
-    public var startIndex: Int { 0 }
-    
-    public var endIndex: Int { base.count }
-    
-    public func index(after i: Int) -> Int { i + 1 }
-    
+
+    public var startIndex: Int {
+        0
+    }
+
+    public var endIndex: Int {
+        base.count
+    }
+
+    public func index(after i: Int) -> Int {
+        i + 1
+    }
+
     public subscript(_ indexOffset: Index) -> Element {
         base[base._index(forOffset: indexOffset)]
     }
 }
 
 extension ZeroIndexedRangeReplaceableCollection: RangeReplaceableCollection {
-    public mutating func replaceSubrange<C>(
+    public mutating func replaceSubrange<C: Collection>(
         _ subrange: Range<Index>,
         with newElements: C
-    ) where C: Collection, Element == C.Element {
+    ) where Element == C.Element {
         let offsetLowerBound = base._index(forOffset: subrange.lowerBound)
         let offsetUpperBound = base._index(forOffset: subrange.upperBound)
         base.replaceSubrange(offsetLowerBound ..< offsetUpperBound, with: newElements)
     }
-    
+
     public init() {
         base = .init()
     }

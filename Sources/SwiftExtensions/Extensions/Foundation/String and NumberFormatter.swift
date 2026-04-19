@@ -1,7 +1,7 @@
 //
 //  String and NumberFormatter.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 #if canImport(Foundation)
@@ -13,7 +13,7 @@ extension DefaultStringInterpolation {
     ///
     /// - Warning: This may not be thread-safe if called from more than one thread simultaneously.
     fileprivate static let siNumFormatter = NumberFormatter()
-    
+
     /// Convenience interpolator for formatting a number inline.
     ///
     /// Example:
@@ -30,7 +30,7 @@ extension DefaultStringInterpolation {
         format style: NumberFormatter.Style
     ) {
         Self.siNumFormatter.numberStyle = style
-        
+
         if let result = Self.siNumFormatter.string(from: value as NSNumber) {
             appendLiteral(result)
         }

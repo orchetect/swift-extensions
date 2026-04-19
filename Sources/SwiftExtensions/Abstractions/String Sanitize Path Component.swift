@@ -1,7 +1,7 @@
 //
 //  String Sanitize Path Component.swift
 //  swift-extensions • https://github.com/orchetect/swift-extensions
-//  © 2025 Steffan Andrews • Licensed under MIT License
+//  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
 // MARK: - Sanitize Path Component
@@ -10,17 +10,19 @@
 public enum FileSystemFormat: Equatable, Hashable, CaseIterable, Sendable {
     /// HFS+ (Apple)
     case hfsPlus
-    
+
     /// APFS (Apple)
     case apfs
-    
+
     // case ext
     // case ntfs
     // case fat32
 }
 
 extension FileSystemFormat: Identifiable {
-    public var id: Self { self }
+    public var id: Self {
+        self
+    }
 }
 
 extension String {
@@ -39,12 +41,12 @@ extension String {
         replacement: Character = "-"
     ) {
         let fileSystems = formats ?? FileSystemFormat.allCases
-        
+
         for fileSystem in fileSystems {
             _sanitizePathComponent(for: fileSystem, replacement: replacement)
         }
     }
-    
+
     private mutating func _sanitizePathComponent(
         for format: FileSystemFormat,
         replacement: Character
@@ -52,23 +54,23 @@ extension String {
         switch format {
         case .hfsPlus, .apfs:
             // legacy Apple file systems did not support the colon character (`:`).
-            
+
             // HFS+:
             // Supports all Unicode characters.
-            
+
             // APFS:
             // Supports all valid UTF-8 strings.
-            
+
             // Even though HFS+ and APFS file systems both support all Unicode characters, most APIs
             // provided
             // by OS X/macOS allow you create/open files with a slash `/` or NUL `\0` in them.
-            
+
             let illegalChars: [Character] = ["/", "\0", ":"]
-            
+
             replace(elementsIn: illegalChars, with: replacement)
         }
     }
-    
+
     /// Returns the path component string by sanitizing illegal characters based on the specified
     /// file system(s). This method takes an over-cautious approach by replacing certain characters
     /// that may be supported on modern systems but may still present backwards-compatibility
@@ -111,12 +113,12 @@ extension URL {
     ) {
         let lpc = lastPathComponent
             .sanitizingPathComponent(for: formats, replacement: replacement)
-        
+
         deleteLastPathComponent()
-        
+
         appendPathComponent(lpc)
     }
-    
+
     /// Sanitizes illegal characters in the last path component based on the
     /// specified file system(s). This method takes an over-cautious approach by replacing certain
     /// characters that may be supported on modern systems but may still present
