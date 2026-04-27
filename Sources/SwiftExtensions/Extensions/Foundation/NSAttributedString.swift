@@ -4,17 +4,21 @@
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
-#if canImport(Foundation)
+#if canImport(Darwin)
+import class Foundation.NSAttributedString
+import class Foundation.NSMutableAttributedString
+import struct Foundation.NSRange
 
 #if os(macOS)
-import AppKit
+import class AppKit.NSMutableParagraphStyle
+import enum AppKit.NSTextAlignment
 #else
-import UIKit
+import class UIKit.NSMutableParagraphStyle
+import enum UIKit.NSTextAlignment
 #endif
 
 extension NSAttributedString {
-    /// Convenience. Returns a new `NSAttributedString` with the attribute applied to the entire
-    /// string.
+    /// Convenience. Returns a new `NSAttributedString` with the attribute applied to the entire string.
     @_disfavoredOverload
     public func addingAttribute(alignment: NSTextAlignment) -> NSAttributedString {
         let paragraph = NSMutableParagraphStyle()
