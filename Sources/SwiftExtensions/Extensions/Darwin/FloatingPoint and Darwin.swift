@@ -5,24 +5,42 @@
 //
 
 #if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#elseif canImport(Musl)
+import Musl
+#endif
 
 import Darwin
 
 // MARK: - ceiling / floor
 
 extension FloatingPoint {
-    /// Same as `ceil(self)`.
+    /// Same as `ceil()`.
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
     public var ceiling: Self {
+        #if canImport(Darwin)
         Darwin.ceil(self)
+        #elseif canImport(Glibc)
+        Glibc.ceil(self)
+        #elseif canImport(Musl)
+        Musl.ceil(self)
+        #endif
     }
 
-    /// Same as `floor(self)`.
+    /// Same as `floor()`.
     /// (Functional convenience method)
     @inlinable @_disfavoredOverload
     public var floor: Self {
+        #if canImport(Darwin)
         Darwin.floor(self)
+        #elseif canImport(Glibc)
+        Glibc.floor(self)
+        #elseif canImport(Musl)
+        Musl.floor(self)
+        #endif
     }
 }
 
@@ -57,6 +75,4 @@ extension Float80: FloatingPointPowerComputable {
         powl(self, exponent)
     }
 }
-#endif
-
 #endif
