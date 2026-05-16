@@ -4,9 +4,9 @@
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
-#if canImport(Darwin)
+#if canImport(Foundation)
 
-import Darwin
+import Foundation
 
 // Derived from https://stackoverflow.com/a/45068046/2805570
 

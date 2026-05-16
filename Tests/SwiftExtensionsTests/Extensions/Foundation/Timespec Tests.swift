@@ -4,9 +4,9 @@
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
-#if canImport(Darwin)
+#if canImport(Foundation)
 
-import Darwin
+import Foundation
 @testable import SwiftExtensions
 import Testing
 
