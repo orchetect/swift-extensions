@@ -22,4 +22,17 @@ extension ComparisonResult {
     }
 }
 
+// MARK: - StringProtocol contains(caseInsensitive:)
+
+extension Sequence where Element: StringProtocol {
+    /// Returns a Boolean value indicating whether the sequence contains the given element, using
+    /// a case-insensitive string comparison.
+    @inlinable @_disfavoredOverload
+    public func contains(caseInsensitive string: some StringProtocol) -> Bool {
+        contains { element in
+            element.caseInsensitiveCompare(string) == .orderedSame
+        }
+    }
+}
+
 #endif
