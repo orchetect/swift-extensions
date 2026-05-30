@@ -25,8 +25,8 @@ on:
   - cron: '30 11 * * *'   # once a day @ 11:30am UTC (4:30am PST)
 
 env:
-  SCHEME: "swift-extensions"
-  WORKSPACEPATH: ".swiftpm/xcode/package.xcworkspace"
+  SCHEME: swift-extensions # Xcode synthesizes a scheme with this name
+  WORKSPACEPATH: .swiftpm/xcode/package.xcworkspace
 
 jobs:
   macOS-14:
