@@ -25,7 +25,7 @@ In your Package.swift file:
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/orchetect/swift-extensions", from: "2.1.7")
+        .package(url: "https://github.com/orchetect/swift-extensions", from: "2.1.8")
     ],
     targets: [
         .target(
