@@ -1,6 +1,6 @@
 //
 //  UserDefaults Tests.swift
-//  swift-extensions • https://github.com/orchetect/swift-extensions
+//  SwiftExtensions • https://github.com/orchetect/swift-extensions
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
@@ -20,7 +20,9 @@ extension UserDefaults {
 
 @Suite(.serialized)
 struct Extensions_Foundation_UserDefaults_Tests {
-    var ud: UserDefaults { .testSuite }
+    var ud: UserDefaults {
+        .testSuite
+    }
 
     init() async throws {
         // since we are accessing actual UserDefaults for these tests,

@@ -1,6 +1,6 @@
 //
 //  CGRect Tests.swift
-//  swift-extensions • https://github.com/orchetect/swift-extensions
+//  SwiftExtensions • https://github.com/orchetect/swift-extensions
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
