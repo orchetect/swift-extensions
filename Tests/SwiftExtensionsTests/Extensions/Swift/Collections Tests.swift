@@ -1564,6 +1564,94 @@ struct Extensions_Swift_Collections_Tests {
         #expect(array == [.one, .two, .three])
     }
 
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortedByRawValuesCaseInsensitive() {
+        enum Foo: String {
+            case one = "A"
+            case two = "a"
+            case three = "b"
+        }
+        #expect(([.two, .three, .one] as [Foo]).sortedByRawValuesCaseInsensitive() == [.two, .one, .three])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortedByRawValuesLocalized() {
+        enum Foo: String {
+            case one = "A"
+            case two = "a"
+            case three = "b"
+        }
+        #expect(([.two, .three, .one] as [Foo]).sortedByRawValuesLocalized() == [.two, .one, .three])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortedByRawValuesLocalizedStandard() {
+        enum Foo: String {
+            case one = "A"
+            case two = "a"
+            case three = "b"
+        }
+        #expect(([.two, .three, .one] as [Foo]).sortedByRawValuesLocalizedStandard() == [.two, .one, .three])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortedByRawValuesLocalizedCaseInsensitive() {
+        enum Foo: String {
+            case one = "A"
+            case two = "a"
+            case three = "b"
+        }
+        #expect(([.two, .three, .one] as [Foo]).sortedByRawValuesLocalizedCaseInsensitive() == [.two, .one, .three])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortByRawValuesCaseInsensitive() {
+        enum Foo: String {
+            case one = "A"
+            case two = "a"
+            case three = "b"
+        }
+        var array: [Foo] = [.two, .three, .one]
+        array.sortByRawValuesCaseInsensitive()
+        #expect(array == [.two, .one, .three])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortByRawValuesLocalized() {
+        enum Foo: String {
+            case one = "A"
+            case two = "a"
+            case three = "b"
+        }
+        var array: [Foo] = [.two, .three, .one]
+        array.sortByRawValuesLocalized()
+        #expect(array == [.two, .one, .three])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortByRawValuesLocalizedStandard() {
+        enum Foo: String {
+            case one = "A"
+            case two = "a"
+            case three = "b"
+        }
+        var array: [Foo] = [.two, .three, .one]
+        array.sortByRawValuesLocalizedStandard()
+        #expect(array == [.two, .one, .three])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortByRawValuesLocalizedCaseInsensitive() {
+        enum Foo: String {
+            case one = "A"
+            case two = "a"
+            case three = "b"
+        }
+        var array: [Foo] = [.two, .three, .one]
+        array.sortByRawValuesLocalizedCaseInsensitive()
+        #expect(array == [.two, .one, .three])
+    }
+
     @Test
     func allElementsAreEqual() {
         #expect([Int]().allElementsAreEqual)
