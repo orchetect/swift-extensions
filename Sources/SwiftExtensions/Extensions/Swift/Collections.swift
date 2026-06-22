@@ -1145,6 +1145,18 @@ extension Collection
     }
 }
 
+// MARK: - RawRepresentable Collection Sorting
+
+extension Sequence where Element: RawRepresentable, Element.RawValue: Comparable {
+    /// Returns the elements of the sequence, sorted based on the raw values of the elements.
+    @_disfavoredOverload
+    public func sortedByRawValues() -> [Element] {
+        sorted(by: { lhs, rhs in
+            lhs.rawValue < rhs.rawValue
+        })
+    }
+}
+
 // MARK: - String Collection Duplicates
 
 extension Collection where Element: StringProtocol {
