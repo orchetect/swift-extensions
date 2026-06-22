@@ -1473,6 +1473,54 @@ struct Extensions_Swift_Collections_Tests {
     }
 
     @Test
+    func sortedCaseInsensitive() {
+        #expect(["ç", "B", "a", "A"].sortedCaseInsensitive() == ["a", "A", "B", "ç"])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortedLocalized() {
+        #expect(["ç", "B", "a", "A"].sortedLocalized() == ["a", "A", "B", "ç"])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortedLocalizedStandard() {
+        #expect(["ç", "B", "a", "A"].sortedLocalizedStandard() == ["a", "A", "B", "ç"])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortedLocalizedCaseInsensitive() {
+        #expect(["ç", "B", "a", "A"].sortedLocalizedCaseInsensitive() == ["a", "A", "B", "ç"])
+    }
+
+    @Test
+    func sortCaseInsensitive() {
+        var array = ["ç", "B", "a", "A"]
+        array.sortCaseInsensitive()
+        #expect(array == ["a", "A", "B", "ç"])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortLocalized() {
+        var array = ["ç", "B", "a", "A"]
+        array.sortLocalized()
+        #expect(array == ["a", "A", "B", "ç"])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortLocalizedStandard() {
+        var array = ["ç", "B", "a", "A"]
+        array.sortLocalizedStandard()
+        #expect(array == ["a", "A", "B", "ç"])
+    }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortLocalizedCaseInsensitive() {
+        var array = ["ç", "B", "a", "A"]
+        array.sortLocalizedCaseInsensitive()
+        #expect(array == ["a", "A", "B", "ç"])
+    }
+
+    @Test
     func sortedByRawValues() {
         enum Foo: Int {
             case one = 1
