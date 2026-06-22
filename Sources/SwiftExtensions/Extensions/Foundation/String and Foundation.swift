@@ -103,4 +103,19 @@ extension StringProtocol {
     }
 }
 
+// MARK: - Sequence Sorting
+
+extension Sequence where Element: RawRepresentable, Element.RawValue: StringProtocol {
+    /// Returns the elements of the sequence, sorted based on the raw values of the elements.
+    @_disfavoredOverload
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    public func sortedByRawValues<Comparator: SortComparator>(
+        using comparator: Comparator
+    ) -> [Element] where Comparator.Compared == Element.RawValue {
+        sorted { lhs, rhs in
+            comparator.compare(lhs.rawValue, rhs.rawValue) == .orderedAscending
+        }
+    }
+}
+
 #endif
