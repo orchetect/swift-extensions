@@ -1237,6 +1237,82 @@ extension MutableCollection where Self: RandomAccessCollection, Element: RawRepr
     }
 }
 
+extension Sequence where Element: RawRepresentable, Element.RawValue: StringProtocol {
+    /// Returns the elements of the sequence sorted based on the raw values of the elements
+    /// using case-insensitive string comparison.
+    @_disfavoredOverload
+    public func sortedByRawValuesCaseInsensitive() -> [Element] {
+        sorted(by: { lhs, rhs in
+            lhs.rawValue.caseInsensitiveCompare(rhs.rawValue) == .orderedAscending
+        })
+    }
+
+    /// Returns the elements of the sequence sorted based on the raw values of the elements
+    /// using localized string comparison.
+    @_disfavoredOverload
+    public func sortedByRawValuesLocalized() -> [Element] {
+        sorted(by: { lhs, rhs in
+            lhs.rawValue.localizedCompare(rhs.rawValue) == .orderedAscending
+        })
+    }
+
+    /// Returns the elements of the sequence sorted based on the raw values of the elements
+    /// using localized standard string comparison.
+    @_disfavoredOverload
+    public func sortedByRawValuesLocalizedStandard() -> [Element] {
+        sorted(by: { lhs, rhs in
+            lhs.rawValue.localizedStandardCompare(rhs.rawValue) == .orderedAscending
+        })
+    }
+
+    /// Returns the elements of the sequence sorted based on the raw values of the elements
+    /// using localized case-insensitive string comparison.
+    @_disfavoredOverload
+    public func sortedByRawValuesLocalizedCaseInsensitive() -> [Element] {
+        sorted(by: { lhs, rhs in
+            lhs.rawValue.localizedCaseInsensitiveCompare(rhs.rawValue) == .orderedAscending
+        })
+    }
+}
+
+extension MutableCollection where Self: RandomAccessCollection, Element: RawRepresentable, Element.RawValue: StringProtocol {
+    /// Sorts the elements of the sequence in-place based on the raw values of the elements
+    /// using case-insensitive string comparison.
+    @_disfavoredOverload
+    public mutating func sortByRawValuesCaseInsensitive() {
+        sort(by: { lhs, rhs in
+            lhs.rawValue.caseInsensitiveCompare(rhs.rawValue) == .orderedAscending
+        })
+    }
+
+    /// Sorts the elements of the sequence in-place based on the raw values of the elements
+    /// using localized string comparison.
+    @_disfavoredOverload
+    public mutating func sortByRawValuesLocalized() {
+        sort(by: { lhs, rhs in
+            lhs.rawValue.localizedCompare(rhs.rawValue) == .orderedAscending
+        })
+    }
+
+    /// Sorts the elements of the sequence in-place based on the raw values of the elements
+    /// using localized standard string comparison.
+    @_disfavoredOverload
+    public mutating func sortByRawValuesLocalizedStandard() {
+        sort(by: { lhs, rhs in
+            lhs.rawValue.localizedStandardCompare(rhs.rawValue) == .orderedAscending
+        })
+    }
+
+    /// Sorts the elements of the sequence in-place based on the raw values of the elements
+    /// using localized case-insensitive string comparison.
+    @_disfavoredOverload
+    public mutating func sortByRawValuesLocalizedCaseInsensitive() {
+        sort(by: { lhs, rhs in
+            lhs.rawValue.localizedCaseInsensitiveCompare(rhs.rawValue) == .orderedAscending
+        })
+    }
+}
+
 // MARK: - String Collection Duplicates
 
 extension Collection where Element: StringProtocol {
