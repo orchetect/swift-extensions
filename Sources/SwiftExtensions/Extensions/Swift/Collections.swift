@@ -1157,6 +1157,16 @@ extension Sequence where Element: RawRepresentable, Element.RawValue: Comparable
     }
 }
 
+extension MutableCollection where Self: RandomAccessCollection, Element: RawRepresentable, Element.RawValue: Comparable {
+    /// Sorts the elements of the sequence in-place based on the raw values of the elements.
+    @_disfavoredOverload
+    public mutating func sortByRawValues() {
+        sort(by: { lhs, rhs in
+            lhs.rawValue < rhs.rawValue
+        })
+    }
+}
+
 // MARK: - String Collection Duplicates
 
 extension Collection where Element: StringProtocol {
