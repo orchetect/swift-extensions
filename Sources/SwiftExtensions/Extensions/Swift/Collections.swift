@@ -1145,10 +1145,80 @@ extension Collection
     }
 }
 
+// MARK: - Collection Sorting
+
+extension Sequence where Element: StringProtocol {
+    /// Returns the elements of the sequence sorted using case-insensitive string comparison.
+    @_disfavoredOverload
+    public func sortedCaseInsensitive() -> [Element] {
+        sorted { lhs, rhs in
+            lhs.caseInsensitiveCompare(rhs) == .orderedAscending
+        }
+    }
+
+    /// Returns the elements of the sequence sorted using localized string comparison.
+    @_disfavoredOverload
+    public func sortedLocalized() -> [Element] {
+        sorted { lhs, rhs in
+            lhs.localizedCompare(rhs) == .orderedAscending
+        }
+    }
+
+    /// Returns the elements of the sequence sorted using localized standard string comparison.
+    @_disfavoredOverload
+    public func sortedLocalizedStandard() -> [Element] {
+        sorted { lhs, rhs in
+            lhs.localizedStandardCompare(rhs) == .orderedAscending
+        }
+    }
+
+    /// Returns the elements of the sequence sorted using localized case-insensitive string comparison.
+    @_disfavoredOverload
+    public func sortedLocalizedCaseInsensitive() -> [Element] {
+        sorted { lhs, rhs in
+            lhs.localizedCaseInsensitiveCompare(rhs) == .orderedAscending
+        }
+    }
+}
+
+extension MutableCollection where Self: RandomAccessCollection, Element: StringProtocol {
+    /// Sorts the elements of the sequence in-place using case-insensitive string comparison.
+    @_disfavoredOverload
+    public mutating func sortCaseInsensitive() {
+        sort { lhs, rhs in
+            lhs.caseInsensitiveCompare(rhs) == .orderedAscending
+        }
+    }
+
+    /// Sorts the elements of the sequence in-place using localized string comparison.
+    @_disfavoredOverload
+    public mutating func sortLocalized() {
+        sort { lhs, rhs in
+            lhs.localizedCompare(rhs) == .orderedAscending
+        }
+    }
+
+    /// Sorts the elements of the sequence in-place using localized standard string comparison.
+    @_disfavoredOverload
+    public mutating func sortLocalizedStandard() {
+        sort { lhs, rhs in
+            lhs.localizedStandardCompare(rhs) == .orderedAscending
+        }
+    }
+
+    /// Sorts the elements of the sequence in-place using localized case-insensitive string comparison.
+    @_disfavoredOverload
+    public mutating func sortLocalizedCaseInsensitive() {
+        sort { lhs, rhs in
+            lhs.localizedCaseInsensitiveCompare(rhs) == .orderedAscending
+        }
+    }
+}
+
 // MARK: - RawRepresentable Collection Sorting
 
 extension Sequence where Element: RawRepresentable, Element.RawValue: Comparable {
-    /// Returns the elements of the sequence, sorted based on the raw values of the elements.
+    /// Returns the elements of the sequence sorted based on the raw values of the elements.
     @_disfavoredOverload
     public func sortedByRawValues() -> [Element] {
         sorted(by: { lhs, rhs in
