@@ -11,17 +11,26 @@ import Foundation
 /// Allows comparison of instances of a `RawRepresentable` type by using the `Comparable` implementation of
 /// the underlying `RawValue` type as a proxy for comparison.
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-public struct RawRepresentableSortComparator<Compared: RawRepresentable>: SortComparator where Compared.RawValue: Comparable {
+public struct RawRepresentableSortComparator<
+    Compared: RawRepresentable,
+    RawValueComparator: SortComparator
+>: SortComparator where Compared.RawValue: Comparable, RawValueComparator.Compared == Compared.RawValue {
+    public var comparator: RawValueComparator
     public var order: SortOrder
 
-    public init(type: Compared.Type = Compared.self, order: SortOrder = .forward) {
+    public init(type: Compared.Type = Compared.self, order: SortOrder = .forward) where RawValueComparator == ComparableSortComparator<Compared.RawValue> {
+        comparator = ComparableSortComparator(order: order)
+        self.order = order
+    }
+
+    /// Acts as a proxy for another sort comparator that acts upon the raw value of the type.
+    public init(type: Compared.Type = Compared.self, wrapping comparator: RawValueComparator, order: SortOrder = .forward) {
+        self.comparator = comparator
         self.order = order
     }
 
     public func compare(_ lhs: Compared, _ rhs: Compared) -> ComparisonResult {
-        if lhs.rawValue == rhs.rawValue { return .orderedSame }
-        if lhs.rawValue < rhs.rawValue { return .orderedAscending }
-        return .orderedDescending
+        comparator.compare(lhs.rawValue, rhs.rawValue)
     }
 }
 
