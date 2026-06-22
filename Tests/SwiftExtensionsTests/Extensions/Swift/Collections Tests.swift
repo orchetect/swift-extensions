@@ -1473,6 +1473,26 @@ struct Extensions_Swift_Collections_Tests {
     }
 
     @Test
+    func sortedByRawValues() {
+        enum Foo: Int {
+            case one = 1
+            case two = 2
+            case three = 3
+        }
+        #expect(([.two, .three, .one] as [Foo]).sortedByRawValues() == [.one, .two, .three])
+    }
+
+    @Test
+    func sortedByRawValues_StringProtocol() {
+        enum Foo: String {
+            case one = "A"
+            case two = "a"
+            case three = "b"
+        }
+        #expect(([.two, .three, .one] as [Foo]).sortedByRawValues() == [.one, .two, .three])
+    }
+
+    @Test
     func allElementsAreEqual() {
         #expect([Int]().allElementsAreEqual)
         #expect([1].allElementsAreEqual)
