@@ -158,6 +158,28 @@ struct Extensions_Foundation_StringAndFoundation_Tests {
         let substring = "    string    ".suffix(13)
         #expect(substring.trimmed == "string")
     }
+
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func sortedByRawValues_using() {
+        enum Foo: String, CustomStringConvertible, CustomDebugStringConvertible {
+            case one = "aardvark"
+            case two = "Azimuth"
+            case three = "batcave"
+
+            var description: String { rawValue }
+            var debugDescription: String { rawValue }
+        }
+        #expect(
+            ([.two, .three, .one] as [Foo])
+                .sortedByRawValues(using: .localized)
+                == [.one, .two, .three]
+        )
+        #expect(
+            ([.two, .three, .one] as [Foo])
+                .sortedByRawValues(using: .localizedStandard)
+            == [.one, .two, .three]
+        )
+    }
 }
 
 #endif
