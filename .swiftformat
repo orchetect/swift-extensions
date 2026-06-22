@@ -1,4 +1,4 @@
---header "\n {file}\n swift-extensions • https://github.com/orchetect/swift-extensions\n © {year} Steffan Andrews • Licensed under MIT License\n"
+--header "\n {file}\n SwiftExtensions • https://github.com/orchetect/swift-extensions\n © {year} Steffan Andrews • Licensed under MIT License\n"
 --allow-partial-wrapping false
 --binary-grouping 8,8
 --call-site-paren balanced
