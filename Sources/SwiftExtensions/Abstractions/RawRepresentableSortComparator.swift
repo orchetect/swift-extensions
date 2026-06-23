@@ -18,13 +18,20 @@ public struct RawRepresentableSortComparator<
     public var comparator: RawValueComparator
     public var order: SortOrder
 
-    public init(type: Compared.Type = Compared.self, order: SortOrder = .forward) where RawValueComparator == ComparableSortComparator<Compared.RawValue> {
+    public init(
+        type: Compared.Type = Compared.self,
+        order: SortOrder = .forward
+    ) where RawValueComparator == ComparableSortComparator<Compared.RawValue> {
         comparator = ComparableSortComparator(order: order)
         self.order = order
     }
 
     /// Acts as a proxy for another sort comparator that acts upon the raw value of the type.
-    public init(type: Compared.Type = Compared.self, wrapping comparator: RawValueComparator, order: SortOrder = .forward) {
+    public init(
+        type: Compared.Type = Compared.self,
+        wrapping comparator: RawValueComparator,
+        order: SortOrder = .forward
+    ) {
         self.comparator = comparator
         self.order = order
     }
