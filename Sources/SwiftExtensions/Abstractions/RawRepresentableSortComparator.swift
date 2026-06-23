@@ -41,4 +41,28 @@ public struct RawRepresentableSortComparator<
     }
 }
 
+extension Sequence where Element: RawRepresentable, Element.RawValue: Comparable {
+    /// Returns the sequence sorted using the given sort comparator by evaluating the `Comparable` implementation
+    /// of the underlying `RawValue` type.
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    @_disfavoredOverload
+    public func sortedByRawValue<Comparator: SortComparator>(
+        using comparator: Comparator
+    ) -> [Element] where Comparator.Compared == Element.RawValue {
+        sorted(using: RawRepresentableSortComparator(wrapping: comparator))
+    }
+}
+
+extension MutableCollection where Self: RandomAccessCollection, Element: RawRepresentable, Element.RawValue: Comparable {
+    /// Sorts the sequence in-place using the given sort comparator by evaluating the `Comparable` implementation
+    /// of the underlying `RawValue` type.
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+    @_disfavoredOverload
+    public mutating func sortByRawValue<Comparator: SortComparator>(
+        using comparator: Comparator
+    ) where Comparator.Compared == Element.RawValue {
+        sort(using: RawRepresentableSortComparator(wrapping: comparator))
+    }
+}
+
 #endif
