@@ -16,84 +16,81 @@ import Testing
 struct PropertyAccessor_Update_Tests {
     @Test
     func updateClosureSync() /* NOT ASYNC */ {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+        var t = PropertyAccessorFoo(name: "NAME")
 
         t.update { updater in
             updater.update(.name())
-            updater.update(.value())
-            // updater.update(.number()) // can't call this; requires await
+            updater.update(.number())
+            // updater.update(.asyncNumber()) // can't call this; requires await
         }
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
+        #expect(t.number == 1)
     }
 
     @MainActor @Test
     func updateClosureSync_MainActor() /* NOT ASYNC */ {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+        var t = PropertyAccessorFoo(name: "NAME")
 
         t.update { updater in
             MainActor.shared.assertIsolated()
             updater.update(.name())
-            updater.update(.value())
-            // updater.update(.number()) // can't call this; requires await
+            updater.update(.number())
+            // updater.update(.asyncNumber()) // can't call this; requires await
         }
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
+        #expect(t.number == 1)
     }
 
     @Test
     func updateClosureAsync() async throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+        var t = PropertyAccessorFoo(name: "NAME")
 
         try await t.update { updater in
             updater.update(.name())
-            updater.update(.value())
-            try await updater.update(.number())
+            updater.update(.number())
+            try await updater.update(.asyncNumber())
         }
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
-        #expect(t.number == 123)
+        #expect(t.number == 2)
     }
 
     @MainActor @Test
     func updateClosureAsync_MainActor() async throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+        var t = PropertyAccessorFoo(name: "NAME")
 
         MainActor.shared.assertIsolated()
 
         try await t.update { updater in
             MainActor.shared.assertIsolated()
             updater.update(.name())
-            updater.update(.value())
-            try await updater.update(.number())
+            updater.update(.number())
+            try await updater.update(.asyncNumber())
         }
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
-        #expect(t.number == 123)
+        #expect(t.number == 2)
     }
 
     @Test
     func updateInBackgroundClosureAsync() async throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+        var t = PropertyAccessorFoo(name: "NAME")
 
         try await t.updateInBackground { updater in
             updater.update(.name())
-            updater.update(.value())
-            try await updater.update(.number())
+            updater.update(.number())
+            try await updater.update(.asyncNumber())
         }
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
-        #expect(t.number == 123)
+        #expect(t.number == 2)
     }
 
     @MainActor @Test
     func updateInBackgroundClosureAsync_MainActor() async throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+        var t = PropertyAccessorFoo(name: "NAME")
 
         MainActor.shared.assertIsolated()
 
@@ -101,13 +98,12 @@ struct PropertyAccessor_Update_Tests {
             #expect(#isolation != MainActor.self)
             #expect(#isolation == nil)
             updater.update(.name())
-            updater.update(.value())
-            try await updater.update(.number())
+            updater.update(.number())
+            try await updater.update(.asyncNumber())
         }
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
-        #expect(t.number == 123)
+        #expect(t.number == 2)
     }
 }
 

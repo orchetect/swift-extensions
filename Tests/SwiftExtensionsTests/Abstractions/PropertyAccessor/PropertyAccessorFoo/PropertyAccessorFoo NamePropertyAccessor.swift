@@ -4,23 +4,24 @@
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
+import typealias Foundation.TimeInterval
 import SwiftExtensions
 
 extension PropertyAccessorFoo {
     nonisolated
     public struct NamePropertyAccessor: PropertyAccessor {
-        public let isDelayed: Bool
+        public let delay: TimeInterval?
 
-        public init(delay isDelayed: Bool = false) {
-            self.isDelayed = isDelayed
+        public init(delay: TimeInterval? = nil) {
+            self.delay = delay
         }
 
         nonisolated
         public func newValue(for subject: borrowing PropertyAccessorFoo) -> PropertyUpdateResult<String> {
-            if isDelayed {
+            if let delay {
                 print("Getting new value for name")
                 defer { print("Done getting new value for name") }
-                sleep(1)
+                sleep(delay)
             }
             return .newValue(subject.name + ".")
         }
@@ -36,7 +37,7 @@ extension PropertyAccessorFoo {
 
 extension PropertyAccessor where Self == PropertyAccessorFoo.NamePropertyAccessor {
     nonisolated
-    public static func name(delay isDelayed: Bool = false) -> Self {
-        PropertyAccessorFoo.NamePropertyAccessor(delay: isDelayed)
+    public static func name(delay: TimeInterval? = nil) -> Self {
+        PropertyAccessorFoo.NamePropertyAccessor(delay: delay)
     }
 }

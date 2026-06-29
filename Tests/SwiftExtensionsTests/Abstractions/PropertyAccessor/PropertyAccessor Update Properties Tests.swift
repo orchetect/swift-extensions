@@ -16,129 +16,178 @@ struct PropertyAccessor_Update_Properties_Tests {
 
     @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     @Test
-    func updatePropertiesSync() /* NOT ASYNC */ throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+    func updateSeriallyPropertiesSync() /* NOT ASYNC */ throws {
+        var t = PropertyAccessorFoo(name: "NAME")
 
         // .number() // can't include this; requires await
         #if compiler(>=6.2)
-        try t.update(properties: [.name(), .value()])
+        try t.updateSerially(properties: [.name(), .number()])
         #else
         // Xcode 16.4 compiler crashes when using static constructors (`.name()`, etc.)
-        try t.update(properties: [PropertyAccessorFoo.NamePropertyAccessor(), PropertyAccessorFoo.ValuePropertyAccessor()])
+        try t.update(properties: [PropertyAccessorFoo.NamePropertyAccessor(), PropertyAccessorFoo.NumberPropertyAccessor()])
         #endif
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
+        #expect(t.number == 1)
     }
 
     @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     @MainActor @Test
-    func updatePropertiesSync_MainActor() /* NOT ASYNC */ throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+    func updateSeriallyPropertiesSync_MainActor() /* NOT ASYNC */ throws {
+        var t = PropertyAccessorFoo(name: "NAME")
 
         // .number() // can't include this; requires await
         #if compiler(>=6.2)
-        try t.update(properties: [.name(), .value()])
+        try t.updateSerially(properties: [.name(), .number()])
         #else
         // Xcode 16.4 compiler crashes when using static constructors (`.name()`, etc.)
-        try t.update(properties: [PropertyAccessorFoo.NamePropertyAccessor(), PropertyAccessorFoo.ValuePropertyAccessor()])
+        try t.updateSerially(properties: [PropertyAccessorFoo.NamePropertyAccessor(), PropertyAccessorFoo.NumberPropertyAccessor()])
         #endif
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
+        #expect(t.number == 1)
     }
 
     @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     @Test
-    func updatePropertiesASync() async throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+    func updateSeriallyPropertiesASync() async throws {
+        var t = PropertyAccessorFoo(name: "NAME")
 
         #if compiler(>=6.2)
-        try await t.update(properties: [.number()])
+        try await t.updateSerially(properties: [.asyncNumber()])
         #else
-        try await t.update(properties: [PropertyAccessorFoo.NumberPropertyAccessor()])
+        try await t.updateSerially(properties: [PropertyAccessorFoo.AsyncNumberPropertyAccessor()])
         #endif
 
         #expect(t.name == "NAME")
-        #expect(t.value == 1)
-        #expect(t.number == 123)
+        #expect(t.number == 1)
     }
 
     @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     @MainActor @Test
-    func updatePropertiesASync_MainActor() async throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+    func updateSeriallyPropertiesASync_MainActor() async throws {
+        var t = PropertyAccessorFoo(name: "NAME")
 
         #if compiler(>=6.2)
-        try await t.update(properties: [.number()])
+        try await t.updateSerially(properties: [.asyncNumber()])
         #else
-        try await t.update(properties: [PropertyAccessorFoo.NumberPropertyAccessor()])
+        try await t.updateSerially(properties: [PropertyAccessorFoo.AsyncNumberPropertyAccessor()])
         #endif
 
         #expect(t.name == "NAME")
-        #expect(t.value == 1)
-        #expect(t.number == 123)
+        #expect(t.number == 1)
     }
 
     // MARK: Properties Builder
 
-    @Test
-    func updatePropertiesAsync() async throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+    @Test(arguments: 0 ... 10) // fuzz test by running multiple times
+    func updateSeriallyPropertiesAsync(iteration: Int) async throws {
+        var t = PropertyAccessorFoo(name: "NAME")
 
-        try await t.update { properties in
-            properties.add(.name())
-            properties.add(.value())
-            properties.add(.number())
+        try await t.updateSerially { properties in
+            properties.add(.name(delay: .random(in: 0.1 ... 0.3)))
+            properties.add(.number(delay: .random(in: 0.1 ... 0.3)))
+            properties.add(.asyncNumber(delay: .random(in: 0.1 ... 0.3)))
         }
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
-        #expect(t.number == 123)
+        #expect(t.number == 2)
     }
 
-    @MainActor @Test
-    func updatePropertiesAsync_MainActor() async throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+    @MainActor @Test(arguments: 0 ... 10) // fuzz test by running multiple times
+    func updateSeriallyPropertiesAsync_MainActor(iteration: Int) async throws {
+        var t = PropertyAccessorFoo(name: "NAME")
 
-        try await t.update { properties in
-            properties.add(.name())
-            properties.add(.value())
-            properties.add(.number())
+        try await t.updateSerially { properties in
+            properties.add(.name(delay: .random(in: 0.1 ... 0.3)))
+            properties.add(.number(delay: .random(in: 0.1 ... 0.3)))
+            properties.add(.asyncNumber(delay: .random(in: 0.1 ... 0.3)))
         }
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
-        #expect(t.number == 123)
+        #expect(t.number == 2)
     }
 
-    @Test
-    func updateInBackgroundPropertiesAsync() async throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+    @Test(arguments: 0 ... 10) // fuzz test by running multiple times
+    func updateConcurrentlyInBackgroundPropertiesAsync(iteration: Int) async throws {
+        var t = PropertyAccessorFoo(name: "NAME")
 
-        try await t.updateInBackground { properties in
-            properties.add(.name())
-            properties.add(.value())
-            properties.add(.number())
+        try await t.updateConcurrentlyInBackground { properties in
+            properties.add(.name(delay: .random(in: 0.1 ... 0.3)))
+            properties.add(.number(delay: .random(in: 0.1 ... 0.3)))
+            properties.add(.asyncNumber(delay: .random(in: 0.1 ... 0.3)))
         }
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
-        #expect(t.number == 123)
+        // not 2, because properties all generate new values from the same subject in parallel
+        #expect(t.number == 1)
     }
 
-    @MainActor @Test
-    func updateInBackgroundPropertiesAsync_MainActor() async throws {
-        var t = PropertyAccessorFoo(name: "NAME", value: 1)
+    @MainActor @Test(arguments: 0 ... 10) // fuzz test by running multiple times
+    func updateConcurrentlyInBackgroundPropertiesAsync_MainActor(iteration: Int) async throws {
+        var t = PropertyAccessorFoo(name: "NAME")
 
-        try await t.updateInBackground { properties in
-            properties.add(.name())
-            properties.add(.value())
-            properties.add(.number())
+        try await t.updateConcurrentlyInBackground { properties in
+            properties.add(.name(delay: .random(in: 0.1 ... 0.3)))
+            properties.add(.number(delay: .random(in: 0.1 ... 0.3)))
+            properties.add(.asyncNumber(delay: .random(in: 0.1 ... 0.3)))
         }
 
         #expect(t.name == "NAME.")
-        #expect(t.value == 2)
-        #expect(t.number == 123)
+        // not 2, because properties all generate new values from the same subject in parallel
+        #expect(t.number == 1)
     }
 }
+
+#if !GITHUB_ACTIONS
+@Suite(.serialized)
+struct PropertyAccessor_Update_Properties_Performance_Tests {
+    /// Checks that all properties update concurrently, not serially.
+    @Test
+    func updateConcurrentlyPropertiesAsync_performanceCheck() async throws {
+        try await Task(priority: .userInitiated) { // raise task priority to increase timing precision
+            var t = PropertyAccessorFoo(name: "NAME")
+
+            let inTime = Date()
+            try await t.updateConcurrently { properties in
+                properties.add(.asyncNumber(delay: 1.0))
+                properties.add(.asyncNumber(delay: 1.0))
+                properties.add(.asyncNumber(delay: 1.0))
+            }
+            let outTime = Date()
+
+            let duration = outTime.timeIntervalSince(inTime)
+            print("Updates too \(duration) seconds")
+            #expect(duration >= 1.0)
+            #expect(duration < 3.0) // Note: This can be flakey on slow/crowded CI pipelines
+
+            // not 3, because properties all generate new values from the same subject in parallel
+            #expect(t.number == 1)
+        }.value
+    }
+
+    /// Checks that all properties update concurrently, not serially.
+    @Test
+    func updateConcurrentlyInBackgroundPropertiesAsync_performanceCheck() async throws {
+        try await Task(priority: .userInitiated) { // raise task priority to increase timing precision
+            var t = PropertyAccessorFoo(name: "NAME")
+
+            let inTime = Date()
+            try await t.updateConcurrentlyInBackground { properties in
+                properties.add(.asyncNumber(delay: 1.0))
+                properties.add(.asyncNumber(delay: 1.0))
+                properties.add(.asyncNumber(delay: 1.0))
+            }
+            let outTime = Date()
+
+            let duration = outTime.timeIntervalSince(inTime)
+            print("Updates too \(duration) seconds")
+            #expect(duration >= 1.0)
+            #expect(duration < 1.25) // allow +0.25 second margin
+
+            // not 3, because properties all generate new values from the same subject in parallel
+            #expect(t.number == 1)
+        }.value
+    }
+}
+#endif

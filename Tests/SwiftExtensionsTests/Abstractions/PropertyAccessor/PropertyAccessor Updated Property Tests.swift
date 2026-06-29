@@ -14,77 +14,73 @@ import Testing
 struct PropertyAccessor_Updated_Property_Tests {
     @Test
     func updatedPropertySync() /* NOT ASYNC */ {
-        let t = PropertyAccessorFoo(name: "NAME", value: 1)
+        let t = PropertyAccessorFoo(name: "NAME")
 
         let a = t.updated(property: .name())
-        let b = a.updated(property: .value())
-        // let c = b.updated(property: .number()) // can't call this; requires await
+        let b = a.updated(property: .number())
+        // let c = b.updated(property: .asyncNumber()) // can't call this; requires await
 
         #expect(b.name == "NAME.")
-        #expect(b.value == 2)
+        #expect(b.number == 1)
     }
 
     @MainActor @Test
     func updatedPropertySync_MainActor() /* NOT ASYNC */ {
-        let t = PropertyAccessorFoo(name: "NAME", value: 1)
+        let t = PropertyAccessorFoo(name: "NAME")
 
         let a = t.updated(property: .name())
-        let b = a.updated(property: .value())
-        // let c = b.updated(property: .number()) // can't call this; requires await
+        let b = a.updated(property: .number())
+        // let c = b.updated(property: .asyncNumber()) // can't call this; requires await
 
         #expect(b.name == "NAME.")
-        #expect(b.value == 2)
+        #expect(b.number == 1)
     }
 
     @Test
     func updatedPropertyAsync() async throws {
-        let t = PropertyAccessorFoo(name: "NAME", value: 1)
+        let t = PropertyAccessorFoo(name: "NAME")
 
         let a = t.updated(property: .name())
-        let b = a.updated(property: .value())
-        let c = try await b.updated(property: .number())
+        let b = a.updated(property: .number())
+        let c = try await b.updated(property: .asyncNumber())
 
         #expect(c.name == "NAME.")
-        #expect(c.value == 2)
-        #expect(c.number == 123)
+        #expect(c.number == 2)
     }
 
     @MainActor @Test
     func updatedPropertyAsync_MainActor() async throws {
-        let t = PropertyAccessorFoo(name: "NAME", value: 1)
+        let t = PropertyAccessorFoo(name: "NAME")
 
         let a = t.updated(property: .name())
-        let b = a.updated(property: .value())
-        let c = try await b.updated(property: .number())
+        let b = a.updated(property: .number())
+        let c = try await b.updated(property: .asyncNumber())
 
         #expect(c.name == "NAME.")
-        #expect(c.value == 2)
-        #expect(c.number == 123)
+        #expect(c.number == 2)
     }
 
     @Test
     func updatedInBackgroundPropertyAsync() async throws {
-        let t = PropertyAccessorFoo(name: "NAME", value: 1)
+        let t = PropertyAccessorFoo(name: "NAME")
 
         let a = await t.updatedInBackground(property: .name())
-        let b = await a.updatedInBackground(property: .value())
-        let c = try await b.updatedInBackground(property: .number())
+        let b = await a.updatedInBackground(property: .number())
+        let c = try await b.updatedInBackground(property: .asyncNumber())
 
         #expect(c.name == "NAME.")
-        #expect(c.value == 2)
-        #expect(c.number == 123)
+        #expect(c.number == 2)
     }
 
     @MainActor @Test
     func updatedInBackgroundPropertyAsync_MainActor() async throws {
-        let t = PropertyAccessorFoo(name: "NAME", value: 1)
+        let t = PropertyAccessorFoo(name: "NAME")
 
         let a = await t.updatedInBackground(property: .name())
-        let b = await a.updatedInBackground(property: .value())
-        let c = try await b.updatedInBackground(property: .number())
+        let b = await a.updatedInBackground(property: .number())
+        let c = try await b.updatedInBackground(property: .asyncNumber())
 
         #expect(c.name == "NAME.")
-        #expect(c.value == 2)
-        #expect(c.number == 123)
+        #expect(c.number == 2)
     }
 }

@@ -9,13 +9,14 @@ import SwiftExtensions
 
 public struct PropertyAccessorFoo {
     public var name: String
-    public var value: Int
     public var number: NSNumber?
 
-    public init(name: String = "", value: Int = 0, number: NSNumber? = nil) {
+    public func getNumber() async -> Int { Int(truncating: number ?? 0) }
+    public mutating func setNumber(_ newValue: Int) async { number = newValue as NSNumber }
+
+    public init(name: String = "", number: Int? = nil) {
         self.name = name
-        self.value = value
-        self.number = number
+        self.number = number as NSNumber?
     }
 }
 
