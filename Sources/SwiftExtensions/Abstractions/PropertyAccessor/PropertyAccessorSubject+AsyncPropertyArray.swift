@@ -37,7 +37,10 @@ extension PropertyAccessorSubject {
     @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     nonisolated
     public mutating func updateConcurrently(properties: [any AsyncPropertyAccessor<Self>]) async throws -> Void {
-        self = try await withThrowingTaskGroup { group in
+        self = try await withThrowingTaskGroup(
+            of: (@Sendable (inout Self) async throws -> Void).self,
+            returning: Self.self
+        ) { group in
             for property in properties {
                 group.addTask { [self] in
                     try await property.deferredUpdate(for: self)
@@ -63,7 +66,10 @@ extension PropertyAccessorSubject {
     @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     @concurrent nonisolated
     public mutating func updateConcurrentlyInBackground(properties: [any AsyncPropertyAccessor<Self>]) async throws -> Void {
-        self = try await withThrowingTaskGroup { group in
+        self = try await withThrowingTaskGroup(
+            of: (@Sendable (inout Self) async throws -> Void).self,
+            returning: Self.self
+        ) { group in
             for property in properties {
                 group.addTask { [self] in
                     try await property.deferredUpdate(for: self)
@@ -117,7 +123,10 @@ extension PropertyAccessorSubject {
     @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     nonisolated
     public func updatedConcurrently(properties: [any AsyncPropertyAccessor<Self>]) async throws -> Self {
-        try await withThrowingTaskGroup { group in
+        try await withThrowingTaskGroup(
+            of: (@Sendable (inout Self) async throws -> Void).self,
+            returning: Self.self
+        ) { group in
             for property in properties {
                 group.addTask { [self] in
                     try await property.deferredUpdate(for: self)
@@ -143,7 +152,10 @@ extension PropertyAccessorSubject {
     @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     @concurrent nonisolated
     public func updatedConcurrentlyInBackground(properties: [any AsyncPropertyAccessor<Self>]) async throws -> Self {
-        try await withThrowingTaskGroup { group in
+        try await withThrowingTaskGroup(
+            of: (@Sendable (inout Self) async throws -> Void).self,
+            returning: Self.self
+        ) { group in
             for property in properties {
                 group.addTask { [self] in
                     try await property.deferredUpdate(for: self)

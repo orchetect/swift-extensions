@@ -5,7 +5,6 @@
 //
 
 /// Defines logic relating to a property of an underlying subject to produce a new value and assign a value to a subject.
-nonisolated
 public protocol AsyncPropertyAccessor<Subject>: Sendable
 where Subject: Sendable, Value: Sendable, Failure: Error
 {

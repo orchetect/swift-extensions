@@ -59,7 +59,10 @@ extension PropertyAccessorSubject {
         var builder = PropertyAccessorBuilder<Self>()
         properties(&builder)
 
-        self = try await withThrowingTaskGroup { group in
+        self = try await withThrowingTaskGroup(
+            of: (@Sendable (inout Self) async throws -> Void).self,
+            returning: Self.self
+        ) { group in
             for anyProperty in builder.anyProperties {
                 group.addTask { [self] in
                     switch anyProperty {
@@ -94,7 +97,10 @@ extension PropertyAccessorSubject {
         var builder = PropertyAccessorBuilder<Self>()
         properties(&builder)
 
-        self = try await withThrowingTaskGroup { group in
+        self = try await withThrowingTaskGroup(
+            of: (@Sendable (inout Self) async throws -> Void).self,
+            returning: Self.self
+        ) { group in
             for anyProperty in builder.anyProperties {
                 group.addTask { [self] in
                     switch anyProperty {
@@ -177,7 +183,10 @@ extension PropertyAccessorSubject {
         var builder = PropertyAccessorBuilder<Self>()
         properties(&builder)
         
-        return try await withThrowingTaskGroup { group in
+        return try await withThrowingTaskGroup(
+            of: (@Sendable (inout Self) async throws -> Void).self,
+            returning: Self.self
+        ) { group in
             for anyProperty in builder.anyProperties {
                 group.addTask { [self] in
                     switch anyProperty {
@@ -212,7 +221,10 @@ extension PropertyAccessorSubject {
         var builder = PropertyAccessorBuilder<Self>()
         properties(&builder)
         
-        return try await withThrowingTaskGroup { group in
+        return try await withThrowingTaskGroup(
+            of: (@Sendable (inout Self) async throws -> Void).self,
+            returning: Self.self
+        ) { group in
             for anyProperty in builder.anyProperties {
                 group.addTask { [self] in
                     switch anyProperty {

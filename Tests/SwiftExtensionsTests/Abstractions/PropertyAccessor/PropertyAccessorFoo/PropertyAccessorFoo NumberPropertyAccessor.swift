@@ -9,7 +9,6 @@ import typealias Foundation.TimeInterval
 import SwiftExtensions
 
 extension PropertyAccessorFoo {
-    nonisolated
     public struct NumberPropertyAccessor: PropertyAccessor {
         public let delay: TimeInterval?
 

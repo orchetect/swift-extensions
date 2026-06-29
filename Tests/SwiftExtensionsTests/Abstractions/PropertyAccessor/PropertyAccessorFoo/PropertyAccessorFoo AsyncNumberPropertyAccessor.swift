@@ -9,7 +9,6 @@ import typealias Foundation.TimeInterval
 import SwiftExtensions
 
 extension PropertyAccessorFoo {
-    nonisolated
     public struct AsyncNumberPropertyAccessor: AsyncPropertyAccessor {
         public enum NumberError: Error, Sendable {
             case error

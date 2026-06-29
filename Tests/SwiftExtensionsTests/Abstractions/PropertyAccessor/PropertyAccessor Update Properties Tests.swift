@@ -24,7 +24,7 @@ struct PropertyAccessor_Update_Properties_Tests {
         try t.updateSerially(properties: [.name(), .number()])
         #else
         // Xcode 16.4 compiler crashes when using static constructors (`.name()`, etc.)
-        try t.update(properties: [PropertyAccessorFoo.NamePropertyAccessor(), PropertyAccessorFoo.NumberPropertyAccessor()])
+        try t.updateSerially(properties: [PropertyAccessorFoo.NamePropertyAccessor(), PropertyAccessorFoo.NumberPropertyAccessor()])
         #endif
 
         #expect(t.name == "NAME.")
