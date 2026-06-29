@@ -11,6 +11,7 @@ import SwiftExtensions
 import Testing
 
 @Suite struct RawRepresentableSortComparator_Tests {
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) // for sorted(using:)
     @Test
     func sortedUsing() {
         enum Foo: Int {
@@ -41,6 +42,7 @@ import Testing
         }
     }
 
+    @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *) // for sorted(using:)
     @Test
     func sortedUsing_wrapping() {
         enum Foo: String {

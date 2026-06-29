@@ -159,6 +159,7 @@ struct Extensions_Foundation_StringAndFoundation_Tests {
         #expect(substring.trimmed == "string")
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortedByRawValues_using() {
         enum Foo: String, CustomStringConvertible, CustomDebugStringConvertible {

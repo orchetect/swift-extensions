@@ -1477,16 +1477,19 @@ struct Extensions_Swift_Collections_Tests {
         #expect(["ç", "B", "a", "A"].sortedCaseInsensitive() == ["a", "A", "B", "ç"])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortedLocalized() {
         #expect(["ç", "B", "a", "A"].sortedLocalized() == ["a", "A", "B", "ç"])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortedLocalizedStandard() {
         #expect(["ç", "B", "a", "A"].sortedLocalizedStandard() == ["a", "A", "B", "ç"])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortedLocalizedCaseInsensitive() {
         #expect(["ç", "B", "a", "A"].sortedLocalizedCaseInsensitive() == ["a", "A", "B", "ç"])
@@ -1499,6 +1502,7 @@ struct Extensions_Swift_Collections_Tests {
         #expect(array == ["a", "A", "B", "ç"])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortLocalized() {
         var array = ["ç", "B", "a", "A"]
@@ -1506,6 +1510,7 @@ struct Extensions_Swift_Collections_Tests {
         #expect(array == ["a", "A", "B", "ç"])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortLocalizedStandard() {
         var array = ["ç", "B", "a", "A"]
@@ -1513,6 +1518,7 @@ struct Extensions_Swift_Collections_Tests {
         #expect(array == ["a", "A", "B", "ç"])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortLocalizedCaseInsensitive() {
         var array = ["ç", "B", "a", "A"]
@@ -1564,6 +1570,7 @@ struct Extensions_Swift_Collections_Tests {
         #expect(array == [.one, .two, .three])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortedByRawValuesCaseInsensitive() {
         enum Foo: String {
@@ -1574,6 +1581,7 @@ struct Extensions_Swift_Collections_Tests {
         #expect(([.two, .three, .one] as [Foo]).sortedByRawValuesCaseInsensitive() == [.two, .one, .three])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortedByRawValuesLocalized() {
         enum Foo: String {
@@ -1584,6 +1592,7 @@ struct Extensions_Swift_Collections_Tests {
         #expect(([.two, .three, .one] as [Foo]).sortedByRawValuesLocalized() == [.two, .one, .three])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortedByRawValuesLocalizedStandard() {
         enum Foo: String {
@@ -1594,6 +1603,7 @@ struct Extensions_Swift_Collections_Tests {
         #expect(([.two, .three, .one] as [Foo]).sortedByRawValuesLocalizedStandard() == [.two, .one, .three])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortedByRawValuesLocalizedCaseInsensitive() {
         enum Foo: String {
@@ -1604,6 +1614,7 @@ struct Extensions_Swift_Collections_Tests {
         #expect(([.two, .three, .one] as [Foo]).sortedByRawValuesLocalizedCaseInsensitive() == [.two, .one, .three])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortByRawValuesCaseInsensitive() {
         enum Foo: String {
@@ -1616,6 +1627,7 @@ struct Extensions_Swift_Collections_Tests {
         #expect(array == [.two, .one, .three])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortByRawValuesLocalized() {
         enum Foo: String {
@@ -1628,6 +1640,7 @@ struct Extensions_Swift_Collections_Tests {
         #expect(array == [.two, .one, .three])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortByRawValuesLocalizedStandard() {
         enum Foo: String {
@@ -1640,6 +1653,7 @@ struct Extensions_Swift_Collections_Tests {
         #expect(array == [.two, .one, .three])
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func sortByRawValuesLocalizedCaseInsensitive() {
         enum Foo: String {
