@@ -7,6 +7,7 @@
 import class Foundation.NSNumber
 import typealias Foundation.TimeInterval
 import SwiftExtensions
+import TestingExtensions
 
 extension PropertyAccessorFoo {
     public struct AsyncNumberPropertyAccessor: AsyncPropertyAccessor {
@@ -25,7 +26,7 @@ extension PropertyAccessorFoo {
             if let delay {
                 print("Getting new value for number (async)")
                 defer { print("Done getting new value for number (async)") }
-                try? await Task.sleep(for: .seconds(delay))
+                try? await Task.sleep(seconds: delay)
             }
             let number: NSNumber? = ((subject.number?.intValue ?? 0) + 1) as NSNumber
             return .newValue(number)
