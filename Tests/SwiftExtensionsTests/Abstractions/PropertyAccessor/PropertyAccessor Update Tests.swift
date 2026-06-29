@@ -4,6 +4,8 @@
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
+#if compiler(>=6.2)
+
 import Foundation
 @testable import SwiftExtensions
 import Testing
@@ -108,3 +110,5 @@ struct PropertyAccessor_Update_Tests {
         #expect(t.number == 123)
     }
 }
+
+#endif

@@ -6,6 +6,7 @@
 
 // MARK: - Mutating Update Closure
 
+#if compiler(>=6.2)
 extension PropertyAccessorSubject {
     /// Update `self` in-place.
     nonisolated
@@ -33,9 +34,11 @@ extension PropertyAccessorSubject {
         try await block(PropertyAccessorProxy(updating: &self))
     }
 }
+#endif
 
 // MARK: - Non-Mutating Update Closure
 
+#if compiler(>=6.2)
 extension PropertyAccessorSubject {
     /// Return a new copy of `self` with the specified updates applied.
     nonisolated
@@ -68,6 +71,7 @@ extension PropertyAccessorSubject {
         return copy
     }
 }
+#endif
 
 // MARK: - Mutating Update Property
 
@@ -89,7 +93,7 @@ extension PropertyAccessorSubject {
     // MARK: Async Property
 
     /// Update `self` in-place.
-    nonisolated(nonsending)
+    nonisolated
     public mutating func update<P: AsyncPropertyAccessor<Self>>(property: P) async throws(P.Failure) -> Void {
         try await property.update(subject: &self)
     }
@@ -184,7 +188,7 @@ extension PropertyAccessorSubject {
 
     /// Update `self` in-place.
     @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
-    nonisolated(nonsending)
+    nonisolated
     public mutating func update(properties: [any AsyncPropertyAccessor<Self>]) async throws -> Void {
         self = try await withThrowingTaskGroup { group in
             for property in properties {

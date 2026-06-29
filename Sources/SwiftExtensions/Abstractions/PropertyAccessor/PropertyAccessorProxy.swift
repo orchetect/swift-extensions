@@ -4,6 +4,8 @@
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
+#if compiler(>=6.2)
+
 /// Property update proxy.
 ///
 /// This type is not constructible. Rather, this type is vended in update closures and may be used within the current scope
@@ -75,3 +77,5 @@ extension PropertyAccessorProxy {
         }
     }
 }
+
+#endif

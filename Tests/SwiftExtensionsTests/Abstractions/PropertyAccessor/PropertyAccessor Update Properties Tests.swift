@@ -14,43 +14,67 @@ import Testing
 struct PropertyAccessor_Update_Properties_Tests {
     // MARK: Homogenous Properties
 
-    @available(iOS 16, watchOS 9, tvOS 16, *)
+    @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     @Test
     func updatePropertiesSync() /* NOT ASYNC */ throws {
         var t = PropertyAccessorFoo(name: "NAME", value: 1)
 
-        try t.update(properties: [.name(), .value()]) // .number() // can't include this; requires await
+        // .number() // can't include this; requires await
+        #if compiler(>=6.2)
+        try t.update(properties: [.name(), .value()])
+        #else
+        // Xcode 16.4 compiler crashes when using static constructors (`.name()`, etc.)
+        try t.update(properties: [PropertyAccessorFoo.NamePropertyAccessor(), PropertyAccessorFoo.ValuePropertyAccessor()])
+        #endif
+
         #expect(t.name == "NAME.")
         #expect(t.value == 2)
     }
 
-    @available(iOS 16, watchOS 9, tvOS 16, *)
+    @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     @MainActor @Test
     func updatePropertiesSync_MainActor() /* NOT ASYNC */ throws {
         var t = PropertyAccessorFoo(name: "NAME", value: 1)
 
-        try t.update(properties: [.name(), .value()]) // .number() // can't include this; requires await
+        // .number() // can't include this; requires await
+        #if compiler(>=6.2)
+        try t.update(properties: [.name(), .value()])
+        #else
+        // Xcode 16.4 compiler crashes when using static constructors (`.name()`, etc.)
+        try t.update(properties: [PropertyAccessorFoo.NamePropertyAccessor(), PropertyAccessorFoo.ValuePropertyAccessor()])
+        #endif
+
         #expect(t.name == "NAME.")
         #expect(t.value == 2)
     }
 
-    @available(iOS 16, watchOS 9, tvOS 16, *)
+    @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     @Test
     func updatePropertiesASync() async throws {
         var t = PropertyAccessorFoo(name: "NAME", value: 1)
 
+        #if compiler(>=6.2)
         try await t.update(properties: [.number()])
+        #else
+        try await t.update(properties: [PropertyAccessorFoo.NumberPropertyAccessor()])
+        #endif
+
         #expect(t.name == "NAME")
         #expect(t.value == 1)
         #expect(t.number == 123)
     }
 
-    @available(iOS 16, watchOS 9, tvOS 16, *)
+    @available(macOS 13, iOS 16, watchOS 9, tvOS 16, *)
     @MainActor @Test
     func updatePropertiesASync_MainActor() async throws {
         var t = PropertyAccessorFoo(name: "NAME", value: 1)
 
+        #if compiler(>=6.2)
         try await t.update(properties: [.number()])
+        #else
+        try await t.update(properties: [PropertyAccessorFoo.NumberPropertyAccessor()])
+        #endif
+
         #expect(t.name == "NAME")
         #expect(t.value == 1)
         #expect(t.number == 123)

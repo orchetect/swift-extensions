@@ -12,7 +12,7 @@ extension PropertyAccessorFoo {
         public let increment: Int
         public let isDelayed: Bool
 
-        public init(increment: Int, delay isDelayed: Bool = false) {
+        public init(increment: Int = 1, delay isDelayed: Bool = false) {
             self.increment = increment
             self.isDelayed = isDelayed
         }
