@@ -33,7 +33,10 @@ let package = Package(
             dependencies: [
                 .product(name: "SwiftDataParsing", package: "swift-data-parsing")
             ],
-            swiftSettings: [.define("DEBUG", .when(configuration: .debug))]
+            swiftSettings: [
+                .define("DEBUG", .when(configuration: .debug)),
+                    .enableExperimentalFeature("Lifetimes")
+            ]
         ),
         .testTarget(
             name: "SwiftExtensionsTests",
