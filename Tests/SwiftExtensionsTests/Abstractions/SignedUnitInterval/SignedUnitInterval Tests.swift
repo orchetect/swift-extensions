@@ -183,12 +183,23 @@ struct SignedUnitInterval_Tests {
     }
 
     @Test
-    func signedUnitInterval() {
-        #expect(SignedUnitInterval( 0.0).signedUnitInterval == (absoluteUnitInterval: UnitInterval(0.0), sign: .plus))
-        #expect(SignedUnitInterval( 0.5).signedUnitInterval == (absoluteUnitInterval: UnitInterval(0.5), sign: .plus))
-        #expect(SignedUnitInterval(-0.5).signedUnitInterval == (absoluteUnitInterval: UnitInterval(0.5), sign: .minus))
-        #expect(SignedUnitInterval( 1.0).signedUnitInterval == (absoluteUnitInterval: UnitInterval(1.0), sign: .plus))
-        #expect(SignedUnitInterval(-1.0).signedUnitInterval == (absoluteUnitInterval: UnitInterval(1.0), sign: .minus))
+    func sign() {
+        #expect(SignedUnitInterval(-1.0).sign == .minus)
+        #expect(SignedUnitInterval(-0.5).sign == .minus)
+        #expect(SignedUnitInterval(-0.0).sign == .minus)
+        #expect(SignedUnitInterval(0.0).sign == .plus)
+        #expect(SignedUnitInterval(0.5).sign == .plus)
+        #expect(SignedUnitInterval(1.0).sign == .plus)
+    }
+
+    @Test
+    func absoluteUnitInterval() {
+        #expect(SignedUnitInterval(-1.0).absoluteUnitInterval == UnitInterval(1.0))
+        #expect(SignedUnitInterval(-0.5).absoluteUnitInterval == UnitInterval(0.5))
+        #expect(SignedUnitInterval(-0.0).absoluteUnitInterval == UnitInterval(0.0))
+        #expect(SignedUnitInterval(0.0).absoluteUnitInterval == UnitInterval(0.0))
+        #expect(SignedUnitInterval(0.5).absoluteUnitInterval == UnitInterval(0.5))
+        #expect(SignedUnitInterval(1.0).absoluteUnitInterval == UnitInterval(1.0))
     }
 
     @Test
