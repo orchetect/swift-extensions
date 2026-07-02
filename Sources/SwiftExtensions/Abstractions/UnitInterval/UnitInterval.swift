@@ -128,6 +128,21 @@ extension UnitInterval {
     }
 }
 
+// MARK: - Formatting
+
+extension UnitInterval {
+    /// Returns the unit interval formatted as a percentage string (ie: "50%").
+    @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    public func localizedPercentageString(fractionLength: Int = 0) -> String {
+        Int(rawValue * 100.0)
+            .formatted(
+                .percent
+                    .precision(.fractionLength(fractionLength))
+                    .locale(.current)
+            )
+    }
+}
+
 // MARK: - Conversion
 
 extension UnitInterval {
