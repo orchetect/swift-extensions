@@ -187,6 +187,14 @@ struct UnitInterval_Tests {
         #expect(UnitInterval(1.0).scaledSignedUnitInterval == SignedUnitInterval(1.0))
     }
 
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func localizedPercentageString() {
+        #expect(UnitInterval(0.0).localizedPercentageString(fractionLength: 0) == "0%")
+        #expect(UnitInterval(0.0).localizedPercentageString(fractionLength: 1) == "0.0%")
+        #expect(UnitInterval(1.0).localizedPercentageString(fractionLength: 0) == "100%")
+        #expect(UnitInterval(1.0).localizedPercentageString(fractionLength: 1) == "100.0%")
+    }
+
     @Test
     func init_scaling_signedUnitInterval() {
         #expect(UnitInterval(scaling: SignedUnitInterval(-1.0)) == UnitInterval(0.0))
