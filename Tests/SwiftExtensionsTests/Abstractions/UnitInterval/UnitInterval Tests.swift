@@ -187,6 +187,7 @@ struct UnitInterval_Tests {
         #expect(UnitInterval(1.0).scaledSignedUnitInterval == SignedUnitInterval(1.0))
     }
 
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func localizedPercentageString() {
         #expect(UnitInterval(0.0).localizedPercentageString(fractionLength: 0) == "0%")
