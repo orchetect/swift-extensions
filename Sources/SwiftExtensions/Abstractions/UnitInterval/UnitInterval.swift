@@ -4,6 +4,8 @@
 //  © 2026 Steffan Andrews • Licensed under MIT License
 //
 
+import struct Foundation.Locale
+
 /// A floating point type that can contain values between `0.0 ... 1.0`.
 public struct UnitInterval {
     public let rawValue: Double
@@ -131,15 +133,38 @@ extension UnitInterval {
 // MARK: - Formatting
 
 extension UnitInterval {
-    /// Returns the unit interval formatted as a percentage string (ie: "50%").
+    /// Returns the unit interval formatted as localized string containing a percentage (ie: "50%")
+    /// with an unbounded fraction length.
     @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
-    public func localizedPercentageString(fractionLength: Int = 0) -> String {
-        Int(rawValue * 100.0)
+    public func localizedPercentageString(locale: Locale = .current) -> String {
+        rawValue
             .formatted(
                 .percent
-                    .precision(.fractionLength(fractionLength))
-                    .locale(.current)
+                    .locale(locale)
             )
+    }
+
+    /// Returns the unit interval formatted as localized string containing a percentage (ie: "50%")
+    /// rounding to a fixed fraction length.
+    @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    public func localizedPercentageString(fractionLength: Int, locale: Locale = .current) -> String {
+        rawValue
+            .formatted(
+                .percent
+                    .precision(.fractionLength(fractionLength.clamped(to: 0...)))
+                    .locale(locale)
+            )
+    }
+
+    /// Returns the unit interval formatted as localized string containing a percentage (ie: "50%")
+    /// rounding to a maximum fraction length.
+    @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    public func localizedPercentageString(maxFractionLength: Int, locale: Locale = .current) -> String {
+        rawValue
+            .formatted(
+                .percent
+                    .precision(.integerAndFractionLength(integerLimits: 1..., fractionLimits: ...maxFractionLength.clamped(to: 0...)))
+                    .locale(locale)            )
     }
 }
 
