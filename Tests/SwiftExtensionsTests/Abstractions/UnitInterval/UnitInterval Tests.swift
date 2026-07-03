@@ -17,6 +17,9 @@ struct UnitInterval_Tests {
         #expect(UnitInterval(rawValue: 0.5).rawValue == 0.5)
         #expect(UnitInterval(rawValue: 1.0).rawValue == 1.0)
         #expect(UnitInterval(rawValue: 1.1).rawValue == 1.0)
+
+        // edge cases
+        #expect(UnitInterval(rawValue: 0.0000005).rawValue == 0.0000005)
     }
 
     @Test
@@ -190,10 +193,69 @@ struct UnitInterval_Tests {
     @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
     @Test(.enabled(ifLocaleLanguageCode: .english))
     func localizedPercentageString() {
+        // Note that the output of this string may vary depending on local machine regional/formatting
+        // that could be altered from the system default.
+
+        #expect(UnitInterval(0.0).localizedPercentageString() == "0%")
+        #expect(UnitInterval(0.5).localizedPercentageString() == "50%")
+        #expect(UnitInterval(0.52).localizedPercentageString() == "52%")
+        #expect(UnitInterval(0.528).localizedPercentageString() == "52.8%")
+        #expect(UnitInterval(0.5285).localizedPercentageString() == "52.85%")
+        #expect(UnitInterval(1.0).localizedPercentageString() == "100%")
+    }
+
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func localizedPercentageString_fractionLength() {
+        // Note that the output of this string may vary depending on local machine regional/formatting
+        // that could be altered from the system default.
+
         #expect(UnitInterval(0.0).localizedPercentageString(fractionLength: 0) == "0%")
         #expect(UnitInterval(0.0).localizedPercentageString(fractionLength: 1) == "0.0%")
+
+        #expect(UnitInterval(0.5).localizedPercentageString(fractionLength: 0) == "50%")
+        #expect(UnitInterval(0.5).localizedPercentageString(fractionLength: 1) == "50.0%")
+        #expect(UnitInterval(0.52).localizedPercentageString(fractionLength: 1) == "52.0%")
+        #expect(UnitInterval(0.528).localizedPercentageString(fractionLength: 0) == "53%") // rounded up
+        #expect(UnitInterval(0.528).localizedPercentageString(fractionLength: 1) == "52.8%")
+        #expect(UnitInterval(0.528).localizedPercentageString(fractionLength: 2) == "52.80%")
+        #expect(UnitInterval(0.5285).localizedPercentageString(fractionLength: 0) == "53%") // rounded up
+        #expect(UnitInterval(0.5285).localizedPercentageString(fractionLength: 1) == "52.8%") // rounded down
+        #expect(UnitInterval(0.5285).localizedPercentageString(fractionLength: 2) == "52.85%")
+        #expect(UnitInterval(0.5285).localizedPercentageString(fractionLength: 3) == "52.850%")
+
         #expect(UnitInterval(1.0).localizedPercentageString(fractionLength: 0) == "100%")
         #expect(UnitInterval(1.0).localizedPercentageString(fractionLength: 1) == "100.0%")
+
+        // edge cases
+        #expect(UnitInterval(1.0).localizedPercentageString(fractionLength: -1) == "100%") // clamps to >= 0
+    }
+
+    @available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) // for language check
+    @Test(.enabled(ifLocaleLanguageCode: .english))
+    func localizedPercentageString_maxFractionLength() {
+        // Note that the output of this string may vary depending on local machine regional/formatting
+        // that could be altered from the system default.
+
+        #expect(UnitInterval(0.0).localizedPercentageString(maxFractionLength: 0) == "0%")
+        #expect(UnitInterval(0.0).localizedPercentageString(maxFractionLength: 1) == "0%")
+
+        #expect(UnitInterval(0.5).localizedPercentageString(maxFractionLength: 0) == "50%")
+        #expect(UnitInterval(0.5).localizedPercentageString(maxFractionLength: 1) == "50%")
+        #expect(UnitInterval(0.52).localizedPercentageString(maxFractionLength: 1) == "52%")
+        #expect(UnitInterval(0.528).localizedPercentageString(maxFractionLength: 0) == "53%") // rounded up
+        #expect(UnitInterval(0.528).localizedPercentageString(maxFractionLength: 1) == "52.8%")
+        #expect(UnitInterval(0.528).localizedPercentageString(maxFractionLength: 2) == "52.8%")
+        #expect(UnitInterval(0.5285).localizedPercentageString(maxFractionLength: 0) == "53%") // rounded up
+        #expect(UnitInterval(0.5285).localizedPercentageString(maxFractionLength: 1) == "52.8%") // rounded down
+        #expect(UnitInterval(0.5285).localizedPercentageString(maxFractionLength: 2) == "52.85%")
+        #expect(UnitInterval(0.5285).localizedPercentageString(maxFractionLength: 3) == "52.85%")
+
+        #expect(UnitInterval(1.0).localizedPercentageString(maxFractionLength: 0) == "100%")
+        #expect(UnitInterval(1.0).localizedPercentageString(maxFractionLength: 1) == "100%")
+
+        // edge cases
+        #expect(UnitInterval(1.0).localizedPercentageString(maxFractionLength: -1) == "100%") // clamps to >= 0
     }
 
     @Test

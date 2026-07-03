@@ -19,6 +19,10 @@ struct SignedUnitInterval_Tests {
         #expect(SignedUnitInterval(rawValue: 0.5).rawValue == 0.5)
         #expect(SignedUnitInterval(rawValue: 1.0).rawValue == 1.0)
         #expect(SignedUnitInterval(rawValue: 1.1).rawValue == 1.0)
+
+        // edge cases
+        #expect(SignedUnitInterval(rawValue: 0.0000005).rawValue == 0.0000005)
+        #expect(SignedUnitInterval(rawValue: -0.0000005).rawValue == -0.0000005)
     }
 
     @Test
