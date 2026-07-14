@@ -20,9 +20,6 @@ let package = Package(
         )
     ],
     dependencies: [
-        // External dependencies
-        .package(url: "https://github.com/orchetect/swift-data-parsing", from: "0.1.1"),
-
         // Testing-only dependencies
         .package(url: "https://github.com/apple/swift-numerics", from: "1.1.0"),
         .package(url: "https://github.com/orchetect/swift-testing-extensions", from: "0.3.0")
@@ -30,9 +27,6 @@ let package = Package(
     targets: [
         .target(
             name: "SwiftExtensions",
-            dependencies: [
-                .product(name: "SwiftDataParsing", package: "swift-data-parsing")
-            ],
             swiftSettings: [
                 .define("DEBUG", .when(configuration: .debug)),
                     .enableExperimentalFeature("Lifetimes")

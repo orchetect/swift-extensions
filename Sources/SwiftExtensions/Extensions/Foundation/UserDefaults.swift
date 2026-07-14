@@ -298,7 +298,7 @@ public struct UserDefaultsStorage<Value, StorageValue: UserDefaultsStorable>: @u
         setTransformation = { newValue in
             let encoder = JSONEncoder()
             guard let encoded = try? encoder.encode(newValue),
-                  let string = encoded.toString(using: .utf8)
+                  let string = String(data: encoded, encoding: .utf8)
             else { return nil }
             return string
         }

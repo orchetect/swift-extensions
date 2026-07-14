@@ -31,7 +31,7 @@ extension XMLTestSuite {
     }
 
     static var testXMLStringData: Data {
-        testXMLString.toData()!
+        testXMLString.data(using: .utf8)!
     }
 
     static var testXMLString: String {
