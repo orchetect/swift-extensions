@@ -6,36 +6,29 @@ Multi-platform general-purpose Swift extensions.
 
 The library has full unit test coverage and is actively used in production.
 
-## Installation: Swift Package Manager (SPM)
+## Getting Started
 
-### Dependency within an Application Project
+This library is available as a Swift Package Manager (SPM) package.
 
-1. Add the package to your Xcode project using Swift Package Manager using `https://github.com/orchetect/swift-extensions` as the URL.
+1. Add the **swift-extensions** repo as a dependency.
 
-2. Import the module files where needed. It's recommended to use the `internal` access level if used in a package so that it is not exported to the user of your package.
+   ```swift
+   .package(url: "https://github.com/orchetect/swift-extensions", from: "3.0.0")
+   ```
+
+2. Add **SwiftExtensions** to your target.
+
+   ```swift
+   .product(name: "SwiftExtensions", package: "swift-extensions")
+   ```
+
+3. Import **SwiftExtensions** to use it.
+
+   It's recommended to use the `internal` access level if used in a package so that it is not exported to the user of your package.
 
    ```swift
    internal import SwiftExtensions
    ```
-
-### Dependency within a Swift Package
-
-In your Package.swift file:
-
-```swift
-let package = Package(
-    dependencies: [
-        .package(url: "https://github.com/orchetect/swift-extensions", from: "2.1.8")
-    ],
-    targets: [
-        .target(
-            dependencies: [
-                .product(name: "SwiftExtensions", package: "swift-extensions")
-            ]
-        )
-    ]
-)
-```
 
 ## Documentation
 
