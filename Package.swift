@@ -28,8 +28,7 @@ let package = Package(
         .target(
             name: "SwiftExtensions",
             swiftSettings: [
-                .define("DEBUG", .when(configuration: .debug)),
-                    .enableExperimentalFeature("Lifetimes")
+                .define("DEBUG", .when(configuration: .debug))
             ]
         ),
         .testTarget(
