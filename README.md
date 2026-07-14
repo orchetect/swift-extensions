@@ -11,21 +11,15 @@ The library has full unit test coverage and is actively used in production.
 This library is available as a Swift Package Manager (SPM) package.
 
 1. Add the **swift-extensions** repo as a dependency.
-
    ```swift
    .package(url: "https://github.com/orchetect/swift-extensions", from: "3.0.0")
    ```
-
 2. Add **SwiftExtensions** to your target.
-
    ```swift
    .product(name: "SwiftExtensions", package: "swift-extensions")
    ```
-
 3. Import **SwiftExtensions** to use it.
-
    It's recommended to use the `internal` access level if used in a package so that it is not exported to the user of your package.
-
    ```swift
    internal import SwiftExtensions
    ```
