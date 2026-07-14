@@ -11,19 +11,21 @@ import Foundation
 // MARK: - String Formatting
 
 extension BinaryInteger {
-    /// Convenience method to return a String, padded to `paddedTo` number of leading zeros.
+    /// Convenience method to return a String, padded to `digitCount` number of leading zeros.
     @inlinable @_disfavoredOverload
-    public func string(paddedTo: Int) -> String {
-        if let cVarArg = self as? CVarArg {
-            String(format: "%0\(paddedTo)d", cVarArg)
-        } else {
-            // Typically this will never happen,
-            // but BinaryInteger does not implicitly conform to CVarArg,
-            // and we can't assume all concrete types that conform
-            // to BinaryInteger CVarArg now or in the future.
-            // Just return a string as-is as a failsafe:
-            String(describing: self)
-        }
+    public func string(paddedTo digitCount: Int) -> String {
+        let numberString = "\(self)"
+        let padCount = digitCount - numberString.count
+        guard padCount > 0 else { return numberString }
+        let padded = String(repeating: "0", count: padCount) + numberString
+        return padded
+
+        // this also works, but BinaryInteger does not implicitly conform to CVarArg,
+        // and we can't assume all concrete types that conform to BinaryInteger CVarArg
+        // now or in the future.
+        // if let cVarArg = self as? CVarArg {
+        //     String(format: "%0\(digitCount)d", cVarArg)
+        // }
     }
 }
 
