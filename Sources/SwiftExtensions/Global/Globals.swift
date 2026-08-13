@@ -129,8 +129,19 @@ extension Globals {
 
         /// Internal use.
         static func getSysInfoString(key: String) -> String? {
+            // Constant is deprecated and renamed in macOS 27.0.
+            // AppKit is version 2775 in the macOS 27.0 beta 5 SDK. The AppKit version can be found in the MacOSX SDK:
+            // - Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+            // nested within the SDK here:
+            // - System/Library/Frameworks/AppKit/Versions/Current/Modules/AppKit.swiftmodule/arm64e-apple-macos.swiftinterface
+            #if canImport(AppKit, _version: 2775.0)
+            let port: mach_port_t = kIOMainPortDefault
+            #else
+            let port: mach_port_t = kIOMasterPortDefault
+            #endif
+
             let platformExpert = IOServiceGetMatchingService(
-                kIOMasterPortDefault,
+                port,
                 IOServiceMatching("IOPlatformExpertDevice")
             )
 
